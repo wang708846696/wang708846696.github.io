@@ -7,6 +7,46 @@
     </url>
 
     <url>
+        <loc>http://yoursite-url/2018/11/01/Activity%E5%90%AF%E5%8A%A88-performLaunchActivity%E6%96%B9%E6%B3%95/</loc>
+        <lastmod>2018-11-01T12:46:24.789Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://yoursite-url/2018/11/01/Activity%E5%90%AF%E5%8A%A87-scheduleLaunchActivity%E6%96%B9%E6%B3%95/</loc>
+        <lastmod>2018-11-01T12:44:55.294Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://yoursite-url/2018/11/01/Activity%E5%90%AF%E5%8A%A86-startSpecificActivityLocked%E6%96%B9%E6%B3%95/</loc>
+        <lastmod>2018-11-01T12:42:51.577Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://yoursite-url/2018/11/01/Activity%E5%90%AF%E5%8A%A85-resumeFocusedStackTopActivityLocked%E6%96%B9%E6%B3%95/</loc>
+        <lastmod>2018-11-01T12:39:23.706Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://yoursite-url/2018/11/01/Activity%E5%90%AF%E5%8A%A84-startActivity%E6%96%B9%E6%B3%95/</loc>
+        <lastmod>2018-11-01T12:38:08.065Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://yoursite-url/2018/11/01/Activity%E5%90%AF%E5%8A%A83-startActivityLocked%E6%96%B9%E6%B3%95/</loc>
         <lastmod>2018-11-01T11:23:59.840Z</lastmod>
         <changefreq>weekly</changefreq>

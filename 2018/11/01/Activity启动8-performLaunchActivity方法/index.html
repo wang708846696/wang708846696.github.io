@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Activity启动8-performLaunchActivity方法 - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/11/01/Activity启动8-performLaunchActivity方法/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                            
+                              <a class="tag" href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
+                            
+                        </div>
+                        <h1>Activity启动8-performLaunchActivity方法</h1>
+                        <h2 class="subheading">performLaunchActivity()方法的主要说明</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-11-01
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>通过这个方法，我们就知道Activity为什么会出现在清单文件中，什么时候回调onCreate方法，Activity也是一个类。许多实用面面纱将在这个方法中揭晓</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Activity <span class="title">performLaunchActivity</span><span class="params">(ActivityClientRecord r, Intent customIntent)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//第一点我们可以看出，在真正所在启动Activity的进程里面，Activity其实是一个ActivityClientRecord，而在SystemServer进程中也就是AMS所在代码中是用一个ActivityRecord进行表示的。</span></span><br><span class="line">    ActivityInfo aInfo = r.activityInfo;</span><br><span class="line">    <span class="keyword">if</span> (r.loadedApk == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">//得到LoadedApk，这个对象中包含基础的类加载器，ActivityThread，等</span></span><br><span class="line">        r.loadedApk = getLoadedApk(aInfo.applicationInfo, r.compatInfo,</span><br><span class="line">                                   Context.CONTEXT_INCLUDE_CODE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ComponentName component = r.intent.getComponent();</span><br><span class="line">    <span class="keyword">if</span> (component == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">//返回应该用于处理此意图的活动组件</span></span><br><span class="line">        component = r.intent.resolveActivity(</span><br><span class="line">            mInitialApplication.getPackageManager());</span><br><span class="line">        r.intent.setComponent(component);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (r.activityInfo.targetActivity != <span class="keyword">null</span>) &#123;</span><br><span class="line">        component = <span class="keyword">new</span> ComponentName(r.activityInfo.packageName,</span><br><span class="line">                                      r.activityInfo.targetActivity);</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//创建Activity中的ContextImpl</span></span><br><span class="line">    ContextImpl appContext = createBaseContextForActivity(r);</span><br><span class="line">    Activity activity = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//是从loadedApk.getClassLoader()得到的，这块下面单独讲，本质上是PathClassLoader</span></span><br><span class="line">        java.lang.ClassLoader cl = appContext.getClassLoader();</span><br><span class="line">        <span class="comment">//(Activity)cl.loadClass(className).newInstance();通过反射得到Activity实例对象</span></span><br><span class="line">        activity = mInstrumentation.newActivity(</span><br><span class="line">            cl, component.getClassName(), r.intent);</span><br><span class="line">        StrictMode.incrementExpectedActivityCount(activity.getClass());</span><br><span class="line">        r.intent.setExtrasClassLoader(cl);</span><br><span class="line">        r.intent.prepareToEnterProcess();</span><br><span class="line">        <span class="keyword">if</span> (r.state != <span class="keyword">null</span>) &#123;</span><br><span class="line">            r.state.setClassLoader(cl);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!mInstrumentation.onException(activity, e)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(</span><br><span class="line">                <span class="string">"Unable to instantiate activity "</span> + component</span><br><span class="line">                + <span class="string">": "</span> + e.toString(), e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//生成Application对象，ActivityThread.mInstrumentation.newApplication(cl, appClass, appContext);</span></span><br><span class="line">        <span class="comment">//这里面也创建Context，但是这个Context和Activity中的Context不一样</span></span><br><span class="line">        Application app = r.loadedApk.makeApplication(<span class="keyword">false</span>, mInstrumentation);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (localLOGV) Slog.v(TAG, <span class="string">"Performing launch of "</span> + r);</span><br><span class="line">        <span class="keyword">if</span> (localLOGV) Slog.v(</span><br><span class="line">            TAG, r + <span class="string">": app="</span> + app</span><br><span class="line">            + <span class="string">", appName="</span> + app.getPackageName()</span><br><span class="line">            + <span class="string">", pkg="</span> + r.loadedApk.getPackageName()</span><br><span class="line">            + <span class="string">", comp="</span> + r.intent.getComponent().toShortString()</span><br><span class="line">            + <span class="string">", dir="</span> + r.loadedApk.getAppDir());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (activity != <span class="keyword">null</span>) &#123;</span><br><span class="line">            CharSequence title = r.activityInfo.loadLabel(appContext.getPackageManager());</span><br><span class="line">            Configuration config = <span class="keyword">new</span> Configuration(mCompatConfiguration);</span><br><span class="line">            <span class="keyword">if</span> (r.overrideConfig != <span class="keyword">null</span>) &#123;</span><br><span class="line">                config.updateFrom(r.overrideConfig);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (DEBUG_CONFIGURATION) Slog.v(TAG, <span class="string">"Launching activity "</span></span><br><span class="line">                                            + r.activityInfo.name + <span class="string">" with config "</span> + config);</span><br><span class="line">            Window window = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">if</span> (r.mPendingRemoveWindow != <span class="keyword">null</span> &amp;&amp; r.mPreserveWindow) &#123;</span><br><span class="line">                window = r.mPendingRemoveWindow;</span><br><span class="line">                r.mPendingRemoveWindow = <span class="keyword">null</span>;</span><br><span class="line">                r.mPendingRemoveWindowManager = <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            appContext.setOuterContext(activity);</span><br><span class="line">            <span class="comment">//调用到了Activity的attch了。顺序在onCreate之前</span></span><br><span class="line">            activity.attach(appContext, <span class="keyword">this</span>, getInstrumentation(), r.token,</span><br><span class="line">                            r.ident, app, r.intent, r.activityInfo, title, r.parent,</span><br><span class="line">                            r.embeddedID, r.lastNonConfigurationInstances, config,</span><br><span class="line">                            r.referrer, r.voiceInteractor, window, r.configCallback);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (customIntent != <span class="keyword">null</span>) &#123;</span><br><span class="line">                activity.mIntent = customIntent;</span><br><span class="line">            &#125;</span><br><span class="line">            r.lastNonConfigurationInstances = <span class="keyword">null</span>;</span><br><span class="line">            checkAndBlockForNetworkAccess();</span><br><span class="line">            activity.mStartedActivity = <span class="keyword">false</span>;</span><br><span class="line">            <span class="comment">//有主题的时候设置主题</span></span><br><span class="line">            <span class="keyword">int</span> theme = r.activityInfo.getThemeResource();</span><br><span class="line">            <span class="keyword">if</span> (theme != <span class="number">0</span>) &#123;</span><br><span class="line">                activity.setTheme(theme);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            activity.mCalled = <span class="keyword">false</span>;</span><br><span class="line">            <span class="comment">//调用onCreate方法</span></span><br><span class="line">            <span class="keyword">if</span> (r.isPersistable()) &#123;</span><br><span class="line">                mInstrumentation.callActivityOnCreate(activity, r.state, r.persistentState);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                mInstrumentation.callActivityOnCreate(activity, r.state);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (!activity.mCalled) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> SuperNotCalledException(</span><br><span class="line">                    <span class="string">"Activity "</span> + r.intent.getComponent().toShortString() +</span><br><span class="line">                    <span class="string">" did not call through to super.onCreate()"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            r.activity = activity;</span><br><span class="line">            r.stopped = <span class="keyword">true</span>;</span><br><span class="line">            <span class="keyword">if</span> (!r.activity.mFinished) &#123;</span><br><span class="line">                <span class="comment">//调用onStart了。</span></span><br><span class="line">                activity.performStart();</span><br><span class="line">                r.stopped = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (!r.activity.mFinished) &#123;</span><br><span class="line">                <span class="keyword">if</span> (r.isPersistable()) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (r.state != <span class="keyword">null</span> || r.persistentState != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        mInstrumentation.callActivityOnRestoreInstanceState(activity, r.state,</span><br><span class="line">                                                                            r.persistentState);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (r.state != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    mInstrumentation.callActivityOnRestoreInstanceState(activity, r.state);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (!r.activity.mFinished) &#123;</span><br><span class="line">                activity.mCalled = <span class="keyword">false</span>;</span><br><span class="line">                <span class="comment">//保存Activity的状态</span></span><br><span class="line">                <span class="keyword">if</span> (r.isPersistable()) &#123;</span><br><span class="line">                    mInstrumentation.callActivityOnPostCreate(activity, r.state,</span><br><span class="line">                                                              r.persistentState);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    mInstrumentation.callActivityOnPostCreate(activity, r.state);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (!activity.mCalled) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> SuperNotCalledException(</span><br><span class="line">                        <span class="string">"Activity "</span> + r.intent.getComponent().toShortString() +</span><br><span class="line">                        <span class="string">" did not call through to super.onPostCreate()"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        r.paused = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">        mActivities.put(r.token, r);</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (SuperNotCalledException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> e;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!mInstrumentation.onException(activity, e)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(</span><br><span class="line">                <span class="string">"Unable to start activity "</span> + component</span><br><span class="line">                + <span class="string">": "</span> + e.toString(), e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> activity;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="核心点">核心点</span></h4>
+<p>关于这个</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ContextImpl appContext = createBaseContextForActivity(r);</span><br><span class="line"><span class="comment">//是从loadedApk.getClassLoader()得到的</span></span><br><span class="line">java.lang.ClassLoader cl = appContext.getClassLoader();</span><br><span class="line"><span class="comment">//(Activity)cl.loadClass(className).newInstance();通过反射得到Activity实例对象</span></span><br><span class="line">activity = mInstrumentation.newActivity(cl, component.getClassName(), r.intent);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> ContextImpl <span class="title">createBaseContextForActivity</span><span class="params">(ActivityClientRecord r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> displayId;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        displayId = ActivityManager.getService().getActivityDisplayId(r.token);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> e.rethrowFromSystemServer();</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//创建Context</span></span><br><span class="line">    ContextImpl appContext = ContextImpl.createActivityContext(</span><br><span class="line">        <span class="keyword">this</span>, r.loadedApk, r.activityInfo, r.token, displayId, r.overrideConfig);</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> appContext;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">static</span> ContextImpl <span class="title">createActivityContext</span><span class="params">(ActivityThread mainThread,</span></span></span><br><span class="line"><span class="function"><span class="params">          LoadedApk loadedApk, ActivityInfo activityInfo, IBinder activityToken, <span class="keyword">int</span> displayId,</span></span></span><br><span class="line"><span class="function"><span class="params">          Configuration overrideConfiguration)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (loadedApk == <span class="keyword">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"loadedApk"</span>);</span><br><span class="line"></span><br><span class="line">      String[] splitDirs = loadedApk.getSplitResDirs();</span><br><span class="line">      <span class="comment">//得到ClassLoader</span></span><br><span class="line">      ClassLoader classLoader = loadedApk.getClassLoader();</span><br><span class="line"><span class="comment">//要设置privateFlags &amp; ApplicationInfo.PRIVATE_FLAG_ISOLATED_SPLIT_LOADING</span></span><br><span class="line">      <span class="comment">//如果应用程序在清单中声明希望将其拆分后的APKs加载到独立的上下文中，使用它们自己的类加载器和资源对象，则返回true。关于这个值，我们在下面说明下</span></span><br><span class="line">      <span class="keyword">if</span> (loadedApk.getApplicationInfo().requestsIsolatedSplitLoading()) &#123;</span><br><span class="line">          Trace.traceBegin(Trace.TRACE_TAG_RESOURCES, <span class="string">"SplitDependencies"</span>);</span><br><span class="line">          <span class="keyword">try</span> &#123;</span><br><span class="line">              classLoader = loadedApk.getSplitClassLoader(activityInfo.splitName);</span><br><span class="line">              splitDirs = loadedApk.getSplitPaths(activityInfo.splitName);</span><br><span class="line">          &#125; <span class="keyword">catch</span> (NameNotFoundException e) &#123;</span><br><span class="line">              <span class="comment">// Nothing above us can handle a NameNotFoundException, better crash.</span></span><br><span class="line">              <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">          &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">              Trace.traceEnd(Trace.TRACE_TAG_RESOURCES);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line"><span class="comment">//将ClassLoader设置进去了</span></span><br><span class="line">      ContextImpl context = <span class="keyword">new</span> ContextImpl(<span class="keyword">null</span>, mainThread, loadedApk, activityInfo.splitName,</span><br><span class="line">              activityToken, <span class="keyword">null</span>, <span class="number">0</span>, classLoader);</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Clamp display ID to DEFAULT_DISPLAY if it is INVALID_DISPLAY.</span></span><br><span class="line">      displayId = (displayId != Display.INVALID_DISPLAY) ? displayId : Display.DEFAULT_DISPLAY;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">final</span> CompatibilityInfo compatInfo = (displayId == Display.DEFAULT_DISPLAY)</span><br><span class="line">              ? loadedApk.getCompatibilityInfo()</span><br><span class="line">              : CompatibilityInfo.DEFAULT_COMPATIBILITY_INFO;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">final</span> ResourcesManager resourcesManager = ResourcesManager.getInstance();</span><br><span class="line"></span><br><span class="line">      <span class="comment">//这里也设置了ClassLoader</span></span><br><span class="line">      context.setResources(resourcesManager.createBaseActivityResources(activityToken,</span><br><span class="line">              loadedApk.getResDir(),</span><br><span class="line">              splitDirs,</span><br><span class="line">              loadedApk.getOverlayDirs(),</span><br><span class="line">              loadedApk.getApplicationInfo().sharedLibraryFiles,</span><br><span class="line">              displayId,</span><br><span class="line">              overrideConfiguration,</span><br><span class="line">              compatInfo,</span><br><span class="line">              classLoader));</span><br><span class="line">      context.mDisplay = resourcesManager.getAdjustedDisplay(displayId,</span><br><span class="line">              context.getResources());</span><br><span class="line">      <span class="keyword">return</span> context;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>关于<code>loadedApk.getApplicationInfo().requestsIsolatedSplitLoading()</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//该方法在PackageParser中，parseBaseApkCommon，可以看出来在解析apk的时候会出现</span></span><br><span class="line">TypedArray sa = res.obtainAttributes(parser, com.android.internal.R.styleable.AndroidManifest);</span><br><span class="line"><span class="keyword">if</span> (sa.getBoolean(com.android.internal.R.styleable.AndroidManifest_isolatedSplits, <span class="keyword">false</span>)) &#123;</span><br><span class="line">    pkg.applicationInfo.privateFlags |= ApplicationInfo.PRIVATE_FLAG_ISOLATED_SPLIT_LOADING;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://i1.bvimg.com/667198/d27edf37e09bfa2e.png" alt="Markdown"></p>
+<p>如果设置为true，则向平台表明为该应用程序安装的任何分离APKs都应该加载到它们自己的上下文对象中，而不出现在基本应用程序的上下文中。</p>
+<p>所以这样子可能类加载器就跑到Split中。具体要研究ApkLoad中怎么搞。</p>
+<blockquote>
+<p><code>ClassLoader classLoader = loadedApk.getClassLoader();</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ClassLoader <span class="title">getClassLoader</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mClassLoader == <span class="keyword">null</span>) &#123;</span><br><span class="line">            createOrUpdateClassLoaderLocked(<span class="keyword">null</span> <span class="comment">/*addedPaths*/</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mClassLoader;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">createOrUpdateClassLoaderLocked</span><span class="params">(List&lt;String&gt; addedPaths)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//包名是android，应用ClassLoader.getSystemClassLoader()</span></span><br><span class="line">    <span class="keyword">if</span> (mPackageName.equals(<span class="string">"android"</span>)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mClassLoader != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mBaseClassLoader != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mClassLoader = mBaseClassLoader;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            mClassLoader = ClassLoader.getSystemClassLoader();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!Objects.equals(mPackageName, ActivityThread.currentPackageName()) &amp;&amp; mIncludeCode) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ActivityThread.getPackageManager().notifyPackageUse(mPackageName,</span><br><span class="line">                                                                PackageManager.NOTIFY_PACKAGE_USE_CROSS_PACKAGE);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RemoteException re) &#123;</span><br><span class="line">            <span class="keyword">throw</span> re.rethrowFromSystemServer();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (mRegisterPackage) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ActivityManager.getService().addPackageDependency(mPackageName);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> e.rethrowFromSystemServer();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> List&lt;String&gt; zipPaths = <span class="keyword">new</span> ArrayList&lt;&gt;(<span class="number">10</span>);</span><br><span class="line">    <span class="keyword">final</span> List&lt;String&gt; libPaths = <span class="keyword">new</span> ArrayList&lt;&gt;(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//系统app</span></span><br><span class="line">    <span class="keyword">boolean</span> isBundledApp = mApplicationInfo.isSystemApp()</span><br><span class="line">        &amp;&amp; !mApplicationInfo.isUpdatedSystemApp();</span><br><span class="line">    <span class="keyword">final</span> String defaultSearchPaths = System.getProperty(<span class="string">"java.library.path"</span>);</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">boolean</span> treatVendorApkAsUnbundled = !defaultSearchPaths.contains(<span class="string">"/vendor/lib"</span>);</span><br><span class="line">    <span class="comment">//判断是否是系统app确认一遍</span></span><br><span class="line">    <span class="keyword">if</span> (mApplicationInfo.getCodePath() != <span class="keyword">null</span></span><br><span class="line">        &amp;&amp; mApplicationInfo.getCodePath().startsWith(<span class="string">"/vendor/"</span>)</span><br><span class="line">        &amp;&amp; treatVendorApkAsUnbundled) &#123;</span><br><span class="line">        isBundledApp = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将apk解析之后放入该有的目录下</span></span><br><span class="line">    makePaths(mActivityThread, isBundledApp, mApplicationInfo, zipPaths, libPaths);</span><br><span class="line"></span><br><span class="line">    String libraryPermittedPath = mDataDir;</span><br><span class="line">    <span class="keyword">if</span> (isBundledApp) &#123;</span><br><span class="line">        libraryPermittedPath += File.pathSeparator + defaultSearchPaths;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> String librarySearchPath = TextUtils.join(File.pathSeparator, libPaths);</span><br><span class="line">    <span class="keyword">if</span> (!mIncludeCode) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mClassLoader == <span class="keyword">null</span>) &#123;</span><br><span class="line">            StrictMode.ThreadPolicy oldPolicy = StrictMode.allowThreadDiskReads();</span><br><span class="line">            mClassLoader = ApplicationLoaders.getDefault().getClassLoader(</span><br><span class="line">                <span class="string">""</span> <span class="comment">/* codePath */</span>, mApplicationInfo.targetSdkVersion, isBundledApp,</span><br><span class="line">                librarySearchPath, libraryPermittedPath, mBaseClassLoader,</span><br><span class="line">                <span class="keyword">null</span> <span class="comment">/* classLoaderName */</span>);</span><br><span class="line">            StrictMode.setThreadPolicy(oldPolicy);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> String zip = (zipPaths.size() == <span class="number">1</span>) ? zipPaths.get(<span class="number">0</span>) :</span><br><span class="line">    TextUtils.join(File.pathSeparator, zipPaths);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (DEBUG) Slog.v(ActivityThread.TAG, <span class="string">"Class path: "</span> + zip +</span><br><span class="line">                      <span class="string">", JNI path: "</span> + librarySearchPath);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> needToSetupJitProfiles = <span class="keyword">false</span>;</span><br><span class="line">    <span class="comment">//最后通过ApplicationLoaders得到ClassLoader</span></span><br><span class="line">    <span class="keyword">if</span> (mClassLoader == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Temporarily disable logging of disk reads on the Looper thread</span></span><br><span class="line">        <span class="comment">// as this is early and necessary.</span></span><br><span class="line">        StrictMode.ThreadPolicy oldPolicy = StrictMode.allowThreadDiskReads();</span><br><span class="line"></span><br><span class="line">        mClassLoader = ApplicationLoaders.getDefault().getClassLoader(zip,</span><br><span class="line">                                                                      mApplicationInfo.targetSdkVersion, isBundledApp, librarySearchPath,</span><br><span class="line">                                                                      libraryPermittedPath, mBaseClassLoader,</span><br><span class="line">                                                                      mApplicationInfo.classLoaderName);</span><br><span class="line"></span><br><span class="line">        StrictMode.setThreadPolicy(oldPolicy);</span><br><span class="line">        <span class="comment">// Setup the class loader paths for profiling.</span></span><br><span class="line">        needToSetupJitProfiles = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//添加path</span></span><br><span class="line">    <span class="keyword">if</span> (addedPaths != <span class="keyword">null</span> &amp;&amp; addedPaths.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">final</span> String add = TextUtils.join(File.pathSeparator, addedPaths);</span><br><span class="line">        ApplicationLoaders.getDefault().addPath(mClassLoader, add);</span><br><span class="line">        <span class="comment">// Setup the new code paths for profiling.</span></span><br><span class="line">        needToSetupJitProfiles = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (needToSetupJitProfiles &amp;&amp; !ActivityThread.isSystem()) &#123;</span><br><span class="line">        setupJitProfileSupport();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> ClassLoader <span class="title">getClassLoader</span><span class="params">(String zip, <span class="keyword">int</span> targetSdkVersion, <span class="keyword">boolean</span> isBundled,</span></span></span><br><span class="line"><span class="function"><span class="params">                                   String librarySearchPath, String libraryPermittedPath,</span></span></span><br><span class="line"><span class="function"><span class="params">                                   ClassLoader parent, String cacheKey,</span></span></span><br><span class="line"><span class="function"><span class="params">                                   String classLoaderName)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//根加载器</span></span><br><span class="line">    ClassLoader baseParent = ClassLoader.getSystemClassLoader().getParent();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">synchronized</span> (mLoaders) &#123;</span><br><span class="line">        <span class="keyword">if</span> (parent == <span class="keyword">null</span>) &#123;</span><br><span class="line">            parent = baseParent;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (parent == baseParent) &#123;</span><br><span class="line">            ClassLoader loader = mLoaders.get(cacheKey);</span><br><span class="line">            <span class="keyword">if</span> (loader != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> loader;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, zip);</span><br><span class="line">            <span class="comment">//如果第一次会走这里创建ClassLoader</span></span><br><span class="line">            ClassLoader classloader = ClassLoaderFactory.createClassLoader(</span><br><span class="line">                zip,  librarySearchPath, libraryPermittedPath, parent,</span><br><span class="line">                targetSdkVersion, isBundled, classLoaderName);</span><br><span class="line"></span><br><span class="line">            Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line"></span><br><span class="line">            Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, <span class="string">"setupVulkanLayerPath"</span>);</span><br><span class="line">            setupVulkanLayerPath(classloader, librarySearchPath);</span><br><span class="line">            Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line"></span><br><span class="line">            mLoaders.put(cacheKey, classloader);</span><br><span class="line">            <span class="keyword">return</span> classloader;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, zip);</span><br><span class="line">        ClassLoader loader = ClassLoaderFactory.createClassLoader(</span><br><span class="line">            zip, <span class="keyword">null</span>, parent, classLoaderName);</span><br><span class="line">        Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line">        <span class="keyword">return</span> loader;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个工厂中会看到：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ClassLoader <span class="title">createClassLoader</span><span class="params">(String dexPath,</span></span></span><br><span class="line"><span class="function"><span class="params">        String librarySearchPath, ClassLoader parent, String classloaderName)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//PathClassLoader名称和DexClassLoader都会创建PathClassLoader</span></span><br><span class="line">    <span class="keyword">if</span> (isPathClassLoaderName(classloaderName)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PathClassLoader(dexPath, librarySearchPath, parent);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isDelegateLastClassLoaderName(classloaderName)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> DelegateLastClassLoader(dexPath, librarySearchPath, parent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> AssertionError(<span class="string">"Invalid classLoaderName: "</span> + classloaderName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至如果path不为null则：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addPath</span><span class="params">(ClassLoader classLoader, String dexPath)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!(classLoader <span class="keyword">instanceof</span> PathClassLoader)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"class loader is not a PathClassLoader"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> PathClassLoader baseDexClassLoader = (PathClassLoader) classLoader;</span><br><span class="line">    <span class="comment">//添加dex的path</span></span><br><span class="line">    baseDexClassLoader.addDexPath(dexPath);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/11/01/Activity启动7-scheduleLaunchActivity方法/" data-toggle="tooltip" data-placement="top" title="Activity启动7-scheduleLaunchActivity方法">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/11/01/Activity启动6-startSpecificActivityLocked方法/" data-toggle="tooltip" data-placement="top" title="Activity启动6-startSpecificActivityLocked方法">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">核心点</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                        
+                          <a class="tag" href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">Wangcainiao&#39;s CSDN</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/" target="_blank">Wangcainiao&#39;s jianshu</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://beantech.org">BeanTech</a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="91px" height="20px" src="https://ghbtns.com/github-btn.html?user=YenYuHsuan&repo=hexo-theme-beantech&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

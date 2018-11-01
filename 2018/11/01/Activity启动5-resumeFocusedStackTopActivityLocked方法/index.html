@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Activity启动5-resumeFocusedStackTopActivityLocked方法 - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/11/01/Activity启动5-resumeFocusedStackTopActivityLocked方法/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                            
+                              <a class="tag" href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
+                            
+                        </div>
+                        <h1>Activity启动5-resumeFocusedStackTopActivityLocked方法</h1>
+                        <h2 class="subheading">resumeFocusedStackTopActivityLocked()方法的主要说明</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-11-01
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">boolean</span> <span class="title">resumeFocusedStackTopActivityLocked</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">          ActivityStack targetStack, ActivityRecord target, ActivityOptions targetOptions)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!readyToResume()) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line"><span class="comment">//当前task是焦点，执行这里</span></span><br><span class="line">      <span class="keyword">if</span> (targetStack != <span class="keyword">null</span> &amp;&amp; isFocusedStack(targetStack)) &#123;</span><br><span class="line">          <span class="keyword">return</span> targetStack.resumeTopActivityUncheckedLocked(target, targetOptions);</span><br><span class="line">      &#125;</span><br><span class="line"><span class="comment">//得到焦点task的topActivity</span></span><br><span class="line">      <span class="keyword">final</span> ActivityRecord r = mFocusedStack.topRunningActivityLocked();</span><br><span class="line">      <span class="comment">//当ActivityRecord不是空，并且不是RESUMED状态的时候执行Resume操作</span></span><br><span class="line">      <span class="keyword">if</span> (r == <span class="keyword">null</span> || r.state != RESUMED) &#123;</span><br><span class="line">          mFocusedStack.resumeTopActivityUncheckedLocked(<span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (r.state == RESUMED) &#123;</span><br><span class="line">          <span class="comment">// Kick off any lingering app transitions form the MoveTaskToFront operation.</span></span><br><span class="line">          mFocusedStack.executeAppTransition(targetOptions);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">resumeTopActivityUncheckedLocked</span><span class="params">(ActivityRecord prev, ActivityOptions options)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//已经处于Resum状态则返回</span></span><br><span class="line">    <span class="keyword">if</span> (mStackSupervisor.inResumeTopActivity) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> result = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// Protect against recursion.</span></span><br><span class="line">        mStackSupervisor.inResumeTopActivity = <span class="keyword">true</span>;</span><br><span class="line">        <span class="comment">//执行Resume操作</span></span><br><span class="line">        result = resumeTopActivityInnerLocked(prev, options);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mStackSupervisor.inResumeTopActivity = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> ActivityRecord next = topRunningActivityLocked(<span class="keyword">true</span> <span class="comment">/* focusableOnly */</span>);</span><br><span class="line">    <span class="keyword">if</span> (next == <span class="keyword">null</span> || !next.canTurnScreenOn()) &#123;</span><br><span class="line">        checkReadyForSleep();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">resumeTopActivityInnerLocked</span><span class="params">(ActivityRecord prev, ActivityOptions options)</span> </span>&#123;</span><br><span class="line">      <span class="comment">//系统没有进入booting或booted状态，则不允许启动Activity</span></span><br><span class="line">      <span class="keyword">if</span> (!mService.mBooting &amp;&amp; !mService.mBooted) &#123;</span><br><span class="line">          <span class="comment">// Not ready yet!</span></span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//从当前ActivityStack的记录中，找到第一个待启动的ActivityRecord</span></span><br><span class="line">      <span class="keyword">final</span> ActivityRecord next = topRunningActivityLocked(<span class="keyword">true</span> <span class="comment">/* focusableOnly */</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">final</span> <span class="keyword">boolean</span> hasRunningActivity = next != <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// <span class="doctag">TODO:</span> Maybe this entire condition can get removed?</span></span><br><span class="line">      <span class="keyword">if</span> (hasRunningActivity &amp;&amp; getDisplay() == <span class="keyword">null</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//top running之后的任意处于初始化状态且有显示StartingWindow, 则移除StartingWindow</span></span><br><span class="line">      mStackSupervisor.cancelInitializingActivities();</span><br><span class="line">      <span class="comment">// Remember how we'll process this pause/resume situation, and ensure</span></span><br><span class="line">      <span class="comment">// that the state is reset however we wind up proceeding.</span></span><br><span class="line">      <span class="keyword">final</span> <span class="keyword">boolean</span> userLeaving = mStackSupervisor.mUserLeaving;</span><br><span class="line">      mStackSupervisor.mUserLeaving = <span class="keyword">false</span>;</span><br><span class="line"><span class="comment">//当没有活动中的Activity，去task中找top</span></span><br><span class="line">      <span class="keyword">if</span> (!hasRunningActivity) &#123;</span><br><span class="line">          <span class="comment">// There are no activities left in the stack, let's look somewhere else.</span></span><br><span class="line">          <span class="keyword">return</span> resumeTopActivityInNextFocusableStack(prev, options, <span class="string">"noMoreActivities"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//不用延时执行Resume的标记</span></span><br><span class="line">      next.delayedResume = <span class="keyword">false</span>;</span><br><span class="line">      <span class="comment">//如果已经执行过的ResumeActivity是当前栈中top的Activity则执行这里，log说明已经执行过了</span></span><br><span class="line">      <span class="keyword">if</span> (mResumedActivity == next &amp;&amp; next.state == ActivityState.RESUMED &amp;&amp;</span><br><span class="line">                  mStackSupervisor.allResumedActivitiesComplete()) &#123;</span><br><span class="line">          <span class="comment">// Make sure we have executed any pending transitions, since there</span></span><br><span class="line">          <span class="comment">// should be nothing left to do at this point.</span></span><br><span class="line">          executeAppTransition(options);</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STATES) Slog.d(TAG_STATES,</span><br><span class="line">                  <span class="string">"resumeTopActivityLocked: Top activity resumed "</span> + next);</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STACK) mStackSupervisor.validateTopActivitiesLocked();</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//得到resumed的task</span></span><br><span class="line">      <span class="keyword">final</span> TaskRecord nextTask = next.getTask();</span><br><span class="line">      <span class="keyword">final</span> TaskRecord prevTask = prev != <span class="keyword">null</span> ? prev.getTask() : <span class="keyword">null</span>;</span><br><span class="line">      <span class="keyword">if</span> (prevTask != <span class="keyword">null</span> &amp;&amp; prevTask.getStack() == <span class="keyword">this</span> &amp;&amp;</span><br><span class="line">              prevTask.isOverHomeStack() &amp;&amp; prev.finishing &amp;&amp; prev.frontOfTask) &#123;</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STACK)  mStackSupervisor.validateTopActivitiesLocked();</span><br><span class="line">          <span class="keyword">if</span> (prevTask == nextTask) &#123;</span><br><span class="line">              prevTask.setFrontOfTask();</span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (prevTask != topTask()) &#123;</span><br><span class="line">              <span class="comment">// This task is going away but it was supposed to return to the home stack.</span></span><br><span class="line">              <span class="comment">// Now the task above it has to return to the home task instead.</span></span><br><span class="line">              <span class="keyword">final</span> <span class="keyword">int</span> taskNdx = mTaskHistory.indexOf(prevTask) + <span class="number">1</span>;</span><br><span class="line">              mTaskHistory.get(taskNdx).setTaskToReturnTo(HOME_ACTIVITY_TYPE);</span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!isOnHomeDisplay()) &#123;</span><br><span class="line">              <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!isHomeStack())&#123;</span><br><span class="line">              <span class="comment">//当前的ActivityStack没有等待启动的Activity时，将启动Home</span></span><br><span class="line">              <span class="keyword">if</span> (DEBUG_STATES) Slog.d(TAG_STATES,</span><br><span class="line">                      <span class="string">"resumeTopActivityLocked: Launching home next"</span>);</span><br><span class="line">              <span class="keyword">return</span> isOnHomeDisplay() &amp;&amp;</span><br><span class="line">                      mStackSupervisor.resumeHomeStackTask(prev, <span class="string">"prevFinished"</span>);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//判断Activity是不是应该sleep，可能出现在息屏等状态下</span></span><br><span class="line">      <span class="keyword">if</span> (shouldSleepOrShutDownActivities()</span><br><span class="line">              &amp;&amp; mLastPausedActivity == next</span><br><span class="line">              &amp;&amp; mStackSupervisor.allPausedActivitiesComplete()) &#123;</span><br><span class="line">          <span class="comment">// Make sure we have executed any pending transitions, since there</span></span><br><span class="line">          <span class="comment">// should be nothing left to do at this point.</span></span><br><span class="line">          executeAppTransition(options);</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STATES) Slog.d(TAG_STATES,</span><br><span class="line">                  <span class="string">"resumeTopActivityLocked: Going to sleep and all paused"</span>);</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STACK) mStackSupervisor.validateTopActivitiesLocked();</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//拥有该activity的用户没有启动则直接返回</span></span><br><span class="line">      <span class="keyword">if</span> (!mService.mUserController.hasStartedUserState(next.userId)) &#123;</span><br><span class="line">          Slog.w(TAG, <span class="string">"Skipping resume of top activity "</span> + next</span><br><span class="line">                  + <span class="string">": user "</span> + next.userId + <span class="string">" is stopped"</span>);</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STACK) mStackSupervisor.validateTopActivitiesLocked();</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// The activity may be waiting for stop, but that is no longer</span></span><br><span class="line">      <span class="comment">// appropriate for it.</span></span><br><span class="line">      <span class="comment">//将待启动的Activity从下面几个队列中移除</span></span><br><span class="line">      mStackSupervisor.mStoppingActivities.remove(next);</span><br><span class="line">      mStackSupervisor.mGoingToSleepActivities.remove(next);</span><br><span class="line">      next.sleeping = <span class="keyword">false</span>;</span><br><span class="line">      mStackSupervisor.mActivitiesWaitingForVisibleActivity.remove(next);</span><br><span class="line">      <span class="keyword">if</span> (DEBUG_SWITCH) Slog.v(TAG_SWITCH, <span class="string">"Resuming "</span> + next);</span><br><span class="line">      <span class="comment">//当正处于暂停activity，则直接返回</span></span><br><span class="line">      <span class="keyword">if</span> (!mStackSupervisor.allPausedActivitiesComplete()) &#123;</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_SWITCH || DEBUG_PAUSE || DEBUG_STATES) Slog.v(TAG_PAUSE,</span><br><span class="line">                  <span class="string">"resumeTopActivityLocked: Skip resume: some activity pausing."</span>);</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STACK) mStackSupervisor.validateTopActivitiesLocked();</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      mStackSupervisor.setLaunchSource(next.info.applicationInfo.uid);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">boolean</span> lastResumedCanPip = <span class="keyword">false</span>;</span><br><span class="line">      <span class="keyword">final</span> ActivityStack lastFocusedStack = mStackSupervisor.getLastStack();</span><br><span class="line">      <span class="keyword">if</span> (lastFocusedStack != <span class="keyword">null</span> &amp;&amp; lastFocusedStack != <span class="keyword">this</span>) &#123;</span><br><span class="line">          </span><br><span class="line">          <span class="keyword">final</span> ActivityRecord lastResumed = lastFocusedStack.mResumedActivity;</span><br><span class="line">          lastResumedCanPip = lastResumed != <span class="keyword">null</span> &amp;&amp; lastResumed.checkEnterPictureInPictureState(</span><br><span class="line">                  <span class="string">"resumeTopActivity"</span>, userLeaving <span class="comment">/* beforeStopping */</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">final</span> <span class="keyword">boolean</span> resumeWhilePausing = (next.info.flags &amp; FLAG_RESUME_WHILE_PAUSING) != <span class="number">0</span></span><br><span class="line">              &amp;&amp; !lastResumedCanPip;</span><br><span class="line"><span class="comment">//需要等待暂停当前activity完成，再resume top activity</span></span><br><span class="line">      <span class="keyword">boolean</span> pausing = mStackSupervisor.pauseBackStacks(userLeaving, next, <span class="keyword">false</span>);</span><br><span class="line">      <span class="comment">//mResumedActivity指向上一次启动的Activity，也就是当前界面显示的Activity</span></span><br><span class="line">      <span class="keyword">if</span> (mResumedActivity != <span class="keyword">null</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STATES) Slog.d(TAG_STATES,</span><br><span class="line">                  <span class="string">"resumeTopActivityLocked: Pausing "</span> + mResumedActivity);</span><br><span class="line">          <span class="comment">//当前resumd状态activity不为空，则需要先暂停该Activity</span></span><br><span class="line">          <span class="comment">//重点调用onPause方法</span></span><br><span class="line">          pausing |= startPausingLocked(userLeaving, <span class="keyword">false</span>, next, <span class="keyword">false</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (pausing &amp;&amp; !resumeWhilePausing) &#123;</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_SWITCH || DEBUG_STATES) Slog.v(TAG_STATES,</span><br><span class="line">                  <span class="string">"resumeTopActivityLocked: Skip resume: need to start pausing"</span>);</span><br><span class="line">          <span class="keyword">if</span> (next.app != <span class="keyword">null</span> &amp;&amp; next.app.thread != <span class="keyword">null</span>) &#123;</span><br><span class="line">              <span class="comment">//在中断当前界面的Activity时，调用待启动Activity所在进程的优先级，保证其不被kill</span></span><br><span class="line">              mService.updateLruProcessLocked(next.app, <span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STACK) mStackSupervisor.validateTopActivitiesLocked();</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mResumedActivity == next &amp;&amp; next.state == ActivityState.RESUMED &amp;&amp;</span><br><span class="line">              mStackSupervisor.allResumedActivitiesComplete()) &#123;</span><br><span class="line">          <span class="comment">//特殊情况，上面的代码中断后台栈，同时启动模式指定了FLAG_RESUME_WHILE_PAUSING</span></span><br><span class="line">          executeAppTransition(options);</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STATES) Slog.d(TAG_STATES,</span><br><span class="line">                  <span class="string">"resumeTopActivityLocked: Top activity resumed (dontWaitForPause) "</span> + next);</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STACK) mStackSupervisor.validateTopActivitiesLocked();</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//如果最近一次的活动没有历史记录，只是因为设备休眠而停止，而不是停止+结束，</span></span><br><span class="line">      <span class="comment">//我们需要确保完成它，因为我们先处理调Activityfinish。</span></span><br><span class="line">      <span class="keyword">if</span> (shouldSleepActivities() &amp;&amp; mLastNoHistoryActivity != <span class="keyword">null</span> &amp;&amp;</span><br><span class="line">              !mLastNoHistoryActivity.finishing) &#123;</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STATES) Slog.d(TAG_STATES,</span><br><span class="line">                  <span class="string">"no-history finish of "</span> + mLastNoHistoryActivity + <span class="string">" on new resume"</span>);</span><br><span class="line">          requestFinishActivityLocked(mLastNoHistoryActivity.appToken, Activity.RESULT_CANCELED,</span><br><span class="line">                  <span class="keyword">null</span>, <span class="string">"resume-no-history"</span>, <span class="keyword">false</span>);</span><br><span class="line">          mLastNoHistoryActivity = <span class="keyword">null</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      <span class="keyword">if</span> (prev != <span class="keyword">null</span> &amp;&amp; prev != next) &#123;</span><br><span class="line">          <span class="keyword">if</span> (!mStackSupervisor.mActivitiesWaitingForVisibleActivity.contains(prev)</span><br><span class="line">                  &amp;&amp; next != <span class="keyword">null</span> &amp;&amp; !next.nowVisible) &#123;</span><br><span class="line">              mStackSupervisor.mActivitiesWaitingForVisibleActivity.add(prev);</span><br><span class="line">              <span class="keyword">if</span> (DEBUG_SWITCH) Slog.v(TAG_SWITCH,</span><br><span class="line">                      <span class="string">"Resuming top, waiting visible to hide: "</span> + prev);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              <span class="keyword">if</span> (prev.finishing) &#123;</span><br><span class="line">                  prev.setVisibility(<span class="keyword">false</span>);</span><br><span class="line">                  <span class="keyword">if</span> (DEBUG_SWITCH) Slog.v(TAG_SWITCH,</span><br><span class="line">                          <span class="string">"Not waiting for visible to hide: "</span> + prev + <span class="string">", waitingVisible="</span></span><br><span class="line">                          + mStackSupervisor.mActivitiesWaitingForVisibleActivity.contains(prev)</span><br><span class="line">                          + <span class="string">", nowVisible="</span> + next.nowVisible);</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  <span class="keyword">if</span> (DEBUG_SWITCH) Slog.v(TAG_SWITCH,</span><br><span class="line">                          <span class="string">"Previous already visible but still waiting to hide: "</span> + prev</span><br><span class="line">                          + <span class="string">", waitingVisible="</span></span><br><span class="line">                          + mStackSupervisor.mActivitiesWaitingForVisibleActivity.contains(prev)</span><br><span class="line">                          + <span class="string">", nowVisible="</span> + next.nowVisible);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="comment">//通过PKMS，修改待启动Activity对应Package的stop状态</span></span><br><span class="line">          AppGlobals.getPackageManager().setPackageStoppedState(</span><br><span class="line">                  next.packageName, <span class="keyword">false</span>, next.userId); <span class="comment">/* <span class="doctag">TODO:</span> Verify if correct userid */</span></span><br><span class="line">      &#125; <span class="keyword">catch</span> (RemoteException e1) &#123;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;</span><br><span class="line">          Slog.w(TAG, <span class="string">"Failed trying to unstop package "</span></span><br><span class="line">                  + next.packageName + <span class="string">": "</span> + e);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">boolean</span> anim = <span class="keyword">true</span>;</span><br><span class="line">      <span class="comment">//我们正在启动下一个活动，所以告诉窗口管理器前面的活动将很快被隐藏。这样，在计算所需的屏幕方向时就可以知道忽略它。</span></span><br><span class="line">      <span class="keyword">if</span> (prev != <span class="keyword">null</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (prev.finishing) &#123;</span><br><span class="line">              <span class="keyword">if</span> (DEBUG_TRANSITION) Slog.v(TAG_TRANSITION,</span><br><span class="line">                      <span class="string">"Prepare close transition: prev="</span> + prev);</span><br><span class="line">              <span class="keyword">if</span> (mNoAnimActivities.contains(prev)) &#123;</span><br><span class="line">                  anim = <span class="keyword">false</span>;</span><br><span class="line">                  mWindowManager.prepareAppTransition(TRANSIT_NONE, <span class="keyword">false</span>);</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  mWindowManager.prepareAppTransition(prev.getTask() == next.getTask()</span><br><span class="line">                          ? TRANSIT_ACTIVITY_CLOSE</span><br><span class="line">                          : TRANSIT_TASK_CLOSE, <span class="keyword">false</span>);</span><br><span class="line">              &#125;</span><br><span class="line">              prev.setVisibility(<span class="keyword">false</span>);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              <span class="keyword">if</span> (DEBUG_TRANSITION) Slog.v(TAG_TRANSITION,</span><br><span class="line">                      <span class="string">"Prepare open transition: prev="</span> + prev);</span><br><span class="line">              <span class="keyword">if</span> (mNoAnimActivities.contains(next)) &#123;</span><br><span class="line">                  anim = <span class="keyword">false</span>;</span><br><span class="line">                  mWindowManager.prepareAppTransition(TRANSIT_NONE, <span class="keyword">false</span>);</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  mWindowManager.prepareAppTransition(prev.getTask() == next.getTask()</span><br><span class="line">                          ? TRANSIT_ACTIVITY_OPEN</span><br><span class="line">                          : next.mLaunchTaskBehind</span><br><span class="line">                                  ? TRANSIT_TASK_OPEN_BEHIND</span><br><span class="line">                                  : TRANSIT_TASK_OPEN, <span class="keyword">false</span>);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_TRANSITION) Slog.v(TAG_TRANSITION, <span class="string">"Prepare open transition: no previous"</span>);</span><br><span class="line">          <span class="keyword">if</span> (mNoAnimActivities.contains(next)) &#123;</span><br><span class="line">              anim = <span class="keyword">false</span>;</span><br><span class="line">              mWindowManager.prepareAppTransition(TRANSIT_NONE, <span class="keyword">false</span>);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              mWindowManager.prepareAppTransition(TRANSIT_ACTIVITY_OPEN, <span class="keyword">false</span>);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">     <span class="comment">//处理动画相关的选项</span></span><br><span class="line">      Bundle resumeAnimOptions = <span class="keyword">null</span>;</span><br><span class="line">      <span class="keyword">if</span> (anim) &#123;</span><br><span class="line">          ActivityOptions opts = next.getOptionsForTargetActivityLocked();</span><br><span class="line">          <span class="keyword">if</span> (opts != <span class="keyword">null</span>) &#123;</span><br><span class="line">              resumeAnimOptions = opts.toBundle();</span><br><span class="line">          &#125;</span><br><span class="line">          next.applyOptionsLocked();</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          next.clearOptionsLocked();</span><br><span class="line">      &#125;</span><br><span class="line">      ActivityStack lastStack = mStackSupervisor.getLastStack();</span><br><span class="line">      <span class="comment">//要执行resumeactivity的进程还在，则重启Activity，不用启动进程</span></span><br><span class="line">      <span class="keyword">if</span> (next.app != <span class="keyword">null</span> &amp;&amp; next.app.thread != <span class="keyword">null</span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_SWITCH) Slog.v(TAG_SWITCH, <span class="string">"Resume running: "</span> + next</span><br><span class="line">                  + <span class="string">" stopped="</span> + next.stopped + <span class="string">" visible="</span> + next.visible);</span><br><span class="line">          <span class="keyword">final</span> <span class="keyword">boolean</span> lastActivityTranslucent = lastStack != <span class="keyword">null</span></span><br><span class="line">                  &amp;&amp; (!lastStack.mFullscreen</span><br><span class="line">                  || (lastStack.mLastPausedActivity != <span class="keyword">null</span></span><br><span class="line">                  &amp;&amp; !lastStack.mLastPausedActivity.fullscreen));</span><br><span class="line">          <span class="keyword">synchronized</span>(mWindowManager.getWindowManagerLock()) &#123;</span><br><span class="line">              <span class="comment">// This activity is now becoming visible.</span></span><br><span class="line">              <span class="keyword">if</span> (!next.visible || next.stopped || lastActivityTranslucent) &#123;</span><br><span class="line">                  next.setVisibility(<span class="keyword">true</span>);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="comment">// schedule launch ticks to collect information about slow apps.</span></span><br><span class="line">              next.startLaunchTickingLocked();</span><br><span class="line"></span><br><span class="line">              ActivityRecord lastResumedActivity =</span><br><span class="line">                      lastStack == <span class="keyword">null</span> ? <span class="keyword">null</span> :lastStack.mResumedActivity;</span><br><span class="line">              ActivityState lastState = next.state;</span><br><span class="line"></span><br><span class="line">              mService.updateCpuStats();</span><br><span class="line"></span><br><span class="line">              <span class="keyword">if</span> (DEBUG_STATES) Slog.v(TAG_STATES, <span class="string">"Moving to RESUMED: "</span> + next</span><br><span class="line">                      + <span class="string">" (in existing)"</span>);</span><br><span class="line">	  <span class="comment">//设置需要Resumed的Activity，修改状态，添加到resume列表中</span></span><br><span class="line">              setResumedActivityLocked(next, <span class="string">"resumeTopActivityInnerLocked"</span>);</span><br><span class="line"></span><br><span class="line">              mService.updateLruProcessLocked(next.app, <span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">              updateLRUListLocked(next);</span><br><span class="line">              <span class="comment">//更新优先级</span></span><br><span class="line">              mService.updateOomAdjLocked();</span><br><span class="line">              <span class="keyword">boolean</span> notUpdated = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">if</span> (mStackSupervisor.isFocusedStack(<span class="keyword">this</span>)) &#123;</span><br><span class="line">                  <span class="keyword">if</span> (mStackSupervisor.mKeyguardController.isKeyguardLocked()) &#123;</span><br><span class="line">                      mStackSupervisor.ensureActivitiesVisibleLocked(<span class="keyword">null</span> <span class="comment">/* starting */</span>,</span><br><span class="line">                              <span class="number">0</span> <span class="comment">/* configChanges */</span>, <span class="keyword">false</span> <span class="comment">/* preserveWindows */</span>);</span><br><span class="line">                  &#125;</span><br><span class="line">                  <span class="keyword">final</span> Configuration config = mWindowManager.updateOrientationFromAppTokens(</span><br><span class="line">                          mStackSupervisor.getDisplayOverrideConfiguration(mDisplayId),</span><br><span class="line">                          next.mayFreezeScreenLocked(next.app) ? next.appToken : <span class="keyword">null</span>,</span><br><span class="line">                                  mDisplayId);</span><br><span class="line">                  <span class="keyword">if</span> (config != <span class="keyword">null</span>) &#123;</span><br><span class="line">                      next.frozenBeforeDestroy = <span class="keyword">true</span>;</span><br><span class="line">                  &#125;</span><br><span class="line">                  notUpdated = !mService.updateDisplayOverrideConfigurationLocked(config, next,</span><br><span class="line">                          <span class="keyword">false</span> <span class="comment">/* deferResume */</span>, mDisplayId);</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">if</span> (notUpdated) &#123;</span><br><span class="line">                  ActivityRecord nextNext = topRunningActivityLocked();</span><br><span class="line">                  <span class="keyword">if</span> (DEBUG_SWITCH || DEBUG_STATES) Slog.i(TAG_STATES,</span><br><span class="line">                          <span class="string">"Activity config changed during resume: "</span> + next</span><br><span class="line">                                  + <span class="string">", new next: "</span> + nextNext);</span><br><span class="line">                  <span class="keyword">if</span> (nextNext != next) &#123;</span><br><span class="line">                      <span class="comment">// Do over!</span></span><br><span class="line">                      mStackSupervisor.scheduleResumeTopActivities();</span><br><span class="line">                  &#125;</span><br><span class="line">                  <span class="keyword">if</span> (!next.visible || next.stopped) &#123;</span><br><span class="line">                      next.setVisibility(<span class="keyword">true</span>);</span><br><span class="line">                  &#125;</span><br><span class="line">                  next.completeResumeLocked();</span><br><span class="line">                  <span class="keyword">if</span> (DEBUG_STACK) mStackSupervisor.validateTopActivitiesLocked();</span><br><span class="line">                  <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">try</span> &#123;</span><br><span class="line">                  <span class="comment">// Deliver all pending results.</span></span><br><span class="line">                  ArrayList&lt;ResultInfo&gt; a = next.results;</span><br><span class="line">                  <span class="keyword">if</span> (a != <span class="keyword">null</span>) &#123;</span><br><span class="line">                      <span class="keyword">final</span> <span class="keyword">int</span> N = a.size();</span><br><span class="line">                      <span class="keyword">if</span> (!next.finishing &amp;&amp; N &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                          <span class="keyword">if</span> (DEBUG_RESULTS) Slog.v(TAG_RESULTS,</span><br><span class="line">                                  <span class="string">"Delivering results to "</span> + next + <span class="string">": "</span> + a);</span><br><span class="line">                          next.app.thread.scheduleSendResult(next.appToken, a);</span><br><span class="line">                      &#125;</span><br><span class="line">                  &#125;</span><br><span class="line"></span><br><span class="line">                  <span class="keyword">if</span> (next.newIntents != <span class="keyword">null</span>) &#123;</span><br><span class="line">                      next.app.thread.scheduleNewIntent(</span><br><span class="line">                              next.newIntents, next.appToken, <span class="keyword">false</span> <span class="comment">/* andPause */</span>);</span><br><span class="line">                  &#125;</span><br><span class="line">                  next.notifyAppResumed(next.stopped);</span><br><span class="line"></span><br><span class="line">                  EventLog.writeEvent(EventLogTags.AM_RESUME_ACTIVITY, next.userId,</span><br><span class="line">                          System.identityHashCode(next), next.getTask().taskId,</span><br><span class="line">                          next.shortComponentName);</span><br><span class="line"></span><br><span class="line">                  next.sleeping = <span class="keyword">false</span>;</span><br><span class="line">                  mService.showUnsupportedZoomDialogIfNeededLocked(next);</span><br><span class="line">                  mService.showAskCompatModeDialogLocked(next);</span><br><span class="line">                  next.app.pendingUiClean = <span class="keyword">true</span>;</span><br><span class="line">                  next.app.forceProcessStateUpTo(mService.mTopProcessState);</span><br><span class="line">                  next.clearOptionsLocked();</span><br><span class="line">                  <span class="comment">//正式发Binder消息，执行ResumeActivity中的逻辑</span></span><br><span class="line">                  next.app.thread.scheduleResumeActivity(next.appToken, next.app.repProcState,</span><br><span class="line">                          mService.isNextTransitionForward(), resumeAnimOptions);</span><br><span class="line"></span><br><span class="line">                  <span class="keyword">if</span> (DEBUG_STATES) Slog.d(TAG_STATES, <span class="string">"resumeTopActivityLocked: Resumed "</span></span><br><span class="line">                          + next);</span><br><span class="line">              &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                  <span class="comment">// Whoops, need to restart this activity!</span></span><br><span class="line">                  <span class="keyword">if</span> (DEBUG_STATES) Slog.v(TAG_STATES, <span class="string">"Resume failed; resetting state to "</span></span><br><span class="line">                          + lastState + <span class="string">": "</span> + next);</span><br><span class="line">                  next.state = lastState;</span><br><span class="line">                  <span class="keyword">if</span> (lastStack != <span class="keyword">null</span>) &#123;</span><br><span class="line">                      lastStack.mResumedActivity = lastResumedActivity;</span><br><span class="line">                  &#125;</span><br><span class="line">                  Slog.i(TAG, <span class="string">"Restarting because process died: "</span> + next);</span><br><span class="line">                  <span class="keyword">if</span> (!next.hasBeenLaunched) &#123;</span><br><span class="line">                      next.hasBeenLaunched = <span class="keyword">true</span>;</span><br><span class="line">                  &#125; <span class="keyword">else</span>  <span class="keyword">if</span> (SHOW_APP_STARTING_PREVIEW &amp;&amp; lastStack != <span class="keyword">null</span> &amp;&amp;</span><br><span class="line">                          mStackSupervisor.isFrontStackOnDisplay(lastStack)) &#123;</span><br><span class="line">                      next.showStartingWindow(<span class="keyword">null</span> <span class="comment">/* prev */</span>, <span class="keyword">false</span> <span class="comment">/* newTask */</span>,</span><br><span class="line">                              <span class="keyword">false</span> <span class="comment">/* taskSwitch */</span>);</span><br><span class="line">                  &#125;</span><br><span class="line">                  mStackSupervisor.startSpecificActivityLocked(next, <span class="keyword">true</span>, <span class="keyword">false</span>);</span><br><span class="line">                  <span class="keyword">if</span> (DEBUG_STACK) mStackSupervisor.validateTopActivitiesLocked();</span><br><span class="line">                  <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">try</span> &#123;</span><br><span class="line">              <span class="comment">//完成Resume</span></span><br><span class="line">              next.completeResumeLocked();</span><br><span class="line">          &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">              Slog.w(TAG, <span class="string">"Exception thrown during resume of "</span> + next, e);</span><br><span class="line">              requestFinishActivityLocked(next.appToken, Activity.RESULT_CANCELED, <span class="keyword">null</span>,</span><br><span class="line">                      <span class="string">"resume-exception"</span>, <span class="keyword">true</span>);</span><br><span class="line">              <span class="keyword">if</span> (DEBUG_STACK) mStackSupervisor.validateTopActivitiesLocked();</span><br><span class="line">              <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">          &#125;</span><br><span class="line">          </span><br><span class="line">         <span class="comment">//next.app != null &amp;&amp; next.app.thread != null的判断的else</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">// Whoops, need to restart this activity!</span></span><br><span class="line">          <span class="keyword">if</span> (!next.hasBeenLaunched) &#123;</span><br><span class="line">              next.hasBeenLaunched = <span class="keyword">true</span>;</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              <span class="keyword">if</span> (SHOW_APP_STARTING_PREVIEW) &#123;</span><br><span class="line">                  next.showStartingWindow(<span class="keyword">null</span> <span class="comment">/* prev */</span>, <span class="keyword">false</span> <span class="comment">/* newTask */</span>,</span><br><span class="line">                          <span class="keyword">false</span> <span class="comment">/* taskSwich */</span>);</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">if</span> (DEBUG_SWITCH) Slog.v(TAG_SWITCH, <span class="string">"Restarting: "</span> + next);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">if</span> (DEBUG_STATES) Slog.d(TAG_STATES, <span class="string">"resumeTopActivityLocked: Restarting "</span> + next);</span><br><span class="line">          mStackSupervisor.startSpecificActivityLocked(next, <span class="keyword">true</span>, <span class="keyword">true</span>);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (DEBUG_STACK) mStackSupervisor.validateTopActivitiesLocked();</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>调用startPausingLocked从而调用当前Activity的onPause( )</li>
+<li>这里要注意一个细节，就是在走调用onResume分支的时候还是调用startActivity分支的时候用可一个<code>if (next.app != null &amp;&amp; next.app.thread != null) {</code>这个判断的细节是一个ActivityRecord是在startSpecificActivityLocked之后对app 进行赋值的，所以这块由于之前的Activity并没有启动此值会空，所以走startSpecificActivityLocked。方法。</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/11/01/Activity启动6-startSpecificActivityLocked方法/" data-toggle="tooltip" data-placement="top" title="Activity启动6-startSpecificActivityLocked方法">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/11/01/Activity启动4-startActivity方法/" data-toggle="tooltip" data-placement="top" title="Activity启动4-startActivity方法">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="nav">none</ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                        
+                          <a class="tag" href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">Wangcainiao&#39;s CSDN</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/" target="_blank">Wangcainiao&#39;s jianshu</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://beantech.org">BeanTech</a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="91px" height="20px" src="https://ghbtns.com/github-btn.html?user=YenYuHsuan&repo=hexo-theme-beantech&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
