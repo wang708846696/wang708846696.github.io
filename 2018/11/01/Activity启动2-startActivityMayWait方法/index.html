@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Activity启动2-startActivityMayWait方法 - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/11/01/Activity启动2-startActivityMayWait方法/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/BeanTechSign-white.png');
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                            
+                              <a class="tag" href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
+                            
+                        </div>
+                        <h1>Activity启动2-startActivityMayWait方法</h1>
+                        <h2 class="subheading">startActivityMayWait()方法的主要说明</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-11-01
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>我们从上一节分析参数开始最终达到：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result = mInterface.startActivityAndWait(<span class="keyword">null</span>, <span class="keyword">null</span>, intent, mimeType,</span><br><span class="line">                                         <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="number">0</span>, mStartFlags, profilerInfo,</span><br><span class="line">                                         options != <span class="keyword">null</span> ? options.toBundle() : <span class="keyword">null</span>, mUserId);</span><br></pre></td></tr></table></figure>
+<p>此时我们先承上启下的分析参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IApplicationThread caller</td>
+<td>调用者进程控制器</td>
+<td>null</td>
+</tr>
+<tr>
+<td>String callingPackage</td>
+<td>调用者所在包名</td>
+<td>null</td>
+</tr>
+<tr>
+<td>Intent intent</td>
+<td>调用者的意图</td>
+<td>intent</td>
+</tr>
+<tr>
+<td>String resolvedType</td>
+<td>provider中getType返回的值，有些页面可以处理这种uri</td>
+<td>mimeType</td>
+</tr>
+<tr>
+<td>IBinder resultTo</td>
+<td>接受结果的activitytRecord(binder对象)</td>
+<td>null</td>
+</tr>
+<tr>
+<td>String resultWho</td>
+<td>用户自定义的字符串，调用完毕会传回去</td>
+<td>null</td>
+</tr>
+<tr>
+<td>int requestCode</td>
+<td>用户自定义的code，调用完毕会传回去</td>
+<td>0</td>
+</tr>
+<tr>
+<td>int startFlags</td>
+<td>启动标志</td>
+<td>mStartFlags</td>
+</tr>
+<tr>
+<td>ProfilerInfo profilerInfo</td>
+<td>统计数据</td>
+<td>profilerInfo</td>
+</tr>
+<tr>
+<td>Bundle bOptions</td>
+<td>其他启动参数　可能是从父activity继承的</td>
+<td>options.toBundle()</td>
+</tr>
+<tr>
+<td>int userId</td>
+<td>userId</td>
+<td>mUserId</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>ActvitiyManagerService.java</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> WaitResult <span class="title">startActivityAndWait</span><span class="params">(IApplicationThread caller, </span></span></span><br><span class="line"><span class="function"><span class="params">                                             String callingPackage,</span></span></span><br><span class="line"><span class="function"><span class="params">                                             Intent intent, String resolvedType,</span></span></span><br><span class="line"><span class="function"><span class="params">                                             IBinder resultTo, String resultWho, </span></span></span><br><span class="line"><span class="function"><span class="params">                                             <span class="keyword">int</span> requestCode,</span></span></span><br><span class="line"><span class="function"><span class="params">                                             <span class="keyword">int</span> startFlags, ProfilerInfo profilerInfo, </span></span></span><br><span class="line"><span class="function"><span class="params">                                             Bundle bOptions, <span class="keyword">int</span> userId)</span> </span>&#123;</span><br><span class="line">    enforceNotIsolatedCaller(<span class="string">"startActivityAndWait"</span>);</span><br><span class="line">    userId = mUserController.handleIncomingUser(Binder.getCallingPid(), </span><br><span class="line">                                                Binder.getCallingUid(),</span><br><span class="line">                                                userId, <span class="keyword">false</span>, ALLOW_FULL_ONLY, </span><br><span class="line">                                                <span class="string">"startActivityAndWait"</span>, <span class="keyword">null</span>);</span><br><span class="line">    WaitResult res = <span class="keyword">new</span> WaitResult();</span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> Switch to user app stacks here.</span></span><br><span class="line">    mActivityStarter.startActivityMayWait(caller, -<span class="number">1</span>, callingPackage, </span><br><span class="line">                                          intent, resolvedType,</span><br><span class="line">                                          <span class="keyword">null</span>, <span class="keyword">null</span>, resultTo, </span><br><span class="line">                                          resultWho, requestCode, startFlags, </span><br><span class="line">                                          profilerInfo, res, <span class="keyword">null</span>,</span><br><span class="line">                                          bOptions, <span class="keyword">false</span>, userId, <span class="keyword">null</span>, </span><br><span class="line">                                          <span class="string">"startActivityAndWait"</span>);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">startActivityMayWait</span><span class="params">(IApplicationThread caller, <span class="keyword">int</span> callingUid,</span></span></span><br><span class="line"><span class="function"><span class="params">                               String callingPackage, Intent intent, </span></span></span><br><span class="line"><span class="function"><span class="params">                               String resolvedType,</span></span></span><br><span class="line"><span class="function"><span class="params">                               IVoiceInteractionSession voiceSession, </span></span></span><br><span class="line"><span class="function"><span class="params">                               IVoiceInteractor voiceInteractor,</span></span></span><br><span class="line"><span class="function"><span class="params">                               IBinder resultTo, String resultWho, </span></span></span><br><span class="line"><span class="function"><span class="params">                               <span class="keyword">int</span> requestCode, <span class="keyword">int</span> startFlags,</span></span></span><br><span class="line"><span class="function"><span class="params">                               ProfilerInfo profilerInfo, WaitResult outResult,</span></span></span><br><span class="line"><span class="function"><span class="params">                               Configuration globalConfig, Bundle bOptions, </span></span></span><br><span class="line"><span class="function"><span class="params">                               <span class="keyword">boolean</span> ignoreTargetSecurity, <span class="keyword">int</span> userId,</span></span></span><br><span class="line"><span class="function"><span class="params">                               TaskRecord inTask, String reason)</span> </span>&#123;</span><br><span class="line">    	<span class="comment">//intent不能传递文件句柄</span></span><br><span class="line">        <span class="keyword">if</span> (intent != <span class="keyword">null</span> &amp;&amp; intent.hasFileDescriptors()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"File descriptors passed in Intent"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        mSupervisor.mActivityMetricsLogger.notifyActivityLaunching();</span><br><span class="line">    	<span class="comment">//指定-n或者通过查找PKMS中的注册表</span></span><br><span class="line">        <span class="keyword">boolean</span> componentSpecified = intent.getComponent() != <span class="keyword">null</span>;</span><br><span class="line">    	<span class="comment">//拷贝两个intent，一个是临时，一个是防止修改之后无法还原</span></span><br><span class="line">        <span class="keyword">final</span> Intent ephemeralIntent = <span class="keyword">new</span> Intent(intent);</span><br><span class="line">    	intent = <span class="keyword">new</span> Intent(intent);</span><br><span class="line">    	<span class="comment">//当有对应组件并且传递的数据不为null，并且action也就是指定了-a参数是android.intent.action.VIEW</span></span><br><span class="line">    	<span class="comment">//并且是安装程序对应的Activity</span></span><br><span class="line">    	<span class="comment">//反正走不到这里</span></span><br><span class="line">        <span class="keyword">if</span> (componentSpecified</span><br><span class="line">                &amp;&amp; intent.getData() != <span class="keyword">null</span></span><br><span class="line">                &amp;&amp; Intent.ACTION_VIEW.equals(intent.getAction())</span><br><span class="line">                &amp;&amp; mService.getPackageManagerInternalLocked()</span><br><span class="line">                        .isInstantAppInstallerComponent(intent.getComponent())) &#123;、</span><br><span class="line">            intent.setComponent(<span class="keyword">null</span> <span class="comment">/*component*/</span>);</span><br><span class="line">            componentSpecified = <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">	    <span class="comment">//利用PKMS解析满足Intent等参数要求的信息，内部包含了四大组件等从清单文件中声明的信息</span></span><br><span class="line">        ResolveInfo rInfo = mSupervisor.resolveIntent(intent, resolvedType, userId);</span><br><span class="line">    	<span class="comment">//当没有得到ResolveInfo时</span></span><br><span class="line">        <span class="keyword">if</span> (rInfo == <span class="keyword">null</span>) &#123;</span><br><span class="line">            UserInfo userInfo = mSupervisor.getUserInfo(userId);</span><br><span class="line">            <span class="comment">//通过isManagedProfile()方法来判断这份UserInfo是否只是一个profile(Android中允许一个用户还拥有另一份profile)</span></span><br><span class="line">            <span class="keyword">if</span> (userInfo != <span class="keyword">null</span> &amp;&amp; userInfo.isManagedProfile()) &#123;</span><br><span class="line">                UserManager userManager = UserManager.get(mService.mContext);</span><br><span class="line">                <span class="keyword">boolean</span> profileLockedAndParentUnlockingOrUnlocked = <span class="keyword">false</span>;</span><br><span class="line">                <span class="keyword">long</span> token = Binder.clearCallingIdentity();</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    UserInfo parent = userManager.getProfileParent(userId);</span><br><span class="line">                    profileLockedAndParentUnlockingOrUnlocked = (parent != <span class="keyword">null</span>)</span><br><span class="line">                            &amp;&amp; userManager.isUserUnlockingOrUnlocked(parent.id)</span><br><span class="line">                            &amp;&amp; !userManager.isUserUnlockingOrUnlocked(userId);</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    Binder.restoreCallingIdentity(token);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (profileLockedAndParentUnlockingOrUnlocked) &#123;</span><br><span class="line">                    rInfo = mSupervisor.resolveIntent(intent, resolvedType, userId,</span><br><span class="line">                            PackageManager.MATCH_DIRECT_BOOT_AWARE</span><br><span class="line">                                    | PackageManager.MATCH_DIRECT_BOOT_UNAWARE);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">   	    <span class="comment">//上面是有关多用户的一段逻辑</span></span><br><span class="line">        <span class="comment">// 通过ResolveInfo得到目标Activity的信息.</span></span><br><span class="line">        ActivityInfo aInfo = mSupervisor.resolveActivity(intent, rInfo, startFlags, profilerInfo);</span><br><span class="line">    	<span class="comment">//得到ActivityOptions，有关这个就是通过--task，--stack，--display等设置的一些额外参数</span></span><br><span class="line">        ActivityOptions options = ActivityOptions.fromBundle(bOptions);</span><br><span class="line">    	<span class="comment">//来了一把AMS的锁</span></span><br><span class="line">        <span class="keyword">synchronized</span> (mService) &#123;</span><br><span class="line">            <span class="comment">//得到调用的Pid和Uid</span></span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> realCallingPid = Binder.getCallingPid();</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> realCallingUid = Binder.getCallingUid();</span><br><span class="line">            <span class="keyword">int</span> callingPid;</span><br><span class="line">            <span class="keyword">if</span> (callingUid &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                callingPid = -<span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (caller == <span class="keyword">null</span>) &#123;</span><br><span class="line">                callingPid = realCallingPid;</span><br><span class="line">                callingUid = realCallingUid;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                callingPid = callingUid = -<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//得到当前的栈</span></span><br><span class="line">            <span class="keyword">final</span> ActivityStack stack = mSupervisor.mFocusedStack;</span><br><span class="line">            <span class="comment">//false</span></span><br><span class="line">            stack.mConfigWillChange = globalConfig != <span class="keyword">null</span></span><br><span class="line">                    &amp;&amp; mService.getGlobalConfiguration().diff(globalConfig) != <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (DEBUG_CONFIGURATION) Slog.v(TAG_CONFIGURATION,</span><br><span class="line">                    <span class="string">"Starting activity when config will change = "</span> + stack.mConfigWillChange);</span><br><span class="line">            <span class="comment">//清除Pid和Uid，用于安全检查</span></span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">long</span> origId = Binder.clearCallingIdentity();</span><br><span class="line">            <span class="comment">//如果ActivityRecord不为null，ApplicationInfo.PRIVATE_FLAG_CANT_SAVE_STATE标记，意味着调用者App是属于heavy-weight process</span></span><br><span class="line">            <span class="keyword">if</span> (aInfo != <span class="keyword">null</span> &amp;&amp;</span><br><span class="line">                    (aInfo.applicationInfo.privateFlags</span><br><span class="line">                            &amp; ApplicationInfo.PRIVATE_FLAG_CANT_SAVE_STATE) != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">//进程名等于Application中的包名</span></span><br><span class="line">                <span class="keyword">if</span> (aInfo.processName.equals(aInfo.applicationInfo.packageName)) &#123;</span><br><span class="line">                    <span class="comment">//得到重量级进程的记录，当前运行的</span></span><br><span class="line">                    <span class="keyword">final</span> ProcessRecord heavy = mService.mHeavyWeightProcess;</span><br><span class="line">                    <span class="comment">//当前运行的重量级进程与要启动的不符合</span></span><br><span class="line">                    <span class="keyword">if</span> (heavy != <span class="keyword">null</span> &amp;&amp; (heavy.info.uid != aInfo.applicationInfo.uid</span><br><span class="line">                            || !heavy.processName.equals(aInfo.processName))) &#123;</span><br><span class="line">                        <span class="keyword">int</span> appCallingUid = callingUid;</span><br><span class="line">                        <span class="keyword">if</span> (caller != <span class="keyword">null</span>) &#123;</span><br><span class="line">                           	<span class="comment">//得到调用着的进程记录</span></span><br><span class="line">                            ProcessRecord callerApp = mService.getRecordForAppLocked(caller);</span><br><span class="line">                            <span class="keyword">if</span> (callerApp != <span class="keyword">null</span>) &#123;</span><br><span class="line">                                appCallingUid = callerApp.info.uid;</span><br><span class="line">                            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                                Slog.w(TAG, <span class="string">"Unable to find app for caller "</span> + caller</span><br><span class="line">                                        + <span class="string">" (pid="</span> + callingPid + <span class="string">") when starting: "</span></span><br><span class="line">                                        + intent.toString());</span><br><span class="line">                                ActivityOptions.abort(options);</span><br><span class="line">                                <span class="keyword">return</span> ActivityManager.START_PERMISSION_DENIED;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        IIntentSender target = mService.getIntentSenderLocked(</span><br><span class="line">                                ActivityManager.INTENT_SENDER_ACTIVITY, <span class="string">"android"</span>,</span><br><span class="line">                                appCallingUid, userId, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="number">0</span>, <span class="keyword">new</span> Intent[] &#123; intent &#125;,</span><br><span class="line">                                <span class="keyword">new</span> String[] &#123; resolvedType &#125;, PendingIntent.FLAG_CANCEL_CURRENT</span><br><span class="line">                                        | PendingIntent.FLAG_ONE_SHOT, <span class="keyword">null</span>);</span><br><span class="line">					  <span class="comment">//新的Intent</span></span><br><span class="line">                        Intent newIntent = <span class="keyword">new</span> Intent();</span><br><span class="line">                        <span class="keyword">if</span> (requestCode &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                            <span class="comment">// Caller is requesting a result.</span></span><br><span class="line">                            newIntent.putExtra(HeavyWeightSwitcherActivity.KEY_HAS_RESULT, <span class="keyword">true</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                        newIntent.putExtra(HeavyWeightSwitcherActivity.KEY_INTENT,</span><br><span class="line">                                <span class="keyword">new</span> IntentSender(target));</span><br><span class="line">                        <span class="comment">//当前重量级进程的ActivityRecord数量大于0</span></span><br><span class="line">                        <span class="keyword">if</span> (heavy.activities.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                            <span class="comment">//得到第一个Activity，将名字和栈set进新的Intent中</span></span><br><span class="line">                            ActivityRecord hist = heavy.activities.get(<span class="number">0</span>);</span><br><span class="line">                            newIntent.putExtra(HeavyWeightSwitcherActivity.KEY_CUR_APP,</span><br><span class="line">                                    hist.packageName);</span><br><span class="line">                            newIntent.putExtra(HeavyWeightSwitcherActivity.KEY_CUR_TASK,</span><br><span class="line">                                    hist.getTask().taskId);</span><br><span class="line">                        &#125;</span><br><span class="line">                        newIntent.putExtra(HeavyWeightSwitcherActivity.KEY_NEW_APP,</span><br><span class="line">                                aInfo.packageName);</span><br><span class="line">                        newIntent.setFlags(intent.getFlags());</span><br><span class="line">                        <span class="comment">//新intent的名称</span></span><br><span class="line">                        newIntent.setClassName(<span class="string">"android"</span>,</span><br><span class="line">                                HeavyWeightSwitcherActivity.class.getName());</span><br><span class="line">                        intent = newIntent;</span><br><span class="line">                        resolvedType = <span class="keyword">null</span>;</span><br><span class="line">                        caller = <span class="keyword">null</span>;</span><br><span class="line">                        callingUid = Binder.getCallingUid();</span><br><span class="line">                        callingPid = Binder.getCallingPid();</span><br><span class="line">                        componentSpecified = <span class="keyword">true</span>;</span><br><span class="line">                        rInfo = mSupervisor.resolveIntent(intent, <span class="keyword">null</span> <span class="comment">/*resolvedType*/</span>, userId);</span><br><span class="line">                        aInfo = rInfo != <span class="keyword">null</span> ? rInfo.activityInfo : <span class="keyword">null</span>;</span><br><span class="line">                        <span class="keyword">if</span> (aInfo != <span class="keyword">null</span>) &#123;</span><br><span class="line">                            aInfo = mService.getActivityInfoForUser(aInfo, userId);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//创建新的ActivityRecord</span></span><br><span class="line">            <span class="keyword">final</span> ActivityRecord[] outRecord = <span class="keyword">new</span> ActivityRecord[<span class="number">1</span>];</span><br><span class="line">            <span class="comment">//执行startActivityLocked</span></span><br><span class="line">            <span class="keyword">int</span> res = startActivityLocked(caller, intent, ephemeralIntent, resolvedType,</span><br><span class="line">                    aInfo, rInfo, voiceSession, voiceInteractor,</span><br><span class="line">                    resultTo, resultWho, requestCode, callingPid,</span><br><span class="line">                    callingUid, callingPackage, realCallingPid, realCallingUid, startFlags,</span><br><span class="line">                    options, ignoreTargetSecurity, componentSpecified, outRecord, inTask,</span><br><span class="line">                    reason);</span><br><span class="line">            <span class="comment">//设置pid，uid，权限校验相关</span></span><br><span class="line">            Binder.restoreCallingIdentity(origId);</span><br><span class="line">            <span class="comment">//false</span></span><br><span class="line">            <span class="keyword">if</span> (stack.mConfigWillChange) &#123; mService.enforceCallingPermission(android.Manifest.permission.CHANGE_CONFIGURATION,</span><br><span class="line">                        <span class="string">"updateConfiguration()"</span>);</span><br><span class="line">                stack.mConfigWillChange = <span class="keyword">false</span>;</span><br><span class="line">                <span class="keyword">if</span> (DEBUG_CONFIGURATION) Slog.v(TAG_CONFIGURATION,</span><br><span class="line">                        <span class="string">"Updating to new configuration after starting activity."</span>);</span><br><span class="line">                mService.updateConfigurationLocked(globalConfig, <span class="keyword">null</span>, <span class="keyword">false</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//当结果不为null</span></span><br><span class="line">            <span class="keyword">if</span> (outResult != <span class="keyword">null</span>) &#123;</span><br><span class="line">                outResult.result = res;</span><br><span class="line">                <span class="comment">//并且成功启动</span></span><br><span class="line">                <span class="comment">//目标Activity要运行在一个新的应用进程中，因此需要等待应用进程正常启动并处理相关请求</span></span><br><span class="line">                <span class="keyword">if</span> (res == ActivityManager.START_SUCCESS) &#123;</span><br><span class="line">                    mSupervisor.mWaitingActivityLaunched.add(outResult);</span><br><span class="line">                    <span class="keyword">do</span> &#123;</span><br><span class="line">                        <span class="keyword">try</span> &#123;</span><br><span class="line">                            <span class="comment">//一直等待，直到outResult显示Activity对应的Task成为front task</span></span><br><span class="line">                            mService.wait();</span><br><span class="line">                        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="comment">//如果请求结果不是START_TASK_TO_FRONT，并且没有超时，并且调用方不是null则等待</span></span><br><span class="line">                    &#125; <span class="keyword">while</span> (outResult.result != START_TASK_TO_FRONT</span><br><span class="line">                            &amp;&amp; !outResult.timeout &amp;&amp; outResult.who == <span class="keyword">null</span>);</span><br><span class="line">                    <span class="keyword">if</span> (outResult.result == START_TASK_TO_FRONT) &#123;</span><br><span class="line">                        res = START_TASK_TO_FRONT;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (res == START_TASK_TO_FRONT) &#123;</span><br><span class="line">                    <span class="keyword">final</span> ActivityRecord r = outRecord[<span class="number">0</span>];</span><br><span class="line">                    <span class="keyword">if</span> (r.nowVisible &amp;&amp; r.state == RESUMED) &#123;</span><br><span class="line">                        outResult.timeout = <span class="keyword">false</span>;</span><br><span class="line">                        outResult.who = r.realActivity;</span><br><span class="line">                        outResult.totalTime = <span class="number">0</span>;</span><br><span class="line">                        outResult.thisTime = <span class="number">0</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        outResult.thisTime = SystemClock.uptimeMillis();</span><br><span class="line">                        <span class="comment">//Activity对应的task拉到前台后，一直要等到该界面被加载</span></span><br><span class="line">                        mSupervisor.waitActivityVisible(r.realActivity, outResult);</span><br><span class="line">                        <span class="keyword">do</span> &#123;</span><br><span class="line">                            <span class="keyword">try</span> &#123;</span><br><span class="line">                                mService.wait();</span><br><span class="line">                            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125; <span class="keyword">while</span> (!outResult.timeout &amp;&amp; outResult.who == <span class="keyword">null</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>小结这个方法；</p>
+<ul>
+<li>解析出与Intent相匹配的ActivityInfo。</li>
+<li>得到启动该Activity的Task，前台Task。</li>
+<li>通过startActivityLocked启动Activity</li>
+<li>对返回值进行处理，因为使用-W的参数，所以等待Activity被启动</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/11/01/Activity启动3-startActivityLocked方法/" data-toggle="tooltip" data-placement="top" title="Activity启动3-startActivityLocked方法">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/11/01/Activity启动_参数解析/" data-toggle="tooltip" data-placement="top" title="Activity启动_参数解析">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="nav">none</ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                        
+                          <a class="tag" href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">Wangcainiao&#39;s CSDN</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/" target="_blank">Wangcainiao&#39;s jianshu</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://beantech.org">BeanTech</a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="91px" height="20px" src="https://ghbtns.com/github-btn.html?user=YenYuHsuan&repo=hexo-theme-beantech&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
