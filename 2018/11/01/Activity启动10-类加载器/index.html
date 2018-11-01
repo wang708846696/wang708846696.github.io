@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          应用创建后的类加载器 - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/11/01/Activity启动10-类加载器/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
+                            
+                              <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                            
+                        </div>
+                        <h1>应用创建后的类加载器</h1>
+                        <h2 class="subheading">应用创建后的类加载器主要说明</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-11-01
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>可能大家会有疑问，尤其是我当时接触多dex的时候也会存在疑问，为什么会报类的def找不到异常。报这个异常的原因是什么？一个同事推荐说深入理解java虚拟机这本书很好，然后我就仔细看了一遍，发现其实类加载过程其实是一个很漫长的过程，为什么说是很漫长，因为牵扯到.java文件转化.class文件，然后在读入内存中形成对应的数据结构的过程，其中牵扯到校验，连接，编译器优化等等过程，我们今天不讨论这些过程，因为java虚拟机已经讲解的很细致很深入了。尤其是你把.class文件反编译之后会更清晰，因为有两种数据类型，一种是无符号整数类型，一种是无符号整数类型的表结构。通过他们组成了可执行的一系列指令和数据结构。神奇不。我们今天主要看看我们平时如果不指定类加载器，到底会用什么类加载器进行加载。</p>
+<blockquote>
+<p>performLaunchActivity( )</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ContextImpl appContext = createBaseContextForActivity(r);</span><br><span class="line">java.lang.ClassLoader cl = appContext.getClassLoader();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> ContextImpl <span class="title">createBaseContextForActivity</span><span class="params">(ActivityClientRecord r)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">        ContextImpl appContext = ContextImpl.createActivityContext(</span><br><span class="line">        <span class="keyword">this</span>, r.loadedApk, r.activityInfo, r.token, displayId, r.overrideConfig);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> ContextImpl <span class="title">createActivityContext</span><span class="params">(ActivityThread mainThread, LoadedApk loadedApk, ActivityInfo activityInfo, IBinder activityToken, <span class="keyword">int</span> displayId, Configuration overrideConfiguration)</span> </span>&#123;</span><br><span class="line">    ClassLoader classLoader = loadedApk.getClassLoader();<span class="comment">//进入到这里</span></span><br><span class="line">	...</span><br><span class="line">        ContextImpl context = <span class="keyword">new</span> ContextImpl(<span class="keyword">null</span>, mainThread, loadedApk, activityInfo.splitName, activityToken, <span class="keyword">null</span>, <span class="number">0</span>, classLoader);</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>LoadApk.java</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ClassLoader <span class="title">getClassLoader</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mClassLoader == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//第一次会是空</span></span><br><span class="line">            createOrUpdateClassLoaderLocked(<span class="keyword">null</span> <span class="comment">/*addedPaths*/</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mClassLoader;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">createOrUpdateClassLoaderLocked</span><span class="params">(List&lt;String&gt; addedPaths)</span> </span>&#123;</span><br><span class="line">     <span class="comment">//manifest中定义的package 包名是android</span></span><br><span class="line">    <span class="keyword">if</span> (mPackageName.equals(<span class="string">"android"</span>)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mClassLoader != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// nothing to update</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mBaseClassLoader != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mClassLoader = mBaseClassLoader;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//看一看这里</span></span><br><span class="line">            mClassLoader = ClassLoader.getSystemClassLoader();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">   	<span class="comment">//如果清单文件中定义的包名和当前ActivityThread中得到的包名不一样。通知PKMS更新</span></span><br><span class="line">    <span class="keyword">if</span> (!Objects.equals(mPackageName, ActivityThread.currentPackageName()) &amp;&amp; mIncludeCode) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ActivityThread.getPackageManager().notifyPackageUse(mPackageName,</span><br><span class="line">                                                                PackageManager.NOTIFY_PACKAGE_USE_CROSS_PACKAGE);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RemoteException re) &#123;</span><br><span class="line">            <span class="keyword">throw</span> re.rethrowFromSystemServer();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//不明觉厉</span></span><br><span class="line">    <span class="keyword">if</span> (mRegisterPackage) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ActivityManager.getService().addPackageDependency(mPackageName);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> e.rethrowFromSystemServer();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//存储zip路径和lib路径的</span></span><br><span class="line">    <span class="keyword">final</span> List&lt;String&gt; zipPaths = <span class="keyword">new</span> ArrayList&lt;&gt;(<span class="number">10</span>);</span><br><span class="line">    <span class="keyword">final</span> List&lt;String&gt; libPaths = <span class="keyword">new</span> ArrayList&lt;&gt;(<span class="number">10</span>);</span><br><span class="line">    <span class="keyword">boolean</span> isBundledApp = mApplicationInfo.isSystemApp()</span><br><span class="line">        &amp;&amp; !mApplicationInfo.isUpdatedSystemApp();</span><br><span class="line">    <span class="comment">//得到/system/lib64:/vendor/lib64</span></span><br><span class="line">    <span class="keyword">final</span> String defaultSearchPaths = System.getProperty(<span class="string">"java.library.path"</span>);</span><br><span class="line">    <span class="comment">//是否包含/vendor/lib</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">boolean</span> treatVendorApkAsUnbundled = !defaultSearchPaths.contains(<span class="string">"/vendor/lib"</span>);</span><br><span class="line">    <span class="keyword">if</span> (mApplicationInfo.getCodePath() != <span class="keyword">null</span></span><br><span class="line">        &amp;&amp; mApplicationInfo.getCodePath().startsWith(<span class="string">"/vendor/"</span>)</span><br><span class="line">        &amp;&amp; treatVendorApkAsUnbundled) &#123;</span><br><span class="line">        <span class="comment">//判断是不是系统APP</span></span><br><span class="line">        isBundledApp = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//传入ActivityThread，是不是系统app，ApplicationInfo，还有两个数组哈哈</span></span><br><span class="line">    makePaths(mActivityThread, isBundledApp, mApplicationInfo, zipPaths, libPaths);</span><br><span class="line">    String libraryPermittedPath = mDataDir;<span class="comment">///data/user/0/cn.webp.com.myapplication</span></span><br><span class="line">    <span class="keyword">if</span> (isBundledApp) &#123;</span><br><span class="line">        <span class="comment">// This is necessary to grant bundled apps access to</span></span><br><span class="line">        <span class="comment">// libraries located in subdirectories of /system/lib</span></span><br><span class="line">        libraryPermittedPath += File.pathSeparator + defaultSearchPaths;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> String librarySearchPath = TextUtils.join(File.pathSeparator, libPaths);</span><br><span class="line">    <span class="keyword">final</span> String zip = (zipPaths.size() == <span class="number">1</span>) ? zipPaths.get(<span class="number">0</span>) :</span><br><span class="line">    TextUtils.join(File.pathSeparator, zipPaths);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (DEBUG) Slog.v(ActivityThread.TAG, <span class="string">"Class path: "</span> + zip +</span><br><span class="line">                      <span class="string">", JNI path: "</span> + librarySearchPath);</span><br><span class="line">    <span class="keyword">boolean</span> needToSetupJitProfiles = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (mClassLoader == <span class="keyword">null</span>) &#123;</span><br><span class="line">        StrictMode.ThreadPolicy oldPolicy = StrictMode.allowThreadDiskReads();</span><br><span class="line">		<span class="comment">//得到ClassLoader</span></span><br><span class="line">        mClassLoader = ApplicationLoaders.getDefault().getClassLoader(zip,</span><br><span class="line">                                                                      mApplicationInfo.targetSdkVersion, isBundledApp, librarySearchPath,</span><br><span class="line">                                                                      libraryPermittedPath, mBaseClassLoader,</span><br><span class="line">                                                                      mApplicationInfo.classLoaderName);</span><br><span class="line"></span><br><span class="line">        StrictMode.setThreadPolicy(oldPolicy);</span><br><span class="line">        <span class="comment">// Setup the class loader paths for profiling.</span></span><br><span class="line">        needToSetupJitProfiles = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//添加路径</span></span><br><span class="line">    <span class="keyword">if</span> (addedPaths != <span class="keyword">null</span> &amp;&amp; addedPaths.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">final</span> String add = TextUtils.join(File.pathSeparator, addedPaths);</span><br><span class="line">        ApplicationLoaders.getDefault().addPath(mClassLoader, add);</span><br><span class="line">        <span class="comment">// Setup the new code paths for profiling.</span></span><br><span class="line">        needToSetupJitProfiles = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (needToSetupJitProfiles &amp;&amp; !ActivityThread.isSystem()) &#123;</span><br><span class="line">        setupJitProfileSupport();</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段逻辑最主要的就是把一些app的目录给安排了存入outZipPaths，outLibPaths</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">makePaths</span><span class="params">(ActivityThread activityThread,</span></span></span><br><span class="line"><span class="function"><span class="params">                             <span class="keyword">boolean</span> isBundledApp,</span></span></span><br><span class="line"><span class="function"><span class="params">                             ApplicationInfo aInfo,</span></span></span><br><span class="line"><span class="function"><span class="params">                             List&lt;String&gt; outZipPaths,</span></span></span><br><span class="line"><span class="function"><span class="params">                             List&lt;String&gt; outLibPaths)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//比如：/data/app/cn.webp.com.myapplication-2/base.apk</span></span><br><span class="line">    <span class="keyword">final</span> String appDir = aInfo.sourceDir;</span><br><span class="line">    <span class="comment">///data/app/cn.webp.com.myapplication-1/lib/arm64</span></span><br><span class="line">    <span class="keyword">final</span> String libDir = aInfo.nativeLibraryDir;</span><br><span class="line">    <span class="keyword">final</span> String[] sharedLibraries = aInfo.sharedLibraryFiles;</span><br><span class="line"></span><br><span class="line">    outZipPaths.clear();</span><br><span class="line">    outZipPaths.add(appDir);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Do not load all available splits if the app requested isolated split loading.</span></span><br><span class="line">    <span class="keyword">if</span> (aInfo.splitSourceDirs != <span class="keyword">null</span> &amp;&amp; !aInfo.requestsIsolatedSplitLoading()) &#123;</span><br><span class="line">        Collections.addAll(outZipPaths, aInfo.splitSourceDirs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (outLibPaths != <span class="keyword">null</span>) &#123;</span><br><span class="line">        outLibPaths.clear();</span><br><span class="line">    &#125;</span><br><span class="line">    String[] instrumentationLibs = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (activityThread != <span class="keyword">null</span>) &#123;</span><br><span class="line">        String instrumentationPackageName = activityThread.mInstrumentationPackageName;</span><br><span class="line">        String instrumentationAppDir = activityThread.mInstrumentationAppDir;</span><br><span class="line">        String[] instrumentationSplitAppDirs = activityThread.mInstrumentationSplitAppDirs;</span><br><span class="line">        String instrumentationLibDir = activityThread.mInstrumentationLibDir;</span><br><span class="line"></span><br><span class="line">        String instrumentedAppDir = activityThread.mInstrumentedAppDir;</span><br><span class="line">        String[] instrumentedSplitAppDirs = activityThread.mInstrumentedSplitAppDirs;</span><br><span class="line">        String instrumentedLibDir = activityThread.mInstrumentedLibDir;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (appDir.equals(instrumentationAppDir)</span><br><span class="line">            || appDir.equals(instrumentedAppDir)) &#123;</span><br><span class="line">            outZipPaths.clear();</span><br><span class="line">            outZipPaths.add(instrumentationAppDir);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Only add splits if the app did not request isolated split loading.</span></span><br><span class="line">            <span class="keyword">if</span> (!aInfo.requestsIsolatedSplitLoading()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instrumentationSplitAppDirs != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    Collections.addAll(outZipPaths, instrumentationSplitAppDirs);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (!instrumentationAppDir.equals(instrumentedAppDir)) &#123;</span><br><span class="line">                    outZipPaths.add(instrumentedAppDir);</span><br><span class="line">                    <span class="keyword">if</span> (instrumentedSplitAppDirs != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        Collections.addAll(outZipPaths, instrumentedSplitAppDirs);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (outLibPaths != <span class="keyword">null</span>) &#123;</span><br><span class="line">                outLibPaths.add(instrumentationLibDir);</span><br><span class="line">                <span class="keyword">if</span> (!instrumentationLibDir.equals(instrumentedLibDir)) &#123;</span><br><span class="line">                    outLibPaths.add(instrumentedLibDir);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!instrumentedAppDir.equals(instrumentationAppDir)) &#123;</span><br><span class="line">                instrumentationLibs = getLibrariesFor(instrumentationPackageName);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (outLibPaths != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (outLibPaths.isEmpty()) &#123;</span><br><span class="line">            outLibPaths.add(libDir);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Add path to libraries in apk for current abi. Do this now because more entries</span></span><br><span class="line">        <span class="comment">// will be added to zipPaths that shouldn't be part of the library path.</span></span><br><span class="line">        <span class="keyword">if</span> (aInfo.primaryCpuAbi != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// Add fake libs into the library search path if we target prior to N.</span></span><br><span class="line">            <span class="keyword">if</span> (aInfo.targetSdkVersion &lt; Build.VERSION_CODES.N) &#123;</span><br><span class="line">                outLibPaths.add(<span class="string">"/system/fake-libs"</span> +</span><br><span class="line">                                (VMRuntime.is64BitAbi(aInfo.primaryCpuAbi) ? <span class="string">"64"</span> : <span class="string">""</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (String apk : outZipPaths) &#123;</span><br><span class="line">                outLibPaths.add(apk + <span class="string">"!/lib/"</span> + aInfo.primaryCpuAbi);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (isBundledApp) &#123;</span><br><span class="line">            outLibPaths.add(System.getProperty(<span class="string">"java.library.path"</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Prepend the shared libraries, maintaining their original order where possible.</span></span><br><span class="line">    <span class="keyword">if</span> (sharedLibraries != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (String lib : sharedLibraries) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!outZipPaths.contains(lib)) &#123;</span><br><span class="line">                outZipPaths.add(index, lib);</span><br><span class="line">                index++;</span><br><span class="line">                appendApkLibPathIfNeeded(lib, aInfo, outLibPaths);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (instrumentationLibs != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (String lib : instrumentationLibs) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!outZipPaths.contains(lib)) &#123;</span><br><span class="line">                outZipPaths.add(<span class="number">0</span>, lib);</span><br><span class="line">                appendApkLibPathIfNeeded(lib, aInfo, outLibPaths);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> ClassLoader <span class="title">getClassLoader</span><span class="params">(String zip, <span class="keyword">int</span> targetSdkVersion, <span class="keyword">boolean</span> isBundled,</span></span></span><br><span class="line"><span class="function"><span class="params">                                   String librarySearchPath, String libraryPermittedPath,</span></span></span><br><span class="line"><span class="function"><span class="params">                                   ClassLoader parent, String cacheKey,</span></span></span><br><span class="line"><span class="function"><span class="params">                                   String classLoaderName)</span> </span>&#123;</span><br><span class="line">        ClassLoader baseParent = ClassLoader.getSystemClassLoader().getParent();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">synchronized</span> (mLoaders) &#123;</span><br><span class="line">            <span class="keyword">if</span> (parent == <span class="keyword">null</span>) &#123;</span><br><span class="line">                parent = baseParent;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (parent == baseParent) &#123;</span><br><span class="line">                ClassLoader loader = mLoaders.get(cacheKey);</span><br><span class="line">                <span class="keyword">if</span> (loader != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">return</span> loader;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, zip);</span><br><span class="line"></span><br><span class="line">                ClassLoader classloader = ClassLoaderFactory.createClassLoader(</span><br><span class="line">                        zip,  librarySearchPath, libraryPermittedPath, parent,</span><br><span class="line">                        targetSdkVersion, isBundled, classLoaderName);</span><br><span class="line"></span><br><span class="line">                Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line"></span><br><span class="line">                Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, <span class="string">"setupVulkanLayerPath"</span>);</span><br><span class="line">                setupVulkanLayerPath(classloader, librarySearchPath);</span><br><span class="line">                Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line"></span><br><span class="line">                mLoaders.put(cacheKey, classloader);</span><br><span class="line">                <span class="keyword">return</span> classloader;</span><br><span class="line">            &#125;</span><br><span class="line">			<span class="comment">//会利用工厂模式创建ClassLoader</span></span><br><span class="line">            Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, zip);</span><br><span class="line">            <span class="comment">//第一个是我们的apk绝对路径，第三个是根加载器，最后一个是加载器的名称</span></span><br><span class="line">            <span class="comment">//对于名称“PathClassLoader”，“DexClassLoader”，“DelegateLastClassLoader”</span></span><br><span class="line">            ClassLoader loader = ClassLoaderFactory.createClassLoader(</span><br><span class="line">                    zip, <span class="keyword">null</span>, parent, classLoaderName);</span><br><span class="line">            Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</span><br><span class="line">            <span class="keyword">return</span> loader;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面创建ClassLoader，就是两种一种是PathClassLoader，DexClassLoader，但是这两种都创建PathClassLoader传入dex文件，也就是源码中zipPaths的第一个元素也就是我们的apk绝对路径。所以我们经常用的，系统里面的就是PathClassLoader</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/11/01/Activity启动9-Content的区别/" data-toggle="tooltip" data-placement="top" title="Content的创建过程">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="nav">none</ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
+                        
+                          <a class="tag" href="/tags/#Blog" title="Blog">Blog</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">Wangcainiao&#39;s CSDN</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/" target="_blank">Wangcainiao&#39;s jianshu</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://beantech.org">BeanTech</a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="91px" height="20px" src="https://ghbtns.com/github-btn.html?user=YenYuHsuan&repo=hexo-theme-beantech&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
