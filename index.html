@@ -139,14 +139,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -209,6 +209,36 @@
 
 <div class="post-preview">
 
+    <a href="/2018/11/03/滴滴插件化1/">
+        <h2 class="post-title">
+            插件化框架源码解析1_初始化
+        </h2>
+        <h3 class="post-subtitle">
+            主要针对初始化的代码进行分析，具体看看Hook了那些比较重要的点
+        </h3>
+        <div class="post-content-preview">
+            初始化
+这章节主要针对初始化的代码进行分析，具体看看Hook了那些比较重要的点。
+123456789101112131415161718protected PluginManager(Context context) &#123;    if (context instanceof Application) &#123;        this.mApplication = (Applica......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-03
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/11/01/Activity启动10-类加载器/">
         <h2 class="post-title">
             应用创建后的类加载器
@@ -228,8 +258,6 @@
         <div class="tags">
             
               <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-              <a href="/tags/#Blog" title="Blog">Blog</a>
             
         </div>
     
@@ -260,8 +288,6 @@
             
               <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
             
-              <a href="/tags/#Blog" title="Blog">Blog</a>
-            
         </div>
     
 
@@ -289,8 +315,6 @@
         <div class="tags">
             
               <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-              <a href="/tags/#Blog" title="Blog">Blog</a>
             
         </div>
     
@@ -321,8 +345,6 @@
             
               <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
             
-              <a href="/tags/#Blog" title="Blog">Blog</a>
-            
         </div>
     
 
@@ -350,8 +372,6 @@
         <div class="tags">
             
               <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-              <a href="/tags/#Blog" title="Blog">Blog</a>
             
         </div>
     
@@ -381,8 +401,6 @@
             
               <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
             
-              <a href="/tags/#Blog" title="Blog">Blog</a>
-            
         </div>
     
 
@@ -410,8 +428,6 @@
         <div class="tags">
             
               <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-              <a href="/tags/#Blog" title="Blog">Blog</a>
             
         </div>
     
@@ -441,8 +457,6 @@
             
               <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
             
-              <a href="/tags/#Blog" title="Blog">Blog</a>
-            
         </div>
     
 
@@ -471,42 +485,6 @@
         <div class="tags">
             
               <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-              <a href="/tags/#Blog" title="Blog">Blog</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动_参数解析/">
-        <h2 class="post-title">
-            Activity启动_参数解析
-        </h2>
-        <h3 class="post-subtitle">
-            主要进行Activity启动时候必要参数的说明
-        </h3>
-        <div class="post-content-preview">
-            
-Am.java
-
-123public static void main(String[] args) &#123;    (new Am()).run(args);&#125;
-12345678910111213141516public void run(String[] args) &#123;    if (args.length &lt; 1) &#123;        onSho......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-              <a href="/tags/#Blog" title="Blog">Blog</a>
             
         </div>
     
@@ -550,11 +528,11 @@ Am.java
     <div class="tags">
         
             
-            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
+        
             
         
             
-            <a href="/tags/#Blog" title="Blog" rel="11">Blog</a>
+            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
             
         
             
@@ -611,6 +589,10 @@ Am.java
     <ul>
       
         <li>
+          <a href="/2018/11/03/滴滴插件化1/">插件化框架源码解析1_初始化</a>
+        </li>
+      
+        <li>
           <a href="/2018/11/01/Activity启动10-类加载器/">应用创建后的类加载器</a>
         </li>
       
@@ -624,10 +606,6 @@ Am.java
       
         <li>
           <a href="/2018/11/01/Activity启动8-performLaunchActivity方法/">Activity启动8-performLaunchActivity方法</a>
-        </li>
-      
-        <li>
-          <a href="/2018/11/01/Activity启动6-startSpecificActivityLocked方法/">Activity启动6-startSpecificActivityLocked方法</a>
         </li>
       
     </ul>
