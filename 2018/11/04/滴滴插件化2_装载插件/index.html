@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          滴滴插件化2_装载插件 - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/11/04/滴滴插件化2_装载插件/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Android APP" title="Android APP">Android APP</a>
+                            
+                        </div>
+                        <h1>滴滴插件化2_装载插件</h1>
+                        <h2 class="subheading">主要针对装载插件的代码进行分析，具体看看装载插件的时候需要初始化那些内容以及替换那些核心的类</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-11-04
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1><span id="装载插件apk">装载插件（apk）</span></h1>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadPlugin</span><span class="params">(File apk)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//创建LoadedPlugin</span></span><br><span class="line">    LoadedPlugin plugin = createLoadedPlugin(apk);<span class="comment">//【1.2】</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == plugin) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Can't load plugin which is invalid: "</span> + apk.getAbsolutePath());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.mPlugins.put(plugin.getPackageName(), plugin);</span><br><span class="line">    <span class="keyword">synchronized</span> (mCallbacks) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mCallbacks.size(); i++) &#123;</span><br><span class="line">            <span class="comment">//DataBinderMapper相关</span></span><br><span class="line">            mCallbacks.get(i).onAddedLoadedPlugin(plugin);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2><span id="part-1">Part 1</span></h2>
+<p>拿到<code>PackageParser.Package</code>,并且生成<code>PackageInfo</code>进行存入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">LoadedPlugin</span><span class="params">(PluginManager pluginManager, Context context, File apk)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.mPluginManager = pluginManager;</span><br><span class="line">    <span class="keyword">this</span>.mHostContext = context;</span><br><span class="line">    <span class="keyword">this</span>.mLocation = apk.getAbsolutePath();</span><br><span class="line">    <span class="comment">//Package是一个存储四大组件，权限，包名等等信息的一个数据结构</span></span><br><span class="line">    <span class="keyword">this</span>.mPackage = PackageParserCompat.parsePackage(context, apk, PackageParser.PARSE_MUST_BE_APK);</span><br><span class="line">    <span class="comment">//解析清单文件中的meta-data</span></span><br><span class="line">    <span class="keyword">this</span>.mPackage.applicationInfo.metaData = <span class="keyword">this</span>.mPackage.mAppMetaData;</span><br><span class="line">    <span class="comment">//构造一个PackageInfo</span></span><br><span class="line">    <span class="keyword">this</span>.mPackageInfo = <span class="keyword">new</span> PackageInfo();</span><br><span class="line">    <span class="comment">//Application信息</span></span><br><span class="line">    <span class="keyword">this</span>.mPackageInfo.applicationInfo = <span class="keyword">this</span>.mPackage.applicationInfo;</span><br><span class="line">    <span class="comment">//将来源目录设置成apk所在目录</span></span><br><span class="line">    <span class="keyword">this</span>.mPackageInfo.applicationInfo.sourceDir = apk.getAbsolutePath();</span><br><span class="line"> 	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如何通过<code>this.mPackage = PackageParserCompat.parsePackage(context, apk, PackageParser.PARSE_MUST_BE_APK);</code>得到<code>PackageParser.Package</code>数据结构</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> PackageParser.<span class="function">Package <span class="title">parsePackage</span><span class="params">(<span class="keyword">final</span> Context context, <span class="keyword">final</span> File apk, <span class="keyword">final</span> <span class="keyword">int</span> flags)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">28</span></span><br><span class="line">            || (Build.VERSION.SDK_INT == <span class="number">27</span> &amp;&amp; Build.VERSION.PREVIEW_SDK_INT != <span class="number">0</span>)) &#123; <span class="comment">// Android P Preview</span></span><br><span class="line">            <span class="comment">//高版本得到PackageParser.Package</span></span><br><span class="line">            <span class="keyword">return</span> PackageParserPPreview.parsePackage(context, apk, flags);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">24</span>) &#123;</span><br><span class="line">            <span class="comment">//[27-24]</span></span><br><span class="line">            <span class="keyword">return</span> PackageParserV24.parsePackage(context, apk, flags);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">21</span>) &#123;</span><br><span class="line">            <span class="comment">//[21-23]</span></span><br><span class="line">            <span class="keyword">return</span> PackageParserLollipop.parsePackage(context, apk, flags);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//[x-20]</span></span><br><span class="line">            <span class="keyword">return</span> PackageParserLegacy.parsePackage(context, apk, flags);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"error"</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里只是将高版本Android对应的方法。其他核心是需要看framework层代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">PackageParserPPreview</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> PackageParser.<span class="function">Package <span class="title">parsePackage</span><span class="params">(Context context, File apk, <span class="keyword">int</span> flags)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        PackageParser parser = <span class="keyword">new</span> PackageParser();</span><br><span class="line">        <span class="comment">//解析packageParser.Package</span></span><br><span class="line">        PackageParser.Package pkg = parser.parsePackage(apk, flags);</span><br><span class="line">        <span class="comment">//调用收集证书的方法</span></span><br><span class="line">        Reflector.with(parser)</span><br><span class="line">            .method(<span class="string">"collectCertificates"</span>, PackageParser.Package.class, <span class="keyword">boolean</span>.class)</span><br><span class="line">            .call(pkg, <span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">return</span> pkg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>PackageParser.parsePackage(File apk, int flags)</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Package <span class="title">parsePackage</span><span class="params">(File packageFile, <span class="keyword">int</span> flags)</span> <span class="keyword">throws</span> PackageParserException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (packageFile.isDirectory()) &#123;</span><br><span class="line">        <span class="keyword">return</span> parseClusterPackage(packageFile, flags);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> parseMonolithicPackage(packageFile, flags);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Deprecated</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Package <span class="title">parseMonolithicPackage</span><span class="params">(File apkFile, <span class="keyword">int</span> flags)</span> <span class="keyword">throws</span> PackageParserException </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">final</span> AssetManager assets = <span class="keyword">new</span> AssetManager();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> Package pkg = parseBaseApk(apkFile, assets, flags);</span><br><span class="line">        pkg.codePath = apkFile.getAbsolutePath();</span><br><span class="line">        <span class="keyword">return</span> pkg;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        IoUtils.closeQuietly(assets);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Package <span class="title">parseBaseApk</span><span class="params">(File apkFile, AssetManager assets, <span class="keyword">int</span> flags)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> PackageParserException </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> String apkPath = apkFile.getAbsolutePath();</span><br><span class="line"></span><br><span class="line">    String volumeUuid = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">//对应/mnt/expand/</span></span><br><span class="line">    <span class="keyword">if</span> (apkPath.startsWith(MNT_EXPAND)) &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> end = apkPath.indexOf(<span class="string">'/'</span>, MNT_EXPAND.length());</span><br><span class="line">        volumeUuid = apkPath.substring(MNT_EXPAND.length(), end);<span class="comment">///mnt/expand</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mParseError = PackageManager.INSTALL_SUCCEEDED;</span><br><span class="line">    mArchiveSourcePath = apkFile.getAbsolutePath();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (DEBUG_JAR) Slog.d(TAG, <span class="string">"Scanning base APK: "</span> + apkPath);</span><br><span class="line">	<span class="comment">//assets.addAssetPath(apkPath)</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> cookie = loadApkIntoAssetManager(assets, apkPath, flags);</span><br><span class="line"></span><br><span class="line">    Resources res = <span class="keyword">null</span>;</span><br><span class="line">    XmlResourceParser parser = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        res = <span class="keyword">new</span> Resources(assets, mMetrics, <span class="keyword">null</span>);</span><br><span class="line">        assets.setConfiguration(<span class="number">0</span>, <span class="number">0</span>, <span class="keyword">null</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>,</span><br><span class="line">                                Build.VERSION.RESOURCES_SDK_INT);</span><br><span class="line">        parser = assets.openXmlResourceParser(cookie, ANDROID_MANIFEST_FILENAME);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> String[] outError = <span class="keyword">new</span> String[<span class="number">1</span>];</span><br><span class="line">        <span class="comment">//传入的Resources，XmlResourceParser，flags</span></span><br><span class="line">        <span class="comment">//这里面就是各种标签的解析</span></span><br><span class="line">        <span class="keyword">final</span> Package pkg = parseBaseApk(res, parser, flags, outError);</span><br><span class="line">        <span class="keyword">if</span> (pkg == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> PackageParserException(mParseError,</span><br><span class="line">                                             apkPath + <span class="string">" (at "</span> + parser.getPositionDescription() + <span class="string">"): "</span> + outError[<span class="number">0</span>]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        pkg.volumeUuid = volumeUuid;<span class="comment">///mnt/expand</span></span><br><span class="line">        pkg.baseCodePath = apkPath;<span class="comment">//apk的绝对路径</span></span><br><span class="line">        pkg.mSignatures = <span class="keyword">null</span>;<span class="comment">//签名null</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> pkg;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (PackageParserException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> e;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> PackageParserException(INSTALL_PARSE_FAILED_UNEXPECTED_EXCEPTION,</span><br><span class="line">                                         <span class="string">"Failed to read manifest from "</span> + apkPath, e);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        IoUtils.closeQuietly(parser);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总结上面这段代码，当解析一个apk的时候会传入这个重要的对象new Resources(new AssetManager())，他添加了apkPath，他能够得到对应的清单文件。所以只要给AssetManager添加apkpath就能得到对应的apk的清单文件。然后就是一些基本的赋值</p>
+<ul>
+<li><code>pkg.volumeUuid = volumeUuid;///mnt/expand</code></li>
+<li><code>pkg.baseCodePath = apkPath;//apk的绝对路径</code></li>
+<li><code>pkg.mSignatures = null;//签名null</code></li>
+<li><code>pkg.codePath = apkFile.getAbsolutePath();//apk绝对路径</code></li>
+</ul>
+<blockquote>
+<p>特别的：</p>
+</blockquote>
+<p>在四参的parseBaseApk方法中进行解析清单文件，当发现有标签名称是meta-data时候就会进行如下操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (parser.getName().equals(<span class="string">"meta-data"</span>)) &#123;</span><br><span class="line">    <span class="keyword">if</span> ((owner.mAppMetaData = parseMetaData(res, parser, attrs, owner.mAppMetaData,</span><br><span class="line">                                            outError)) == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mParseError = PackageManager.INSTALL_PARSE_FAILED_MANIFEST_MALFORMED;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2><span id="patr-2">Patr 2</span></h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//签名信息的得到</span></span><br><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">28</span></span><br><span class="line">    || (Build.VERSION.SDK_INT == <span class="number">27</span> &amp;&amp; Build.VERSION.PREVIEW_SDK_INT != <span class="number">0</span>)) &#123; <span class="comment">// Android P Preview</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.mPackageInfo.signatures = <span class="keyword">this</span>.mPackage.mSigningDetails.signatures;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">        PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);</span><br><span class="line">        <span class="keyword">this</span>.mPackageInfo.signatures = info.signatures;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.mPackageInfo.signatures = <span class="keyword">this</span>.mPackage.mSignatures;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//包名</span></span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.packageName = <span class="keyword">this</span>.mPackage.packageName;</span><br><span class="line"><span class="comment">//如果已经load过了，则抛出异常</span></span><br><span class="line"><span class="keyword">if</span> (pluginManager.getLoadedPlugin(mPackageInfo.packageName) != <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"plugin has already been loaded : "</span> + mPackageInfo.packageName);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//版本code</span></span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.versionCode = <span class="keyword">this</span>.mPackage.mVersionCode;</span><br><span class="line"><span class="comment">//版本名称</span></span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.versionName = <span class="keyword">this</span>.mPackage.mVersionName;</span><br><span class="line"><span class="comment">//new一个权限数组</span></span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.permissions = <span class="keyword">new</span> PermissionInfo[<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+<p>这段代码就是给我们新创建的mPackageInfo赋值，唯一有疑问的可能就属于签名信息。签名信息的获取在collectCertificates()方法中，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">collectCertificates</span><span class="params">(Package pkg, File apkFile, <span class="keyword">int</span> flags)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> PackageParserException </span>&#123;</span><br><span class="line">    StrictJarFile jarFile = <span class="keyword">new</span> StrictJarFile(apkPath);</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">final</span> Certificate[][] entryCerts = loadCertificates(jarFile, entry);</span><br><span class="line">    <span class="keyword">final</span> Signature[] entrySignatures = convertToSignatures(entryCerts);</span><br><span class="line">    pkg.mSignatures = entrySignatures;<span class="comment">//这就是我们得到的签名信息</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2><span id="part-3">Part 3</span></h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.mPackageManager = createPluginPackageManager();<span class="comment">//new PluginPackageManager()</span></span><br><span class="line"><span class="keyword">this</span>.mPluginContext = createPluginContext(<span class="keyword">null</span>);<span class="comment">//new PluginContext()保存了LoadedPlugin和Context</span></span><br><span class="line"><span class="keyword">this</span>.mNativeLibDir = getDir(context, Constants.NATIVE_DIR);<span class="comment">//valibs目录下：context.getDir("valibs", Context.MODE_PRIVATE)</span></span><br><span class="line"><span class="comment">//native的lib目录</span></span><br><span class="line"><span class="keyword">this</span>.mPackage.applicationInfo.nativeLibraryDir = <span class="keyword">this</span>.mNativeLibDir.getAbsolutePath();</span><br><span class="line"><span class="comment">//创建一个Resources</span></span><br><span class="line"><span class="keyword">this</span>.mResources = createResources(context, getPackageName(), apk);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Resources <span class="title">createResources</span><span class="params">(Context context, String packageName, File apk)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//true</span></span><br><span class="line">    <span class="keyword">if</span> (Constants.COMBINE_RESOURCES) &#123;</span><br><span class="line">        <span class="comment">//创建Resources</span></span><br><span class="line">        <span class="keyword">return</span> ResourcesManager.createResources(context, packageName, apk);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Resources hostResources = context.getResources();</span><br><span class="line">        AssetManager assetManager = createAssetManager(context, apk);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Resources(assetManager, hostResources.getDisplayMetrics(), hostResources.getConfiguration());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Resources <span class="title">createResources</span><span class="params">(Context hostContext, String packageName, File apk)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.N) &#123;</span><br><span class="line">        <span class="comment">//当大于AndroidN 的时候创建</span></span><br><span class="line">        <span class="keyword">return</span> createResourcesForN(hostContext, packageName, apk);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Resources resources = ResourcesManager.createResourcesSimple(hostContext, apk.getAbsolutePath());</span><br><span class="line">    ResourcesManager.hookResources(hostContext, resources);</span><br><span class="line">    <span class="keyword">return</span> resources;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个时候不由自主就会问这段代码到底想干什么？创建mResources干什么？这个问题，单独抽出来讲。</p>
+<h2><span id="part-4">Part 4</span></h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//赋值类加载器</span></span><br><span class="line"><span class="keyword">this</span>.mClassLoader = createClassLoader(context, apk, <span class="keyword">this</span>.mNativeLibDir, context.getClassLoader());</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> ClassLoader <span class="title">createClassLoader</span><span class="params">(Context context, File apk, File libsDir, ClassLoader parent)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//该情景中得到的是：/data/user/0/com.didi.virtualapk/app_dex</span></span><br><span class="line">    File dexOutputDir = getDir(context, Constants.OPTIMIZE_DIR);</span><br><span class="line">    String dexOutputPath = dexOutputDir.getAbsolutePath();</span><br><span class="line">    <span class="comment">///storage/emulated/0/Test.apk</span></span><br><span class="line">    <span class="comment">///data/user/0/com.didi.virtualapk/app_dex</span></span><br><span class="line">    <span class="comment">///data/user/0/com.didi.virtualapk/app_valibs</span></span><br><span class="line">    DexClassLoader loader = <span class="keyword">new</span> DexClassLoader(apk.getAbsolutePath(), dexOutputPath, libsDir.getAbsolutePath(), parent);</span><br><span class="line">	<span class="comment">//true</span></span><br><span class="line">    <span class="keyword">if</span> (Constants.COMBINE_CLASSLOADER) &#123;</span><br><span class="line">        <span class="comment">//将我们的dexClassLoader和系统classLoader进行融合</span></span><br><span class="line">        DexUtil.insertDex(loader, parent, libsDir);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> loader;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">insertDex</span><span class="params">(DexClassLoader dexClassLoader, ClassLoader baseClassLoader, File nativeLibsDir)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//得到原来的dexElements</span></span><br><span class="line">    Object baseDexElements = getDexElements(getPathList(baseClassLoader));</span><br><span class="line">    <span class="comment">//得到我们创建的dexClassLoader中dexElements</span></span><br><span class="line">    Object newDexElements = getDexElements(getPathList(dexClassLoader));</span><br><span class="line">    <span class="comment">//将两个DexElements进行合并</span></span><br><span class="line">    Object allDexElements = combineArray(baseDexElements, newDexElements);</span><br><span class="line">    <span class="comment">//得到baseClassLoader的pathList路径</span></span><br><span class="line">    Object pathList = getPathList(baseClassLoader);</span><br><span class="line">    <span class="comment">//从pathList中得到dexElements然后设置合并过后的pathList，用于寻找类</span></span><br><span class="line">    Reflector.with(pathList).field(<span class="string">"dexElements"</span>).set(allDexElements);</span><br><span class="line">	<span class="comment">//进行nativeLibrary的融合</span></span><br><span class="line">    insertNativeLibrary(dexClassLoader, baseClassLoader, nativeLibsDir);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>得到ClassLoader中的pathList</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Object <span class="title">getPathList</span><span class="params">(ClassLoader baseDexClassLoader)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//得到系统中ClassLoader中的pathList</span></span><br><span class="line">    <span class="keyword">return</span> Reflector.with(baseDexClassLoader).field(<span class="string">"pathList"</span>).get();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>得到dexElements数组用于存储DexFile</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Object <span class="title">getDexElements</span><span class="params">(Object pathList)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//得到dexElements数组用于存储DexFile</span></span><br><span class="line">    <span class="keyword">return</span> Reflector.with(pathList).field(<span class="string">"dexElements"</span>).get();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>进行两个dexElements的融合</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//进行两个dexElements的融合</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Object <span class="title">combineArray</span><span class="params">(Object firstArray, Object secondArray)</span> </span>&#123;</span><br><span class="line">    Class&lt;?&gt; localClass = firstArray.getClass().getComponentType();</span><br><span class="line">    <span class="keyword">int</span> firstArrayLength = Array.getLength(firstArray);</span><br><span class="line">    <span class="keyword">int</span> secondArrayLength = Array.getLength(secondArray);</span><br><span class="line">    Object result = Array.newInstance(localClass, firstArrayLength + secondArrayLength);</span><br><span class="line">    System.arraycopy(firstArray, <span class="number">0</span>, result, <span class="number">0</span>, firstArrayLength);</span><br><span class="line">    System.arraycopy(secondArray, <span class="number">0</span>, result, firstArrayLength, secondArrayLength);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>进行NativeLibrary的融合</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">insertNativeLibrary</span><span class="params">(DexClassLoader dexClassLoader, ClassLoader baseClassLoader, File nativeLibsDir)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//保证一个进程初始化一次</span></span><br><span class="line">    <span class="keyword">if</span> (sHasInsertedNativeLibrary) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    sHasInsertedNativeLibrary = <span class="keyword">true</span>;</span><br><span class="line">    </span><br><span class="line">    Context context = ActivityThread.currentApplication();</span><br><span class="line">    <span class="comment">//得到baseClassLoader的PathList</span></span><br><span class="line">    Object basePathList = getPathList(baseClassLoader);</span><br><span class="line">    <span class="comment">//版本大于22的时候</span></span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt; Build.VERSION_CODES.LOLLIPOP_MR1) &#123;</span><br><span class="line">        Reflector reflector = Reflector.with(basePathList);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//得到BaseClassLoader对应的PathList中的nativeLibraryDirectories&amp;添加现有libs目录</span></span><br><span class="line">        List&lt;File&gt; nativeLibraryDirectories = reflector.field(<span class="string">"nativeLibraryDirectories"</span>).get();</span><br><span class="line">        nativeLibraryDirectories.add(nativeLibsDir);</span><br><span class="line">        </span><br><span class="line">		<span class="comment">//得到BaseClassLoader中对应的nativeLibraryPathElements列表</span></span><br><span class="line">        <span class="comment">//List of native library path elements.</span></span><br><span class="line">        Object baseNativeLibraryPathElements = reflector.field(<span class="string">"nativeLibraryPathElements"</span>).get();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> baseArrayLength = Array.getLength(baseNativeLibraryPathElements);</span><br><span class="line">        </span><br><span class="line">	    <span class="comment">//得到自己创建的DexClassLoader中的PathList然后得到DexClassLoader中newNativeLibraryPathElements</span></span><br><span class="line">        Object newPathList = getPathList(dexClassLoader);</span><br><span class="line">        Object newNativeLibraryPathElements = reflector.get(newPathList);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//创建一个类型是NativeLibraryPathElement类型的BaseClassLoader中allNativeLibraryPathElements的数组</span></span><br><span class="line">        Class&lt;?&gt; elementClass = newNativeLibraryPathElements.getClass().getComponentType();</span><br><span class="line">        Object allNativeLibraryPathElements = Array.newInstance(elementClass, baseArrayLength + <span class="number">1</span>);</span><br><span class="line">        <span class="comment">//将baseNativeLibraryPathElements先拷贝到我们创建的allNativeLibraryPathElements中</span></span><br><span class="line">        System.arraycopy(baseNativeLibraryPathElements, <span class="number">0</span>, allNativeLibraryPathElements, <span class="number">0</span>, baseArrayLength);</span><br><span class="line"></span><br><span class="line">        Field soPathField;</span><br><span class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">26</span>) &#123;</span><br><span class="line">            soPathField = elementClass.getDeclaredField(<span class="string">"path"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            soPathField = elementClass.getDeclaredField(<span class="string">"dir"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        soPathField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> newArrayLength = Array.getLength(newNativeLibraryPathElements);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; newArrayLength; i++) &#123;</span><br><span class="line">            Object element = Array.get(newNativeLibraryPathElements, i);</span><br><span class="line">            String dir = ((File)soPathField.get(element)).getAbsolutePath();</span><br><span class="line">            <span class="comment">//如果是目录，包含我们的valibs则将这个目录塞到allNativeLibraryPathElements中</span></span><br><span class="line">            <span class="keyword">if</span> (dir.contains(Constants.NATIVE_DIR)) &#123;</span><br><span class="line">                Array.set(allNativeLibraryPathElements, baseArrayLength, element);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        reflector.set(allNativeLibraryPathElements);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Reflector reflector = Reflector.with(basePathList).field(<span class="string">"nativeLibraryDirectories"</span>);</span><br><span class="line">        File[] nativeLibraryDirectories = reflector.get();</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> N = nativeLibraryDirectories.length;</span><br><span class="line">        File[] newNativeLibraryDirectories = <span class="keyword">new</span> File[N + <span class="number">1</span>];</span><br><span class="line">        System.arraycopy(nativeLibraryDirectories, <span class="number">0</span>, newNativeLibraryDirectories, <span class="number">0</span>, N);</span><br><span class="line">        newNativeLibraryDirectories[N] = nativeLibsDir;</span><br><span class="line">        reflector.set(newNativeLibraryDirectories);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们分析这段操作：</p>
+<ol>
+<li>得到BaseClassLoader中的PathList</li>
+<li>得到PathList中的nativeLibraryDirectories列表</li>
+<li>将传递进来的目录添加到nativeLibraryDirectories列表中</li>
+<li>得到nativeLibraryPathElements</li>
+<li>得到dexClassLoader对应的PathList</li>
+<li>得到dexClassLoader中的对应PathList中的newNativeLibraryPathElements</li>
+<li>将dexClassLoader中的对应PathList中的newNativeLibraryPathElements包含valibs的放入allNativeLibraryPathElements中</li>
+<li>将allNativeLibraryPathElements塞回BaseClassLoader中的PathList中</li>
+</ol>
+<blockquote>
+<p>特别的：关于ClassLoader的内部使用到的属性代码分析：</p>
+</blockquote>
+<p>可见只是一个包装作用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DexClassLoader</span> <span class="keyword">extends</span> <span class="title">BaseDexClassLoader</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DexClassLoader</span><span class="params">(String dexPath, String optimizedDirectory,</span></span></span><br><span class="line"><span class="function"><span class="params">            String librarySearchPath, ClassLoader parent)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//apk的实际目录</span></span><br><span class="line">        <span class="comment">//dex对应的目录，自己规定的目录</span></span><br><span class="line">        <span class="comment">//libs对应的目录，自己规定的目录</span></span><br><span class="line">        <span class="keyword">super</span>(dexPath, <span class="keyword">new</span> File(optimizedDirectory), librarySearchPath, parent);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据下面的代码可以看出来是对类加载器实际上大部分是对DexPathList的操作封装</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseDexClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Reporter reporter = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">//一个内存封装着Element和nativeLibraryDirectories,nativeLibraryPathElements等的数据结构</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> DexPathList pathList;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BaseDexClassLoader</span><span class="params">(String dexPath, File optimizedDirectory,</span></span></span><br><span class="line"><span class="function"><span class="params">            String librarySearchPath, ClassLoader parent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(parent);</span><br><span class="line">        <span class="keyword">this</span>.pathList = <span class="keyword">new</span> DexPathList(<span class="keyword">this</span>, dexPath, librarySearchPath, <span class="keyword">null</span>);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        List&lt;Throwable&gt; suppressedExceptions = <span class="keyword">new</span> ArrayList&lt;Throwable&gt;();</span><br><span class="line">        Class c = pathList.findClass(name, suppressedExceptions);</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> c;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DexPathList</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEX_SUFFIX = <span class="string">".dex"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String zipSeparator = <span class="string">"!/"</span>;</span><br><span class="line">    <span class="keyword">private</span> Element[] dexElements;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> NativeLibraryElement[] nativeLibraryPathElements;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;File&gt; nativeLibraryDirectories;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;File&gt; systemNativeLibraryDirectories;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DexPathList</span><span class="params">(ClassLoader definingContext, String dexPath,</span></span></span><br><span class="line"><span class="function"><span class="params">            String librarySearchPath, File optimizedDirectory)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="comment">// save dexPath for BaseDexClassLoader</span></span><br><span class="line">        <span class="keyword">this</span>.dexElements = makeDexElements(splitDexPath(dexPath), optimizedDirectory,</span><br><span class="line">                                           suppressedExceptions, definingContext);</span><br><span class="line">        <span class="comment">//得到传进来libs的Dir切成NativeLibraryElement数组</span></span><br><span class="line">        <span class="keyword">this</span>.nativeLibraryDirectories = splitPaths(librarySearchPath, <span class="keyword">false</span>);</span><br><span class="line">        <span class="comment">//得到系统固定目录</span></span><br><span class="line">        <span class="keyword">this</span>.systemNativeLibraryDirectories =</span><br><span class="line">                splitPaths(System.getProperty(<span class="string">"java.library.path"</span>), <span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">//融合固定目录的和传入的目录的lib目录</span></span><br><span class="line">        List&lt;File&gt; allNativeLibraryDirectories = <span class="keyword">new</span> ArrayList&lt;&gt;(nativeLibraryDirectories);</span><br><span class="line">        allNativeLibraryDirectories.addAll(systemNativeLibraryDirectories);</span><br><span class="line">        <span class="comment">//最终生成NativeLibraryElement []nativeLibraryPathElements</span></span><br><span class="line">        <span class="keyword">this</span>.nativeLibraryPathElements = makePathElements(allNativeLibraryDirectories);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>在这一部分我们再看看装载so的时候会是怎么回事</p>
+<blockquote>
+<p><code>Runtime.java</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@CallerSensitive</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadLibrary</span><span class="params">(String libname)</span> </span>&#123;</span><br><span class="line">    loadLibrary0(VMStack.getCallingClassLoader(), libname);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">loadLibrary0</span><span class="params">(ClassLoader loader, String libname)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (libname.indexOf((<span class="keyword">int</span>)File.separatorChar) != -<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(</span><br><span class="line">            <span class="string">"Directory separator should not appear in library name: "</span> + libname);</span><br><span class="line">    &#125;</span><br><span class="line">    String libraryName = libname;</span><br><span class="line">    <span class="keyword">if</span> (loader != <span class="keyword">null</span>) &#123;</span><br><span class="line">        String filename = loader.findLibrary(libraryName);</span><br><span class="line">        <span class="keyword">if</span> (filename == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(loader + <span class="string">" couldn't find \""</span> +</span><br><span class="line">                                           System.mapLibraryName(libraryName) + <span class="string">"\""</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应<code>BaseDexClassLoader.findLibrary ()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findLibrary</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pathList.findLibrary(name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>DexPathList .java</code></p>
+</blockquote>
+<p>在DexPathList中有这么一段是DexPathList初始化的时候存放lib的目录是java.library.path记录的固定目录</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.systemNativeLibraryDirectories =</span><br><span class="line">    splitPaths(System.getProperty(<span class="string">"java.library.path"</span>), <span class="keyword">true</span>);</span><br><span class="line"><span class="keyword">this</span>.nativeLibraryPathElements = makePathElements(<span class="keyword">this</span>.systemNativeLibraryDirectories);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findLibrary</span><span class="params">(String libraryName)</span> </span>&#123;</span><br><span class="line">    String fileName = System.mapLibraryName(libraryName);</span><br><span class="line">    <span class="comment">//对应着List of native library path elements.</span></span><br><span class="line">    <span class="keyword">for</span> (NativeLibraryElement element : nativeLibraryPathElements) &#123;</span><br><span class="line">        String path = element.findNativeLibrary(fileName);</span><br><span class="line">        <span class="keyword">if</span> (path != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> path;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过这段我们知道了so库是对应一个<code>System.getProperty(&quot;java.library.path&quot;)</code>属性下的一个目录</p>
+<h2><span id="part-5">Part 5</span></h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tryToCopyNativeLib(apk);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">tryToCopyNativeLib</span><span class="params">(File apk)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//mPackageInfo我们手动生成的这个</span></span><br><span class="line">    <span class="comment">//mNativeLibDir:/data/user/0/com.didi.virtualapk/app_valibs</span></span><br><span class="line">    PluginUtil.copyNativeLib(apk, mHostContext, mPackageInfo, mNativeLibDir);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copyNativeLib</span><span class="params">(File apk, Context context, PackageInfo packageInfo, File nativeLibDir)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> startTime = System.currentTimeMillis();</span><br><span class="line">    ZipFile zipfile = <span class="keyword">new</span> ZipFile(apk.getAbsolutePath());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</span><br><span class="line">            <span class="comment">//arm64-v8a,armeabi-v7a,armeabi遍历</span></span><br><span class="line">            <span class="keyword">for</span> (String cpuArch : Build.SUPPORTED_ABIS) &#123;</span><br><span class="line">                <span class="keyword">if</span> (findAndCopyNativeLib(zipfile, context, cpuArch, packageInfo, nativeLibDir)) &#123;</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (findAndCopyNativeLib(zipfile, context, Build.CPU_ABI, packageInfo, nativeLibDir)) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        findAndCopyNativeLib(zipfile, context, <span class="string">"armeabi"</span>, packageInfo, nativeLibDir);</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        zipfile.close();</span><br><span class="line">        Log.d(TAG, <span class="string">"Done! +"</span> + (System.currentTimeMillis() - startTime) + <span class="string">"ms"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下一节继续分析后面的几个大的部分</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/11/03/滴滴插件化1/" data-toggle="tooltip" data-placement="top" title="插件化框架源码解析1_初始化">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">装载插件（apk）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Part 1</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Patr 2</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">Part 3</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">Part 4</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">Part 5</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Android APP" title="Android APP">Android APP</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
