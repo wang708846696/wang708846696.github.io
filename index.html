@@ -132,7 +132,7 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -146,7 +146,7 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -206,6 +206,38 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/11/05/滴滴插件化5_使用插件/">
+        <h2 class="post-title">
+            滴滴插件化5_使用插件
+        </h2>
+        <h3 class="post-subtitle">
+            主要针对启动一个Activity看如何使用插件
+        </h3>
+        <div class="post-content-preview">
+            通过前几节的说明，了解到了在LoadedPlugin类的构造方法中将准备工作做好，包括资源管理器，类加载器，四大组件信息等等。生成了一个比较庞大的类，这个类是能够找到APK里面资源，类等信息的主要入口。下面我们就从startActivity这个方法进行突破
+
+12&gt; VAInstrumentation.handleMessage()&gt;
+
+首先了解一下framework中进行启动A......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-05
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -468,34 +500,6 @@ Part 6
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动5-resumeFocusedStackTopActivityLocked方法/">
-        <h2 class="post-title">
-            Activity启动5-resumeFocusedStackTopActivityLocked方法
-        </h2>
-        <h3 class="post-subtitle">
-            resumeFocusedStackTopActivityLocked()方法的主要说明
-        </h3>
-        <div class="post-content-preview">
-            123456789101112131415161718192021  boolean resumeFocusedStackTopActivityLocked(          ActivityStack targetStack, ActivityRecord target, ActivityOptions targetOptions) &#123;      if (!readyToRes......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -540,7 +544,7 @@ Part 6
             
         
             
-            <a href="/tags/#Android APP" title="Android APP" rel="4">Android APP</a>
+            <a href="/tags/#Android APP" title="Android APP" rel="5">Android APP</a>
             
         
     </div>
@@ -595,6 +599,10 @@ Part 6
     <ul>
       
         <li>
+          <a href="/2018/11/05/滴滴插件化5_使用插件/">滴滴插件化5_使用插件</a>
+        </li>
+      
+        <li>
           <a href="/2018/11/05/滴滴插件化4_资源加载/">滴滴插件化4_资源加载</a>
         </li>
       
@@ -608,10 +616,6 @@ Part 6
       
         <li>
           <a href="/2018/11/03/滴滴插件化1/">插件化框架源码解析1_初始化</a>
-        </li>
-      
-        <li>
-          <a href="/2018/11/01/Activity启动10-类加载器/">应用创建后的类加载器</a>
         </li>
       
     </ul>
