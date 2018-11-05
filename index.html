@@ -209,6 +209,35 @@
 
 <div class="post-preview">
 
+    <a href="/2018/11/05/滴滴插件化4_资源加载/">
+        <h2 class="post-title">
+            滴滴插件化4_资源加载
+        </h2>
+        <h3 class="post-subtitle">
+            本节主要是针对资源管理器进行补丁
+        </h3>
+        <div class="post-content-preview">
+            本节主要是针对资源管理器进行补丁。主要思想是添加路径资源管理器中。核心地方有ApplicationInfo中的splitSourceDirs中,LoadedApk中的mSplitResDirs中,ResourcesManager.mResourceImpls需要将ResourcesKey进行更新成带有新添加的apk目录的key。
+12345public LoadedPlugin(Plugin......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-05
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/11/04/滴滴插件化3_装载插件/">
         <h2 class="post-title">
             滴滴插件化3_装载插件
@@ -467,34 +496,6 @@ Part 6
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动4-startActivity方法/">
-        <h2 class="post-title">
-            Activity启动4-startActivity方法
-        </h2>
-        <h3 class="post-subtitle">
-            startActivity()方法的主要说明
-        </h3>
-        <div class="post-content-preview">
-            123456789101112131415161718192021222324252627private int startActivity(final ActivityRecord r, ActivityRecord sourceRecord,           IVoiceInteractionSession voiceSession, IVoiceInteractor voiceIn......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -535,11 +536,11 @@ Part 6
             
         
             
-        
+            <a href="/tags/#Android APP" title="Android APP" rel="4">Android APP</a>
             
         
             
-            <a href="/tags/#Android APP" title="Android APP" rel="3">Android APP</a>
+        
             
         
     </div>
@@ -594,6 +595,10 @@ Part 6
     <ul>
       
         <li>
+          <a href="/2018/11/05/滴滴插件化4_资源加载/">滴滴插件化4_资源加载</a>
+        </li>
+      
+        <li>
           <a href="/2018/11/04/滴滴插件化3_装载插件/">滴滴插件化3_装载插件</a>
         </li>
       
@@ -607,10 +612,6 @@ Part 6
       
         <li>
           <a href="/2018/11/01/Activity启动10-类加载器/">应用创建后的类加载器</a>
-        </li>
-      
-        <li>
-          <a href="/2018/11/01/Activity启动9-Content的区别/">Content的创建过程</a>
         </li>
       
     </ul>
