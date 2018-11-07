@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          滴滴插件化6_插件化期中总结 - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/11/07/滴滴插件化6_插件化期中总结/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Android APP" title="Android APP">Android APP</a>
+                            
+                        </div>
+                        <h1>滴滴插件化6_插件化期中总结</h1>
+                        <h2 class="subheading">总结前面讲的核心知识点</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-11-07
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>我们回顾之前的章节，我们主要干的事情。</p>
+<h1><span id="初始化">初始化</span></h1>
+<p>我们要在应用程序启动最初的时候做好一些准备操作。所以我们将我们的初始化放入<code>Application.attachBaseContext()</code>主要的初始化操作有：</p>
+<ul>
+<li>hook核心服务包括
+<ul>
+<li><code>ActivityThread</code>
+<ul>
+<li><code>Instrumentation mInstrumentation</code>监听性能等</li>
+<li><code>H h</code>主要负责Application这边对应AMS信号的具体操作
+<ul>
+<li><code>mCallback</code>由于H是Handler所以对mCallback进行hook，所以mCallback必须实现<code>Handler.Callback</code>才能处理对应的事件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对<code>IActivityManager</code>进行hook原因是startService，startActivity等等都经过这里</li>
+<li>对<code>DataBindingUtil</code>进行hook这个是啥我也不知道</li>
+</ul>
+</li>
+</ul>
+<p>初始化步骤走完之后，我们就控制了四大组件的启动入口，四大组件的回调处理入口，以及对数据的绑定入口。</p>
+<h1><span id="装载插件">装载插件</span></h1>
+<p>这个时候我们就需要做的是将apk中的文件进行解析，包括清单文件，四大组件等等信息，我们接下来仔细看有什么信息。</p>
+<blockquote>
+<p>解析包的清单文件</p>
+</blockquote>
+<p>将apk进行通过包解析器进行解析<code>PackageParserCompat.parsePackage(context, apk, PackageParser.PARSE_MUST_BE_APK)</code>，然后得到<code>PackageParser.Package</code>这个类，这个类中能得到清单文件中的信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.mPackage = PackageParserCompat.parsePackage(context, apk, PackageParser.PARSE_MUST_BE_APK);</span><br><span class="line"><span class="keyword">this</span>.mPackage.applicationInfo.metaData = <span class="keyword">this</span>.mPackage.mAppMetaData;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>构造PackageInfo</p>
+</blockquote>
+<p>然后我们需要构造我们的<code>PackageInfo</code>主要构造的是：</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.mPackageInfo = <span class="keyword">new</span> <span class="type">PackageInfo</span>();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//填充applicationInfo</span></span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.applicationInfo = <span class="keyword">this</span>.mPackage.applicationInfo;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//填充代码来源</span></span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.applicationInfo.sourceDir = apk.getAbsolutePath();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//填充签名信息 Android P</span></span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.signatures = <span class="keyword">this</span>.mPackage.mSigningDetails.signatures;</span><br><span class="line"><span class="comment">//低于Android P</span></span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.signatures = <span class="keyword">this</span>.mPackage.mSignatures;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//填充包名</span></span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.packageName = <span class="keyword">this</span>.mPackage.packageName;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//填充版本号，版本名称，空权限</span></span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.versionCode = <span class="keyword">this</span>.mPackage.mVersionCode;</span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.versionName = <span class="keyword">this</span>.mPackage.mVersionName;</span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.permissions = <span class="keyword">new</span> PermissionInfo[<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>创建我们自己的包管理器</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.mPackageManager = createPluginPackageManager();</span><br><span class="line"><span class="keyword">protected</span> <span class="class"><span class="keyword">class</span> <span class="title">PluginPackageManager</span> <span class="keyword">extends</span> <span class="title">PackageManager</span> </span>&#123;</span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>得到我们自己的Context</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.mPluginContext = createPluginContext(<span class="keyword">null</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PluginContext</span> <span class="keyword">extends</span> <span class="title">ContextWrapper</span> </span>&#123;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>得到我们存放lib的目录</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//valibs</span></span><br><span class="line"><span class="keyword">this</span>.mNativeLibDir = getDir(context, Constants.NATIVE_DIR);</span><br><span class="line"><span class="keyword">this</span>.mPackage.applicationInfo.nativeLibraryDir = <span class="keyword">this</span>.mNativeLibDir.getAbsolutePath();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>得到资源管理器，这个是hook原来的，将apk的路径添加到对应该hook的地方</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.mResources = createResources(context, getPackageName(), apk);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>修改类加载，创建一个自己的类加载器，将自己类加载器中的DexElements塞到主apk的pathList中并且将native的lib添加到主apk对应的引用中</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.mClassLoader = createClassLoader(context, apk, <span class="keyword">this</span>.mNativeLibDir, context.getClassLoader());</span><br><span class="line">insertNativeLibrary(dexClassLoader, baseClassLoader, nativeLibsDir);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>复制so到我们创建的lib目录下</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tryToCopyNativeLib(apk);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>整理InstrumentationInfo，测试，监控使用</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Cache instrumentations</span></span><br><span class="line">Map&lt;ComponentName, InstrumentationInfo&gt; instrumentations = <span class="keyword">new</span> HashMap&lt;ComponentName, InstrumentationInfo&gt;();</span><br><span class="line"><span class="keyword">for</span> (PackageParser.Instrumentation instrumentation : <span class="keyword">this</span>.mPackage.instrumentation) &#123;</span><br><span class="line">    instrumentations.put(instrumentation.getComponentName(), instrumentation.info);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">this</span>.mInstrumentationInfos = Collections.unmodifiableMap(instrumentations);</span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.instrumentation = instrumentations.values().toArray(<span class="keyword">new</span> InstrumentationInfo[instrumentations.size()]);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>整理四大组件</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.mPackageInfo.activities = activityInfos.values().toArray(<span class="keyword">new</span> ActivityInfo[activityInfos.size()]);</span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.services = serviceInfos.values().toArray(<span class="keyword">new</span> ServiceInfo[serviceInfos.size()]);</span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.providers = providerInfos.values().toArray(<span class="keyword">new</span> ProviderInfo[providerInfos.size()]);</span><br><span class="line"><span class="keyword">this</span>.mPackageInfo.receivers = receivers.values().toArray(<span class="keyword">new</span> ActivityInfo[receivers.size()]);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>创建Application</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mApplication = makeApplication(<span class="keyword">false</span>, mPluginManager.getInstrumentation());</span><br></pre></td></tr></table></figure>
+<p>我们装载插件做了这么多东西，目的就是为了我们能够找到APK文件中的资源文件，类，四大组件等等。</p>
+<h1><span id="使用组件">使用组件</span></h1>
+<p>由于我们启动Activity就必须使用<code>Instrumentation</code>，在framework中，所以我们通过hook这里就执行到了对应的方法比如<code>execStartActivity()</code>所以当信号发送给AMS之前，我们就要瞒天过海，替换下我们的东东，让AMS误认为我们启动的是我们应用自己的类，而不是其他apk。具体实现：</p>
+<blockquote>
+<p><code>VAInstrumentation.java</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">injectIntent</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//将意图转换成显示意图</span></span><br><span class="line">    mPluginManager.getComponentsHandler().transformIntentToExplicitAsNeeded(intent);</span><br><span class="line">    <span class="comment">// null component is an implicitly intent</span></span><br><span class="line">    <span class="keyword">if</span> (intent.getComponent() != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// 保存一份</span></span><br><span class="line">        <span class="keyword">this</span>.mPluginManager.getComponentsHandler().markIntentIfNeeded(intent);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>将意图转化成显示意图</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Intent <span class="title">transformIntentToExplicitAsNeeded</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">    ComponentName component = intent.getComponent();<span class="comment">//得到组件名</span></span><br><span class="line">    <span class="comment">//当组件名或者包名不存在时候，说明当前apk中不包含即将要启动的意图</span></span><br><span class="line">    <span class="keyword">if</span> (component == <span class="keyword">null</span></span><br><span class="line">        || component.getPackageName().equals(mContext.getPackageName())) &#123;</span><br><span class="line">        <span class="comment">//这个时候我们就去其他apk中寻找，由于我们已经把装载信息收集到了LoadedPlugin中所以通过它找到</span></span><br><span class="line">        ResolveInfo info = mPluginManager.resolveActivity(intent);</span><br><span class="line">        <span class="keyword">if</span> (info != <span class="keyword">null</span> &amp;&amp; info.activityInfo != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//找到之后我们就构造一个其他apk中的组件名称。</span></span><br><span class="line">            component = <span class="keyword">new</span> ComponentName(info.activityInfo.packageName, info.activityInfo.name);</span><br><span class="line">            <span class="comment">//将带有信息的意图进行设置</span></span><br><span class="line">            intent.setComponent(component);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> intent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然startService只是hook了AMS的代理类原理一样。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/11/05/滴滴插件化5_使用插件/" data-toggle="tooltip" data-placement="top" title="滴滴插件化5_使用插件">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">初始化</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">装载插件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">使用组件</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Android APP" title="Android APP">Android APP</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
