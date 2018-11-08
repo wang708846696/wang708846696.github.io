@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Java中类的加载机制（简介无源码） - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/11/08/Java中类的加载机制（简介无源码）/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Android APP" title="Android APP">Android APP</a>
+                            
+                        </div>
+                        <h1>Java中类的加载机制（简介无源码）</h1>
+                        <h2 class="subheading">根据自问自答的方式简述了Java中类的加载机制，后续会有源码版</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-11-08
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1><span id="简介">简介</span></h1>
+<p>说道类加载器可能大家第一反应就是啊这个东西我没有接触过很难，而且一般情况下对于app开发应用也用不到类加载器，但是对于框架开发者来说类加载器就是家常便饭一样，那类加载器到底是什么东西，真的难道我们都不敢接触了吗？下面就听菜鸟给你慢慢解答！<strong>我会通过小标题的方式一步步让大家理解最终的答案因为小标题是理解最终答案的基础</strong></p>
+<h2><span id="什么是类加载">什么是类加载？</span></h2>
+<p>jvm(java虚拟机)将xx.class文件读取到内存中，对其进行校验、解析、初始化最终在内存中(jvm的堆和方法区)形成可以直接被jvm使用的类型的过程，这个过程就是类的加载。</p>
+<h2><span id="什么样的文件可以被jvm加载">什么样的文件可以被jvm加载？</span></h2>
+<p>有且仅有一种文件就是后缀名是.class的文件，那么可能有人问，我写的java文件都是.java呀，为什么它就可以执行?</p>
+<p>因为编译工具将.java转换成了jvm可执行的.class文件，如果你用的不是java语法可能使用的是jython或者其他语言也只要能将其转化成.class那就可以被jvm加载。至于加载后能不能被使用，那就要看后面那些验证准备等等步骤了。</p>
+<p><img src="clipboard1.png" alt="clipboard"></p>
+<h2><span id="jvm运行时内存区域如何划分">JVM运行时内存区域如何划分？</span></h2>
+<p>注意是运行时内存是如何划分。如果还没有运行，只是.class文件，那就谈不上运行时内存的划分。</p>
+<ul>
+<li>栈</li>
+<li>堆</li>
+<li>本地方法栈</li>
+<li>程序计数器</li>
+<li>方法区</li>
+</ul>
+<p><img src="clipboard2.png" alt="clipboard2"></p>
+<p>之前我也只是死记硬背，这些东西。因为校招会考，但是现在理解了，.class文件只是一个文件而已，它也是通过流加载到内存中，但是jvm会按照约定的格式把它转化成对应的数据结构。比如如下这种就是简单的反编译.class文件，它会根据指定的这种结构，然后对应到内存中的一种数据结构。</p>
+<p><img src="%E6%88%91%E7%9A%84jvm-class%E6%96%87%E4%BB%B61.png" alt="我的jvm-class文件2"></p>
+<h2><span id="怎么从一个class对象成为jvm可以使用的对象">怎么从一个.class对象成为jvm可以使用的对象？</span></h2>
+<ol>
+<li>
+<p>加载</p>
+<ol>
+<li>类加载器通过类的全路径限定名读取类的二进制字节流</li>
+<li>将二进制字节流代表的类结构转化到运行时数据区的 方法区中</li>
+<li>在jvm堆中生成代表这个类的java.lang.Class实例作为对方法区中这些数据的访问入口</li>
+</ol>
+<p>这个阶段已经生成了Class对象用来描述这个类文件了。just描述，并没有给类中变量方法等等分配内存。<code>切记！</code></p>
+</li>
+<li>
+<p>验证</p>
+<ol>
+<li>文件格式的验证
+<ul>
+<li>文件格式的验证</li>
+<li>元数据的验证</li>
+<li>字节码验证和符号引用验证</li>
+</ul>
+</li>
+</ol>
+<p>验证这个阶段目的是为了确保Class文件中的字节流包含的信息符合当前虚拟机的要求。而且不会危害虚拟机自身的安全。不同的虚拟机对类验证的实现可能会有所不同</p>
+</li>
+<li>
+<p>准备</p>
+<p>准备阶段给类<code>变量</code>分配内存并且设置类变量初始值的阶段，注意这些内存都将在方法区中分配。</p>
+<ol>
+<li>只是对类的静态变量(static)修饰的变量</li>
+<li>这里设置初始化的值是一些固定的值包括：0、0L、null、false并不是在代码中被显式赋的值<br>
+​</li>
+</ol>
+</li>
+<li>
+<p>解析</p>
+<p>解析阶段是虚拟机将常量池中的符号引用转化为直接引用的过程，解析动作主要针对类或接口、字段、类方法、接口方法四类符号引用进行。</p>
+<ul>
+<li>类或接口的解析</li>
+<li>字段解析</li>
+</ul>
+</li>
+<li>
+<p>初始化</p>
+<p>jvm规定只有四种情况下触发初始化</p>
+<ul>
+<li>遇到new、getstatic、putstatic、invokestatic这四条字节码指令时，如果类还没有进行过初始化，则需要先触发其初始化，通俗的说：</li>
+</ul>
+<ol>
+<li>使用new关键字实例化对象时</li>
+<li><code>读取或设置</code>一个类的静态字段（static）时被static修饰又被final修饰的，已在编译期把结果放入常量池的静态字段除外</li>
+<li>以及调用一个类的静态方法时</li>
+</ol>
+<p>但是我们要注意：</p>
+<ul>
+<li>对于静态字段，只有直接定义这个字段的类才会被初始化，因此，通过其子类来引用父类中定义的静态字段，只会触发父类的初始化而不会触发子类的初始化。</li>
+<li>常量在编译阶段会存入调用它的类的常量池中，本质上没有直接引用到定义该常量的类，因此不会触发定义常量的类的初始化。</li>
+</ul>
+</li>
+</ol>
+<h2><span id="class文件的格式如何都包含哪些内容">.class文件的格式如何，都包含哪些内容？</span></h2>
+<p>class文件是一组以8个字节为基础单位的二进制流，只有两种数据结构：无符号数，表</p>
+<ul>
+<li>无符号数：u1,u2,u4,u8</li>
+<li>表结构：多个无符号数组成</li>
+</ul>
+<blockquote>
+<p>对应的数据结构是这样的：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ClassFile &#123;</span><br><span class="line">    u4                  magic;  <span class="comment">//魔数 固定:0xCAFEBABE </span></span><br><span class="line">    u2                  minor_version;  <span class="comment">//副版本号</span></span><br><span class="line">    u2                  major_version;  <span class="comment">//主版本号</span></span><br><span class="line">    u2                  constant_pool_count;    <span class="comment">//常量池计数器</span></span><br><span class="line">    cp_info             constant_pool[constant_pool_count-<span class="number">1</span>];   <span class="comment">//常量池</span></span><br><span class="line">    u2                  access_flags;   <span class="comment">//访问标识</span></span><br><span class="line">    u2                  this_class; <span class="comment">//类索引</span></span><br><span class="line">    u2                  super_class;    <span class="comment">//父索引</span></span><br><span class="line">    u2                  interface_count;    <span class="comment">//接口计数器</span></span><br><span class="line">    u2                  interfaces[interface_count];    <span class="comment">//接口表</span></span><br><span class="line">    u2                  fields_count;   <span class="comment">//字段计数器</span></span><br><span class="line">    field_info          fields[fields_count];   <span class="comment">//字段表</span></span><br><span class="line">    u2                  methods_count;  <span class="comment">//方法计数器</span></span><br><span class="line">    method_info         methods[methods_count]; <span class="comment">//方法表</span></span><br><span class="line">    u2                  attributes_count;   <span class="comment">//属性计数器</span></span><br><span class="line">    attribute_info      attributes[attributes_count];   <span class="comment">//属性表</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="常量池">常量池</span></h3>
+<p><img src="myjvm-classfile-pool.png" alt="myjvm-classfile-pool"></p>
+<p>常量池中定义了大量的常量。也不能说是常量池，只能说是对常量的描述，因为只有在运行时候对应的数据结构才叫做常量池哈哈，感觉有点抠字眼了。</p>
+<h3><span id="类的访问标志">类的访问标志</span></h3>
+<p><img src="clipboard3.png" alt="clipboard3"></p>
+<h3><span id="字段表">字段表</span></h3>
+<p><img src="myjvm-classfile-fields.png" alt="myjvm-classfile-fields"></p>
+<p>既然频繁出现accessFlags我们看看究竟是啥，我用网上一个博主的图片解释</p>
+<p><img src="20141113104136471.png" alt="20141113104136471"></p>
+<p><img src="20141113131808047.png" alt="20141113131808047"></p>
+<h3><span id="nameindex-字段的简单名字">nameIndex 字段的简单名字</span></h3>
+<h3><span id="descriptorindex-字段或方法描述符">descriptorIndex 字段或方法描述符</span></h3>
+<p><img src="20141113141534249.png" alt="20141113141534249"></p>
+<h3><span id="方法">方法</span></h3>
+<p><img src="%E6%88%91%E7%9A%84jvm-class%E6%96%87%E4%BB%B61.png" alt="我的jvm-class文件1"></p>
+<p><img src="20141114150716551.png" alt="20141114150716551"></p>
+<p><img src="20141114161151578.png" alt="20141114161151578"></p>
+<p><img src="20141114180514489.png" alt="20141114180514489"></p>
+<ul>
+<li>全限定名是指形如”com/lzw/jvm/TestClass”，仅仅把类全面的”.”替换为”/”并以”;”结束</li>
+<li>简单名称是指没有参数类型和参数修饰的方法或者字段名称，例如main()方法的简称是main，name字段的简称是name</li>
+</ul>
+<h2><span id="为什么要配置java环境变量">为什么要配置java环境变量？</span></h2>
+<p>当初学java的时候，我比较笨，一个环境变量配了三天才好，但是比较好一点就是幸好我坚持下来了，虽然是三天，但是我坚持完成了，如果当初不配置完放弃的话可能我也走不到软件这个行业了哈哈。当时就在想为啥要配置这玩意，学c语言的时候就没配置直接可以运行程序呀。那我们就先回顾下配置环境变量如何配？然后在说说配置干啥？</p>
+<blockquote>
+<p>JAVA_HOME</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files\Java\jdk1.7</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>PATH</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH=%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;%PATH%;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>CLASSPATH</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CLASSPATH=.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar</span><br></pre></td></tr></table></figure>
+<p>其实配置这些环境变量就是为了让我们可以使用那些指定目录下的工具代码，比如javac，java等等这些命令使用那些工具就是在这目录下的执行程序。</p>
+<h2><span id="什么是java类加载器">什么是java类加载器</span></h2>
+<p>顾名思义，类加载器（class loader）用来加载 Java 类到 Java 虚拟机中。一般来说，Java 虚拟机使用 Java 类的方式如下：Java 源程序（.java 文件）在经过 Java 编译器编译之后就被转换成 Java 字节代码（.class 文件）。类加载器负责读取 Java 字节代码，并用 对应的java.lang.Class类进行描述。每个这样的实例用来表示一个 Java 类。通过此实例的 newInstance()方法就可以创建出该类的一个对象。</p>
+<h5><span id="类加载器中的核心方法介绍">类加载器中的核心方法介绍</span></h5>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getParent()</td>
+<td>返回该类加载器的父类加载器。</td>
+</tr>
+<tr>
+<td>loadClass(String name)</td>
+<td>加载名称为 name的类，返回的结果是 java.lang.Class类的实例。</td>
+</tr>
+<tr>
+<td>findClass(String name)</td>
+<td>查找名称为 name的类，返回的结果是 java.lang.Class类的实例。</td>
+</tr>
+<tr>
+<td>findLoadedClass(String name)</td>
+<td>查找名称为 name的已经被加载过的类，返回的结果是 java.lang.Class类的实例。</td>
+</tr>
+<tr>
+<td>defineClass(String name, byte[] b, int off, int len)</td>
+<td>把字节数组 b中的内容转换成 Java 类，返回的结果是 java.lang.Class类的实例。这个方法被声明为 final的。</td>
+</tr>
+<tr>
+<td>resolveClass(Class&lt;?&gt; c)</td>
+<td>链接指定的 Java 类。</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="双亲委托模型是什么">双亲委托模型是什么？</span></h2>
+<p>双亲委托模型是类加载的一种委托机制。我们直接上图</p>
+<p><img src="image001.png" alt="image001"></p>
+<p>一个类加载器查找class和resource时，是通过“委托模式”进行的，它首先判断这个class是不是已经加载成功，如果没有的话它并不是自己进行查找，而是先通过父加载器，然后递归下去，直到Bootstrap ClassLoader，如果Bootstrap classloader找到了，直接返回，如果没有找到，则一级一级返回，最后到达自身去查找这些对象。这种机制就叫做双亲委托。</p>
+<blockquote>
+<p>包含的内容有：</p>
+</blockquote>
+<ul>
+<li><code>引导类加载器</code>（bootstrap class loader）：它用来加载 Java 的核心库，是用原生代码来实现的，并不继承自 java.lang.ClassLoader。</li>
+<li><code>扩展类加载器</code>（extensions class loader）：它用来加载 Java 的扩展库。Java 虚拟机的实现会提供一个扩展库目录。该类加载器在此目录里面查找并加载 Java 类。</li>
+<li><code>系统类加载器</code>（system class loader）：它根据 Java 应用的类路径（CLASSPATH）来加载 Java 类。一般来说，Java 应用的类都是由它来完成加载的。可以通过 ClassLoader.getSystemClassLoader()来获取它。</li>
+<li><code>自定义类加载器</code>开发人员可以通过继承 java.lang.ClassLoader类的方式实现自己的类加载器，以满足一些特殊的需求。</li>
+</ul>
+<p><img src="1356102154_9421.png" alt="1356102154_9421"></p>
+<p>由于每个类加载器加载的区域不一样，bootstrap负责加载系统类，extclassloader负责加载扩展类，appclassloader负责加载应用类。他们主要是分工不一样，各自负责不同的区域，另外也是为了实现委托模型。什么是委托模型呢，其实就是当类加载器有加载需求的时候，先请示他的父类使用父类的搜索路径来加入，如果没有找到的话，才使用自己的搜索路径来来搜索类。</p>
+<h2><span id="简单实现一个类加载器">简单实现一个类加载器</span></h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String mPath;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyClassLoader</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">        mPath = path;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        String fileName = getFileName(name);</span><br><span class="line">        File file = <span class="keyword">new</span> File(mPath,fileName);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            FileInputStream is = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">            ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">            <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">while</span> ((len = is.read()) != -<span class="number">1</span>) &#123;</span><br><span class="line">                    bos.write(len);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">byte</span>[] data = bos.toByteArray();</span><br><span class="line">            is.close();</span><br><span class="line">            bos.close();</span><br><span class="line">            <span class="keyword">return</span> defineClass(name,data,<span class="number">0</span>,data.length);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.findClass(name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取需要加载 的class文件名</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getFileName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> index = name.lastIndexOf(<span class="string">'.'</span>);</span><br><span class="line">        <span class="keyword">if</span>(index == -<span class="number">1</span>)&#123; </span><br><span class="line">            <span class="keyword">return</span> name+<span class="string">".class"</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> name.substring(index)+<span class="string">".class"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassLoaderTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//创建自定义classloader对象。</span></span><br><span class="line">        DiskClassLoader diskLoader = <span class="keyword">new</span> DiskClassLoader(<span class="string">"C:\\myclass"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//加载class文件</span></span><br><span class="line">            Class c = diskLoader.loadClass(<span class="string">"com.test.Test"</span>);</span><br><span class="line">            <span class="keyword">if</span>(c != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Object obj = c.newInstance();</span><br><span class="line">                    Method method = c.getDeclaredMethod(<span class="string">"say"</span>,<span class="keyword">null</span>);</span><br><span class="line">                    <span class="comment">//通过反射调用Test类的say方法</span></span><br><span class="line">                    method.invoke(obj, <span class="keyword">null</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception  e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/11/08/反射优雅使用/" data-toggle="tooltip" data-placement="top" title="反射优雅使用">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">什么是类加载？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">什么样的文件可以被jvm加载？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">JVM运行时内存区域如何划分？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">怎么从一个.class对象成为jvm可以使用的对象？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">.class文件的格式如何，都包含哪些内容？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.1.</span> <span class="toc-nav-text">常量池</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.2.</span> <span class="toc-nav-text">类的访问标志</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.3.</span> <span class="toc-nav-text">字段表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.4.</span> <span class="toc-nav-text">nameIndex 字段的简单名字</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.5.</span> <span class="toc-nav-text">descriptorIndex 字段或方法描述符</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.6.</span> <span class="toc-nav-text">方法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">为什么要配置java环境变量？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">什么是java类加载器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.7.0.0.1.</span> <span class="toc-nav-text">类加载器中的核心方法介绍</span></a></li></ol></li></ol></li></ol><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">双亲委托模型是什么？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.9.</span> <span class="toc-nav-text">简单实现一个类加载器</span></a></li>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Android APP" title="Android APP">Android APP</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
