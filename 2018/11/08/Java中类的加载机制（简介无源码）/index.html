@@ -140,14 +140,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -212,13 +212,13 @@
 
                 <h1><span id="简介">简介</span></h1>
 <p>说道类加载器可能大家第一反应就是啊这个东西我没有接触过很难，而且一般情况下对于app开发应用也用不到类加载器，但是对于框架开发者来说类加载器就是家常便饭一样，那类加载器到底是什么东西，真的难道我们都不敢接触了吗？下面就听菜鸟给你慢慢解答！<strong>我会通过小标题的方式一步步让大家理解最终的答案因为小标题是理解最终答案的基础</strong></p>
-<h2><span id="什么是类加载">什么是类加载？</span></h2>
+<h1><span id="什么是类加载">什么是类加载？</span></h1>
 <p>jvm(java虚拟机)将xx.class文件读取到内存中，对其进行校验、解析、初始化最终在内存中(jvm的堆和方法区)形成可以直接被jvm使用的类型的过程，这个过程就是类的加载。</p>
-<h2><span id="什么样的文件可以被jvm加载">什么样的文件可以被jvm加载？</span></h2>
+<h1><span id="什么样的文件可以被jvm加载">什么样的文件可以被jvm加载？</span></h1>
 <p>有且仅有一种文件就是后缀名是.class的文件，那么可能有人问，我写的java文件都是.java呀，为什么它就可以执行?</p>
 <p>因为编译工具将.java转换成了jvm可执行的.class文件，如果你用的不是java语法可能使用的是jython或者其他语言也只要能将其转化成.class那就可以被jvm加载。至于加载后能不能被使用，那就要看后面那些验证准备等等步骤了。</p>
 <p><img src="clipboard1.png" alt="clipboard"></p>
-<h2><span id="jvm运行时内存区域如何划分">JVM运行时内存区域如何划分？</span></h2>
+<h1><span id="jvm运行时内存区域如何划分">JVM运行时内存区域如何划分？</span></h1>
 <p>注意是运行时内存是如何划分。如果还没有运行，只是.class文件，那就谈不上运行时内存的划分。</p>
 <ul>
 <li>栈</li>
@@ -230,7 +230,7 @@
 <p><img src="clipboard2.png" alt="clipboard2"></p>
 <p>之前我也只是死记硬背，这些东西。因为校招会考，但是现在理解了，.class文件只是一个文件而已，它也是通过流加载到内存中，但是jvm会按照约定的格式把它转化成对应的数据结构。比如如下这种就是简单的反编译.class文件，它会根据指定的这种结构，然后对应到内存中的一种数据结构。</p>
 <p><img src="%E6%88%91%E7%9A%84jvm-class%E6%96%87%E4%BB%B61.png" alt="我的jvm-class文件2"></p>
-<h2><span id="怎么从一个class对象成为jvm可以使用的对象">怎么从一个.class对象成为jvm可以使用的对象？</span></h2>
+<h1><span id="怎么从一个class对象成为jvm可以使用的对象">怎么从一个.class对象成为jvm可以使用的对象？</span></h1>
 <ol>
 <li>
 <p>加载</p>
@@ -289,7 +289,7 @@
 </ul>
 </li>
 </ol>
-<h2><span id="class文件的格式如何都包含哪些内容">.class文件的格式如何，都包含哪些内容？</span></h2>
+<h1><span id="class文件的格式如何都包含哪些内容">.class文件的格式如何，都包含哪些内容？</span></h1>
 <p>class文件是一组以8个字节为基础单位的二进制流，只有两种数据结构：无符号数，表</p>
 <ul>
 <li>无符号数：u1,u2,u4,u8</li>
@@ -299,20 +299,20 @@
 <p>对应的数据结构是这样的：</p>
 </blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ClassFile &#123;</span><br><span class="line">    u4                  magic;  <span class="comment">//魔数 固定:0xCAFEBABE </span></span><br><span class="line">    u2                  minor_version;  <span class="comment">//副版本号</span></span><br><span class="line">    u2                  major_version;  <span class="comment">//主版本号</span></span><br><span class="line">    u2                  constant_pool_count;    <span class="comment">//常量池计数器</span></span><br><span class="line">    cp_info             constant_pool[constant_pool_count-<span class="number">1</span>];   <span class="comment">//常量池</span></span><br><span class="line">    u2                  access_flags;   <span class="comment">//访问标识</span></span><br><span class="line">    u2                  this_class; <span class="comment">//类索引</span></span><br><span class="line">    u2                  super_class;    <span class="comment">//父索引</span></span><br><span class="line">    u2                  interface_count;    <span class="comment">//接口计数器</span></span><br><span class="line">    u2                  interfaces[interface_count];    <span class="comment">//接口表</span></span><br><span class="line">    u2                  fields_count;   <span class="comment">//字段计数器</span></span><br><span class="line">    field_info          fields[fields_count];   <span class="comment">//字段表</span></span><br><span class="line">    u2                  methods_count;  <span class="comment">//方法计数器</span></span><br><span class="line">    method_info         methods[methods_count]; <span class="comment">//方法表</span></span><br><span class="line">    u2                  attributes_count;   <span class="comment">//属性计数器</span></span><br><span class="line">    attribute_info      attributes[attributes_count];   <span class="comment">//属性表</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3><span id="常量池">常量池</span></h3>
+<h2><span id="常量池">常量池</span></h2>
 <p><img src="myjvm-classfile-pool.png" alt="myjvm-classfile-pool"></p>
 <p>常量池中定义了大量的常量。也不能说是常量池，只能说是对常量的描述，因为只有在运行时候对应的数据结构才叫做常量池哈哈，感觉有点抠字眼了。</p>
-<h3><span id="类的访问标志">类的访问标志</span></h3>
+<h2><span id="类的访问标志">类的访问标志</span></h2>
 <p><img src="clipboard.png" alt="clipboard"></p>
-<h3><span id="字段表">字段表</span></h3>
+<h2><span id="字段表">字段表</span></h2>
 <p><img src="myjvm-classfile-fields.png" alt="myjvm-classfile-fields"></p>
 <p>既然频繁出现accessFlags我们看看究竟是啥，我用网上一个博主的图片解释</p>
 <p><img src="20141113104136471.png" alt="20141113104136471"></p>
 <p><img src="20141113131808047.png" alt="20141113131808047"></p>
-<h3><span id="nameindex-字段的简单名字">nameIndex 字段的简单名字</span></h3>
-<h3><span id="descriptorindex-字段或方法描述符">descriptorIndex 字段或方法描述符</span></h3>
+<h2><span id="nameindex-字段的简单名字">nameIndex 字段的简单名字</span></h2>
+<h2><span id="descriptorindex-字段或方法描述符">descriptorIndex 字段或方法描述符</span></h2>
 <p><img src="20141113141534249.png" alt="20141113141534249"></p>
-<h3><span id="方法">方法</span></h3>
+<h2><span id="方法">方法</span></h2>
 <p><img src="%E6%88%91%E7%9A%84jvm-class%E6%96%87%E4%BB%B61.png" alt="我的jvm-class文件1"></p>
 <p><img src="20141114150716551.png" alt="20141114150716551"></p>
 <p><img src="20141114161151578.png" alt="20141114161151578"></p>
@@ -321,7 +321,7 @@
 <li>全限定名是指形如”com/lzw/jvm/TestClass”，仅仅把类全面的”.”替换为”/”并以”;”结束</li>
 <li>简单名称是指没有参数类型和参数修饰的方法或者字段名称，例如main()方法的简称是main，name字段的简称是name</li>
 </ul>
-<h2><span id="为什么要配置java环境变量">为什么要配置java环境变量？</span></h2>
+<h1><span id="为什么要配置java环境变量">为什么要配置java环境变量？</span></h1>
 <p>当初学java的时候，我比较笨，一个环境变量配了三天才好，但是比较好一点就是幸好我坚持下来了，虽然是三天，但是我坚持完成了，如果当初不配置完放弃的话可能我也走不到软件这个行业了哈哈。当时就在想为啥要配置这玩意，学c语言的时候就没配置直接可以运行程序呀。那我们就先回顾下配置环境变量如何配？然后在说说配置干啥？</p>
 <blockquote>
 <p>JAVA_HOME</p>
@@ -336,7 +336,7 @@
 </blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CLASSPATH=.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar</span><br></pre></td></tr></table></figure>
 <p>其实配置这些环境变量就是为了让我们可以使用那些指定目录下的工具代码，比如javac，java等等这些命令使用那些工具就是在这目录下的执行程序。</p>
-<h2><span id="什么是java类加载器">什么是java类加载器</span></h2>
+<h1><span id="什么是java类加载器">什么是java类加载器</span></h1>
 <p>顾名思义，类加载器（class loader）用来加载 Java 类到 Java 虚拟机中。一般来说，Java 虚拟机使用 Java 类的方式如下：Java 源程序（.java 文件）在经过 Java 编译器编译之后就被转换成 Java 字节代码（.class 文件）。类加载器负责读取 Java 字节代码，并用 对应的java.lang.Class类进行描述。每个这样的实例用来表示一个 Java 类。通过此实例的 newInstance()方法就可以创建出该类的一个对象。</p>
 <h5><span id="类加载器中的核心方法介绍">类加载器中的核心方法介绍</span></h5>
 <table>
@@ -373,7 +373,7 @@
 </tr>
 </tbody>
 </table>
-<h2><span id="双亲委托模型是什么">双亲委托模型是什么？</span></h2>
+<h1><span id="双亲委托模型是什么">双亲委托模型是什么？</span></h1>
 <p>双亲委托模型是类加载的一种委托机制。我们直接上图</p>
 <p><img src="image001.png" alt="image001"></p>
 <p>一个类加载器查找class和resource时，是通过“委托模式”进行的，它首先判断这个class是不是已经加载成功，如果没有的话它并不是自己进行查找，而是先通过父加载器，然后递归下去，直到Bootstrap ClassLoader，如果Bootstrap classloader找到了，直接返回，如果没有找到，则一级一级返回，最后到达自身去查找这些对象。这种机制就叫做双亲委托。</p>
@@ -388,7 +388,7 @@
 </ul>
 <p><img src="1356102154_9421.png" alt="1356102154_9421"></p>
 <p>由于每个类加载器加载的区域不一样，bootstrap负责加载系统类，extclassloader负责加载扩展类，appclassloader负责加载应用类。他们主要是分工不一样，各自负责不同的区域，另外也是为了实现委托模型。什么是委托模型呢，其实就是当类加载器有加载需求的时候，先请示他的父类使用父类的搜索路径来加入，如果没有找到的话，才使用自己的搜索路径来来搜索类。</p>
-<h2><span id="简单实现一个类加载器">简单实现一个类加载器</span></h2>
+<h1><span id="简单实现一个类加载器">简单实现一个类加载器</span></h1>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String mPath;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyClassLoader</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">        mPath = path;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        String fileName = getFileName(name);</span><br><span class="line">        File file = <span class="keyword">new</span> File(mPath,fileName);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            FileInputStream is = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">            ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">            <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">while</span> ((len = is.read()) != -<span class="number">1</span>) &#123;</span><br><span class="line">                    bos.write(len);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">byte</span>[] data = bos.toByteArray();</span><br><span class="line">            is.close();</span><br><span class="line">            bos.close();</span><br><span class="line">            <span class="keyword">return</span> defineClass(name,data,<span class="number">0</span>,data.length);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.findClass(name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取需要加载 的class文件名</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getFileName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> index = name.lastIndexOf(<span class="string">'.'</span>);</span><br><span class="line">        <span class="keyword">if</span>(index == -<span class="number">1</span>)&#123; </span><br><span class="line">            <span class="keyword">return</span> name+<span class="string">".class"</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> name.substring(index)+<span class="string">".class"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassLoaderTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//创建自定义classloader对象。</span></span><br><span class="line">        DiskClassLoader diskLoader = <span class="keyword">new</span> DiskClassLoader(<span class="string">"C:\\myclass"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//加载class文件</span></span><br><span class="line">            Class c = diskLoader.loadClass(<span class="string">"com.test.Test"</span>);</span><br><span class="line">            <span class="keyword">if</span>(c != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Object obj = c.newInstance();</span><br><span class="line">                    Method method = c.getDeclaredMethod(<span class="string">"say"</span>,<span class="keyword">null</span>);</span><br><span class="line">                    <span class="comment">//通过反射调用Test类的say方法</span></span><br><span class="line">                    method.invoke(obj, <span class="keyword">null</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception  e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -426,7 +426,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">什么是类加载？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">什么样的文件可以被jvm加载？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">JVM运行时内存区域如何划分？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">怎么从一个.class对象成为jvm可以使用的对象？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">.class文件的格式如何，都包含哪些内容？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.1.</span> <span class="toc-nav-text">常量池</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.2.</span> <span class="toc-nav-text">类的访问标志</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.3.</span> <span class="toc-nav-text">字段表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.4.</span> <span class="toc-nav-text">nameIndex 字段的简单名字</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.5.</span> <span class="toc-nav-text">descriptorIndex 字段或方法描述符</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.6.</span> <span class="toc-nav-text">方法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">为什么要配置java环境变量？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">什么是java类加载器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.7.0.0.1.</span> <span class="toc-nav-text">类加载器中的核心方法介绍</span></a></li></ol></li></ol></li></ol><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">双亲委托模型是什么？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.9.</span> <span class="toc-nav-text">简单实现一个类加载器</span></a></li>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">简介</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">什么是类加载？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">什么样的文件可以被jvm加载？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">JVM运行时内存区域如何划分？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">怎么从一个.class对象成为jvm可以使用的对象？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">.class文件的格式如何，都包含哪些内容？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">常量池</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">类的访问标志</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">字段表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.4.</span> <span class="toc-nav-text">nameIndex 字段的简单名字</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.5.</span> <span class="toc-nav-text">descriptorIndex 字段或方法描述符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.6.</span> <span class="toc-nav-text">方法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">为什么要配置java环境变量？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">什么是java类加载器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">8.0.0.0.1.</span> <span class="toc-nav-text">类加载器中的核心方法介绍</span></a></li></ol></li></ol><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">双亲委托模型是什么？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">简单实现一个类加载器</span></a></li>
         
         </div>
       </aside>
