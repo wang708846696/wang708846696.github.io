@@ -209,6 +209,38 @@
 
 <div class="post-preview">
 
+    <a href="/2018/11/10/热修复的一种实现/">
+        <h2 class="post-title">
+            Android热修复的一种实现
+        </h2>
+        <h3 class="post-subtitle">
+            本章节将介绍一种常用的热修复的实现
+        </h3>
+        <div class="post-content-preview">
+            回顾
+
+在 Android 中，App 安装到手机后，apk 里面的 class.dex 中的 class 均是通过 PathClassLoader 来加载的。
+DexClassLoader 可以用来加载外置sd卡等包含 class.dex 的 .jar 和 .apk 文件
+DexClassLoader 和 PathClassLoader 的基类 BaseDexClassLoader 查找 ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-10
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#热修复" title="热修复">热修复</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/11/10/Android中的类加载器(含源码)/">
         <h2 class="post-title">
             Android中的类加载器(含源码)
@@ -489,34 +521,6 @@ Part 6
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动10-类加载器/">
-        <h2 class="post-title">
-            应用创建后的类加载器
-        </h2>
-        <h3 class="post-subtitle">
-            应用创建后的类加载器主要说明
-        </h3>
-        <div class="post-content-preview">
-            可能大家会有疑问，尤其是我当时接触多dex的时候也会存在疑问，为什么会报类的def找不到异常。报这个异常的原因是什么？一个同事推荐说深入理解java虚拟机这本书很好，然后我就仔细看了一遍，发现其实类加载过程其实是一个很漫长的过程，为什么说是很漫长，因为牵扯到.java文件转化.class文件，然后在读入内存中形成对应的数据结构的过程，其中牵扯到校验，连接，编译器优化等等过程，我们今天不讨论这......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -566,6 +570,8 @@ Part 6
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
+            
+        
             
         
     </div>
@@ -620,6 +626,10 @@ Part 6
     <ul>
       
         <li>
+          <a href="/2018/11/10/热修复的一种实现/">Android热修复的一种实现</a>
+        </li>
+      
+        <li>
           <a href="/2018/11/10/Android中的类加载器(含源码)/">Android中的类加载器(含源码)</a>
         </li>
       
@@ -633,10 +643,6 @@ Part 6
       
         <li>
           <a href="/2018/11/07/滴滴插件化6_插件化期中总结/">滴滴插件化6_插件化期中总结</a>
-        </li>
-      
-        <li>
-          <a href="/2018/11/05/滴滴插件化5_使用插件/">滴滴插件化5_使用插件</a>
         </li>
       
     </ul>

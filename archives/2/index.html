@@ -209,6 +209,34 @@
 
 <div class="post-preview">
 
+    <a href="/2018/11/01/Activity启动10-类加载器/">
+        <h2 class="post-title">
+            应用创建后的类加载器
+        </h2>
+        <h3 class="post-subtitle">
+            应用创建后的类加载器主要说明
+        </h3>
+        <div class="post-content-preview">
+            可能大家会有疑问，尤其是我当时接触多dex的时候也会存在疑问，为什么会报类的def找不到异常。报这个异常的原因是什么？一个同事推荐说深入理解java虚拟机这本书很好，然后我就仔细看了一遍，发现其实类加载过程其实是一个很漫长的过程，为什么说是很漫长，因为牵扯到.java文件转化.class文件，然后在读入内存中形成对应的数据结构的过程，其中牵扯到校验，连接，编译器优化等等过程，我们今天不讨论这......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-01
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/11/01/Activity启动9-Content的区别/">
         <h2 class="post-title">
             Content的创建过程
@@ -466,45 +494,6 @@ Am.java
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2017/03/18/hexo-theme-beantech/">
-        <h2 class="post-title">
-            [Hexo] Theme BeanTech
-        </h2>
-        <h3 class="post-subtitle">
-            This is hexo theme Demo.
-        </h3>
-        <div class="post-content-preview">
-            
-Ported Theme of Hux Blog, Thank Huxpro for designing such a flawless theme.
-This BeanTech theme created by YuHsuan modified from the original Porter Kaijun
-
-
-
-
-Usage
-
-I publish the whole project f......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2017-03-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hexo" title="Hexo">Hexo</a>
-            
-              <a href="/tags/#Blog" title="Blog">Blog</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -515,6 +504,10 @@ I publish the whole project f......
             <a href="/">&larr; Newer Posts</a>
         </li>
     
+    
+        <li class="next">
+            <a href="/archives/3/">Older Posts &rarr;</a>
+        </li>
     
 </ul>
 
@@ -554,6 +547,8 @@ I publish the whole project f......
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
+            
+        
             
         
     </div>
@@ -608,6 +603,10 @@ I publish the whole project f......
     <ul>
       
         <li>
+          <a href="/2018/11/10/热修复的一种实现/">Android热修复的一种实现</a>
+        </li>
+      
+        <li>
           <a href="/2018/11/10/Android中的类加载器(含源码)/">Android中的类加载器(含源码)</a>
         </li>
       
@@ -621,10 +620,6 @@ I publish the whole project f......
       
         <li>
           <a href="/2018/11/07/滴滴插件化6_插件化期中总结/">滴滴插件化6_插件化期中总结</a>
-        </li>
-      
-        <li>
-          <a href="/2018/11/05/滴滴插件化5_使用插件/">滴滴插件化5_使用插件</a>
         </li>
       
     </ul>
