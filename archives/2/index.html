@@ -209,6 +209,36 @@
 
 <div class="post-preview">
 
+    <a href="/2018/11/03/滴滴插件化1/">
+        <h2 class="post-title">
+            插件化框架源码解析1_初始化
+        </h2>
+        <h3 class="post-subtitle">
+            主要针对初始化的代码进行分析，具体看看Hook了那些比较重要的点
+        </h3>
+        <div class="post-content-preview">
+            初始化
+这章节主要针对初始化的代码进行分析，具体看看Hook了那些比较重要的点。
+123456789101112131415161718protected PluginManager(Context context) &#123;    if (context instanceof Application) &#123;        this.mApplication = (Applica......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-03
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/11/01/Activity启动10-类加载器/">
         <h2 class="post-title">
             应用创建后的类加载器
@@ -462,38 +492,6 @@
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动_参数解析/">
-        <h2 class="post-title">
-            Activity启动_参数解析
-        </h2>
-        <h3 class="post-subtitle">
-            主要进行Activity启动时候必要参数的说明
-        </h3>
-        <div class="post-content-preview">
-            
-Am.java
-
-123public static void main(String[] args) &#123;    (new Am()).run(args);&#125;
-12345678910111213141516public void run(String[] args) &#123;    if (args.length &lt; 1) &#123;        onSho......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -551,6 +549,8 @@ Am.java
         
             
         
+            
+        
     </div>
 </section>
 
@@ -603,6 +603,10 @@ Am.java
     <ul>
       
         <li>
+          <a href="/2018/11/13/gradle基本使用/">groovy语法&amp;gradle与groovy和java的关系简要说明</a>
+        </li>
+      
+        <li>
           <a href="/2018/11/10/热修复的一种实现/">Android热修复的一种实现</a>
         </li>
       
@@ -616,10 +620,6 @@ Am.java
       
         <li>
           <a href="/2018/11/08/反射优雅使用/">反射优雅使用</a>
-        </li>
-      
-        <li>
-          <a href="/2018/11/07/滴滴插件化6_插件化期中总结/">滴滴插件化6_插件化期中总结</a>
         </li>
       
     </ul>

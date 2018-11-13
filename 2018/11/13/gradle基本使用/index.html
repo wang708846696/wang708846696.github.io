@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          groovy语法&amp;gradle与groovy和java的关系简要说明 - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/11/13/gradle基本使用/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#gradle" title="gradle">gradle</a>
+                            
+                        </div>
+                        <h1>groovy语法&amp;gradle与groovy和java的关系简要说明</h1>
+                        <h2 class="subheading">本节主要针对groovy语法&amp;gradle与groovy和java的关系简要说明</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-11-13
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1><span id="简介">简介</span></h1>
+<p><a href="https://docs.gradle.org/current/userguide/userguide.html" target="_blank" rel="noopener">gradle官方文档</a></p>
+<p><a href="https://github.com/google/android-gradle-dsl" target="_blank" rel="noopener">android dsl官方文档</a></p>
+<p><a href="http://www.groovy-lang.org/documentation.html" target="_blank" rel="noopener">gradle学习链接来自官方</a></p>
+<h2><span id="gradle是什么">gradle是什么？</span></h2>
+<p>We said earlier that the core of Gradle is a language for dependency based programming. In Gradle terms this means that you can define tasks and dependencies between tasks. Gradle guarantees that these tasks are executed in the order of their dependencies, and that each task is executed only once. These tasks form a Directed Acyclic Graph. There are build tools that build up such a dependency graph as they execute their tasks. Gradle builds the complete dependency graph before any task is executed. This lies at the heart of Gradle and makes many things possible which would not be possible otherwise.</p>
+<p>我们之前说过，Gradle的核心是基于依赖的编程语言。在Gradle术语中，这意味着您可以定义任务之间的任务和依赖关系。Gradle保证这些任务按其依赖项的顺序执行，并且每个任务只执行一次。这些任务形成有向无环图。有一些构建工具可以在执行任务时构建这样的依赖图。Gradle在执行任务之前构建完整的依赖关系图。<br>
+这就是Gradle的核心，并使许多事情成为可能，否则这是不可能的。</p>
+<h2><span id="gradle构建的三个阶段">gradle构建的三个阶段</span></h2>
+<p>Gradle构建有三个不同的阶段。</p>
+<ul>
+<li>Initialization</li>
+</ul>
+<p>Gradle supports single and multi-project builds. During the initialization phase, Gradle determines which projects are going to take part in the build, and creates a Project instance for each of these projects.</p>
+<p>Gradle支持单项目和多项目构建。在初始化阶段，Gradle确定哪些项目将参与构建，并为每个项目创建一个Project实例。</p>
+<ul>
+<li>Configuration</li>
+</ul>
+<p>During this phase the project objects are configured. The build scripts of all projects which are part of the build are executed</p>
+<p>在此阶段，配置项目对象。将执行构建的所有项目的构建脚本。</p>
+<ul>
+<li>Execution</li>
+</ul>
+<p>Gradle determines the subset of the tasks, created and configured during the configuration phase, to be executed. The subset is determined by the task name arguments passed to the gradle command and the current directory. Gradle then executes each of the selected tasks</p>
+<p>Gradle确定要在执行期间创建和配置的任务子集。子集由传递给gradle命令和当前目录的任务名称参数确定。Gradle然后执行每个选定的任务。</p>
+<h2><span id="构建">构建</span></h2>
+<p>framework的同学在编译源码的时候经常使用make framework.jar，所以make就是进行构建，所谓构建，就是通过编译源码得到目标产物。</p>
+<p>同样gradle的职能在Android中类似于make，也是一种构建手段。</p>
+<h2><span id="三大核心对象">三大核心对象</span></h2>
+<table>
+<thead>
+<tr>
+<th>脚本类型</th>
+<th>关联对象类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build script</td>
+<td>Project</td>
+</tr>
+<tr>
+<td>Init script</td>
+<td>Gradle</td>
+</tr>
+<tr>
+<td>Settings script</td>
+<td>Settings</td>
+</tr>
+</tbody>
+</table>
+<p>Gradle的三种主要对象解释如下：</p>
+<ul>
+<li>
+<p>Project对象：每个build.gradle会转换成一个Project对象。</p>
+</li>
+<li>
+<p>Gradle对象：构建初始化时创建，整个构建执行过程中只有这么一个对象</p>
+</li>
+<li>
+<p>Settings对象：每个settings.gradle会转换成一个Settings对象。</p>
+</li>
+</ul>
+<h1><span id="groovygradlejava的关系">Groovy,gradle,java的关系</span></h1>
+<p>Groovy是一种动态语言。这种语言比较有特点，它和Java一样，也运行于Java虚拟机中。简单粗暴点儿看，你可以认为Groovy扩展了Java语言。比如，Groovy对自己的定义就是：Groovy是在 java平台上的、 具有像Python， Ruby 和 Smalltalk 语言特性的灵活动态语言， Groovy保证了这些特性像 Java语法一样被 Java开发者使用。除了语言和Java相通外，Groovy有时候又像一种脚本语言。前文也提到过，当我执行Groovy脚本时，Groovy会先将其编译成Java类字节码，然后通过Jvm来执行这个Java类。图1展示了Java、Groovy和Jvm之间的关系。</p>
+<p>其次gradle相当于一颗框架，支持的语言是groovy，groovy又完美兼容java，所以我们理解成gradle是一个build框架，我们可以用groovy和java在gradle这个框架上通过代码去按照我们对构建产物的要求进行代码编写。</p>
+<h1><span id="groovy的基础语法">groovy的基础语法</span></h1>
+<p><a href="https://www.w3cschool.cn/groovy/" target="_blank" rel="noopener">引用来自w3cschool点击迅速查看</a></p>
+<p><a href="http://www.groovy-lang.org/gdk.html" target="_blank" rel="noopener">gdk官方文档</a></p>
+<h2><span id="安装">安装</span></h2>
+<blockquote>
+<p>安装</p>
+</blockquote>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fx3y2krdncj319q0ywafq.jpg" alt="image-20181111110702093"></p>
+<blockquote>
+<p>test安装</p>
+</blockquote>
+<p>然后，创建一个test.groovy文件，里边只有一行代码：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">println</span>  <span class="string">"hello groovy"</span></span><br></pre></td></tr></table></figure>
+<h2><span id="语法">语法</span></h2>
+<h3><span id="关键字">关键字</span></h3>
+<p>关键字作为名称建议是在Groovy编程语言中保留的特殊字。 下表列出了在Groovy中定义的关键字。</p>
+<table>
+<thead>
+<tr>
+<th>as</th>
+<th>assert</th>
+<th>break</th>
+<th>case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>catch</td>
+<td>class</td>
+<td>const</td>
+<td>continue</td>
+</tr>
+<tr>
+<td>def</td>
+<td>default</td>
+<td>do</td>
+<td>else</td>
+</tr>
+<tr>
+<td>enum</td>
+<td>extends</td>
+<td>false</td>
+<td>Finally</td>
+</tr>
+<tr>
+<td>for</td>
+<td>goto</td>
+<td>if</td>
+<td>implements</td>
+</tr>
+<tr>
+<td>import</td>
+<td>in</td>
+<td>instanceof</td>
+<td>interface</td>
+</tr>
+<tr>
+<td>new</td>
+<td>pull</td>
+<td>package</td>
+<td>return</td>
+</tr>
+<tr>
+<td>super</td>
+<td>switch</td>
+<td>this</td>
+<td>throw</td>
+</tr>
+<tr>
+<td>throws</td>
+<td>trait</td>
+<td>true</td>
+<td>try</td>
+</tr>
+<tr>
+<td>while</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3><span id="数据类型">数据类型</span></h3>
+<h4><span id="基本数据类型">基本数据类型</span></h4>
+<ul>
+<li><strong>byte</strong> -这是用来表示字节值。例如2。</li>
+<li><strong>short</strong> -这是用来表示一个短整型。例如10。</li>
+<li><strong>int</strong> -这是用来表示整数。例如1234。</li>
+<li><strong>long</strong> -这是用来表示一个长整型。例如10000090。</li>
+<li><strong>float</strong> -这是用来表示32位浮点数。例如12.34。</li>
+<li><strong>double</strong> -这是用来表示64位浮点数，这些数字是有时可能需要的更长的十进制数表示。例如12.3456565。</li>
+<li><strong>char</strong> -这定义了单个字符文字。例如“A”。</li>
+<li><strong>Boolean</strong> -这表示一个布尔值，可以是true或false。</li>
+<li><strong>String</strong> -这些是以字符串的形式表示的文本。例如，“Hello World”的。</li>
+</ul>
+<p>下表显示了数字和小数点文字中的最大允许值。</p>
+<table>
+<thead>
+<tr>
+<th>byte</th>
+<th>-128到127</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>short</td>
+<td>-32,768到32,767</td>
+</tr>
+<tr>
+<td>int</td>
+<td>2,147,483,648 到,147,483,647</td>
+</tr>
+<tr>
+<td>long</td>
+<td>-9,223,372,036,854,775,808到+9,223,372,036,854,775,807</td>
+</tr>
+<tr>
+<td>float</td>
+<td>1.40129846432481707e-45到3.40282346638528860e + 38</td>
+</tr>
+<tr>
+<td>double</td>
+<td>4.94065645841246544e-324d 到1.79769313486231570e + 308d</td>
+</tr>
+</tbody>
+</table>
+<h4><span id="对象类型">对象类型</span></h4>
+<blockquote>
+<p>包装类型</p>
+</blockquote>
+<p>类型除了基本类型，还允许以下对象类型（有时称为包装器类型）</p>
+<ul>
+<li>java.lang.Byte</li>
+<li>java.lang.Short</li>
+<li>java.lang.Integer</li>
+<li>java.lang.Long</li>
+<li>java.lang.Float</li>
+<li>java.lang.Double</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+<th>例如</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>java.math.BigInteger</td>
+<td>不可变的任意精度的有符号整数数字</td>
+<td>30克</td>
+</tr>
+<tr>
+<td>java.math.BigDecimal</td>
+<td>不可变的任意精度的有符号十进制数</td>
+<td>3.5克</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="变量">变量</span></h3>
+<p>变量声明告诉编译器为变量创建存储的位置和大小。</p>
+<p>下面是一个变量声明的例子</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123; </span><br><span class="line">      String x = <span class="string">"Hello"</span>;</span><br><span class="line">      println(x);<span class="comment">//Hello</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="变量命名">变量命名</span></h4>
+<p>数字和下划线字符组成。 它必须以字母或下划线开头。 大写和小写字母是不同的，因为Groovy，就像Java是一种区分大小写的编程语言。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123; </span><br><span class="line">      <span class="keyword">int</span> x = <span class="number">5</span>;</span><br><span class="line">      <span class="keyword">int</span> X = <span class="number">6</span>; </span><br><span class="line">      <span class="keyword">def</span> _Name = <span class="string">"Joe"</span>; </span><br><span class="line">      println(x); </span><br><span class="line">      println(X); </span><br><span class="line">      println(_Name); </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="运算符">运算符</span></h3>
+<p>Groovy中有以下类型的运算符</p>
+<ul>
+<li>算术运算符</li>
+<li>关系运算符</li>
+<li>逻辑运算符</li>
+<li>位运算符</li>
+<li>赋值运算符</li>
+</ul>
+<h4><span id="算数运算符">算数运算符</span></h4>
+<table>
+<thead>
+<tr>
+<th><strong>运算符</strong></th>
+<th><strong>描述</strong></th>
+<th><strong>例子</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+</td>
+<td>两个操作数的加法</td>
+<td>1 + 2 将得到 3</td>
+</tr>
+<tr>
+<td>-</td>
+<td>第一第二操作数相减</td>
+<td>2 - 1 将得到 1</td>
+</tr>
+<tr>
+<td>*</td>
+<td>两个操作数的乘法</td>
+<td>2 * 2 将得到4</td>
+</tr>
+<tr>
+<td>/</td>
+<td>两个操作数的除法</td>
+<td>3/2 将得到 1.5</td>
+</tr>
+<tr>
+<td>％</td>
+<td>取模运算</td>
+<td>3％2 将得到 1</td>
+</tr>
+<tr>
+<td>++</td>
+<td>自增运算，在自身值的基础上加1</td>
+<td>INT X = 5;X ++;X 将得到 6</td>
+</tr>
+<tr>
+<td>–</td>
+<td>自减运算,在自身值的基础上减1</td>
+<td>INT X = 5;X - -;X 将得到 4</td>
+</tr>
+</tbody>
+</table>
+<h4><span id="关系运算符">关系运算符</span></h4>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>==</td>
+<td>测试两个对象之间是否相等</td>
+<td>2 == 2 将得到 true</td>
+</tr>
+<tr>
+<td>!=</td>
+<td>测试两个对象之间是否不等</td>
+<td>3 != 2 将得到 true</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>检查是否左边的对象是小于右边的对象。</td>
+<td>2 &lt; 3 将得到 true</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>检查是否向左对象是小于或等于右边的对象</td>
+<td>2 &lt;= 3 将得到 true</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>检查是否左边的对象比右边的对象大。</td>
+<td>3 &gt; 2 将得到 true</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>检查是否向左对象大于或等于右边的对象。</td>
+<td>3&gt;= 2 将得到 true</td>
+</tr>
+</tbody>
+</table>
+<h4><span id="逻辑运算符">逻辑运算符</span></h4>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&amp;&amp;</td>
+<td>这是逻辑“与”运算</td>
+<td>true &amp;&amp; true 得到 true</td>
+</tr>
+<tr>
+<td>||</td>
+<td>这是逻辑“或”运算</td>
+<td>true || true 得到 true</td>
+</tr>
+<tr>
+<td>！</td>
+<td>这是逻辑“非”运算</td>
+<td>!true 得到 false</td>
+</tr>
+</tbody>
+</table>
+<h4><span id="位运算符">位运算符</span></h4>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>＆</td>
+<td>这是位“与”运算</td>
+</tr>
+<tr>
+<td>|</td>
+<td>这是按位“或”运算</td>
+</tr>
+<tr>
+<td>^</td>
+<td>这是按位“异或”或异或运算符</td>
+</tr>
+<tr>
+<td>〜</td>
+<td>这是按位反运算符</td>
+</tr>
+</tbody>
+</table>
+<p>真值表</p>
+<table>
+<thead>
+<tr>
+<th>p</th>
+<th>q</th>
+<th>p＆Q</th>
+<th>p | q</th>
+<th>p ^ Q</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4><span id="赋值运算符">赋值运算符</span></h4>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+=</td>
+<td>A += B 等价于 A = A+B</td>
+<td>DEF A = 5A += 3输出将是8</td>
+</tr>
+<tr>
+<td>-=</td>
+<td>A -= B 等价于 A = A-B</td>
+<td>DEF A = 5A -= 3输出将是2</td>
+</tr>
+<tr>
+<td>*=</td>
+<td>A <em>= B 等价于 A= A</em>B</td>
+<td>DEF A = 5A *= 3输出将是15</td>
+</tr>
+<tr>
+<td>/=</td>
+<td>A /= B 等价于 A = A/B</td>
+<td>DEF A = 6A /= 3输出将是2</td>
+</tr>
+<tr>
+<td>(%)=</td>
+<td>A (%)= B 等价于 A = A % B</td>
+<td>DEF A = 5A %= 3输出将是2</td>
+</tr>
+</tbody>
+</table>
+<h4><span id="范围运算符">范围运算符</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123; </span><br><span class="line">      <span class="keyword">def</span> range = <span class="number">5.</span><span class="number">.10</span>; </span><br><span class="line">      println(range); </span><br><span class="line">      println(range.get(<span class="number">2</span>)); </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>] </span><br><span class="line"><span class="number">7</span></span><br></pre></td></tr></table></figure>
+<h4><span id="运算符优先级">运算符优先级</span></h4>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>++ - + -</td>
+<td>预增/减，一元加，一元减</td>
+</tr>
+<tr>
+<td>* / ％</td>
+<td>乘法，除法，取模</td>
+</tr>
+<tr>
+<td>+ -</td>
+<td>加法，减法</td>
+</tr>
+<tr>
+<td>==！= &lt;=&gt;</td>
+<td>等于，不等于，比较</td>
+</tr>
+<tr>
+<td>＆</td>
+<td>二进制/位运算符与</td>
+</tr>
+<tr>
+<td>^</td>
+<td>二进制/位异或</td>
+</tr>
+<tr>
+<td>|</td>
+<td>二进制/按位或</td>
+</tr>
+<tr>
+<td>&amp;&amp;</td>
+<td>逻辑和</td>
+</tr>
+<tr>
+<td>||</td>
+<td>逻辑或</td>
+</tr>
+<tr>
+<td>= ** = * = / =％= + = - = &lt;&lt; = &gt;&gt; = &gt;&gt;&gt; = = ^ = | =</td>
+<td>各种赋值运算符</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="循环">循环</span></h3>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>语句和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_while_statement.html" target="_blank" rel="noopener">while语句</a>while语句首先通过计算条件表达式（布尔值）来执行，如果结果为真，则执行while循环中的语句。</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_for_statement.html" target="_blank" rel="noopener">for语句</a>for语句用于遍历一组值。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_forin_statement.html" target="_blank" rel="noopener">for-in语句</a>for-in语句用于遍历一组值。</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="循环控制语句">循环控制语句</span></h2>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>语句和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_break_statement.html" target="_blank" rel="noopener">break语句</a>break语句用于改变循环和switch语句内的控制流。</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_continue_statement.html" target="_blank" rel="noopener">continue语句</a>continue语句补充了break语句。它的使用仅限于while和for循环。</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="条件语句">条件语句</span></h3>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>语句和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_if_statement.html" target="_blank" rel="noopener">if语句</a>这个语句的一般工作是首先在if语句中计算一个条件。如果条件为真，它然后执行语句。</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_if_else_statement.html" target="_blank" rel="noopener">if / else语句</a>这个语句的一般工作是首先在if语句中计算一个条件。如果条件为真，则其后执行语句，并在else条件之前停止并退出循环。如果条件为假，则执行else语句块中的语句，然后退出循环。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_nested_if_statement.html" target="_blank" rel="noopener">嵌套if语句</a>i有时需要有多个if语句嵌入在彼此内部。</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_switch_statement.html" target="_blank" rel="noopener">Switch语句</a>有时，嵌套的if-else语句是如此常见，并且经常使用，因此设计了一个更容易的语句，称为switch语句。</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_nested_switch_statement.html" target="_blank" rel="noopener">嵌套switch语句</a>switch也可以多层嵌套。</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="方法">方法</span></h3>
+<h4><span id="带参数方法">带参数方法</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> sum(<span class="keyword">int</span> a,<span class="keyword">int</span> b) &#123;</span><br><span class="line">      <span class="keyword">int</span> c = a+b;</span><br><span class="line">      println(c);</span><br><span class="line">   &#125;  </span><br><span class="line">	</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      sum(<span class="number">10</span>,<span class="number">5</span>);</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="默认参数方法">默认参数方法</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> someMethod(parameter1, parameter2 = <span class="number">0</span>, parameter3 = <span class="number">0</span>) &#123; </span><br><span class="line">   <span class="comment">// Method code goes here </span></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> sum(<span class="keyword">int</span> a,<span class="keyword">int</span> b = <span class="number">5</span>) &#123; </span><br><span class="line">      <span class="keyword">int</span> c = a+b; </span><br><span class="line">      println(c); </span><br><span class="line">   &#125; </span><br><span class="line">	</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      sum(<span class="number">6</span>); </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="io操作">IO操作</span></h3>
+<h4><span id="操作文件的核心类">操作文件的核心类</span></h4>
+<p>Groovy在使用I / O时提供了许多辅助方法，Groovy提供了更简单的类来为文件提供以下功能。</p>
+<ul>
+<li>读取文件</li>
+<li>写入文件</li>
+<li>遍历文件树</li>
+<li>读取和写入数据对象到文件</li>
+</ul>
+<p>除此之外，您始终可以使用下面列出的用于文件I / O操作的标准Java类。</p>
+<ul>
+<li>java.io.File</li>
+<li>java.io.InputStream</li>
+<li>java.io.OutputStream</li>
+<li>java.io.Reader</li>
+<li>java.io.Writer</li>
+</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.File </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123; </span><br><span class="line">      <span class="keyword">new</span> File(<span class="string">"E:/Example.txt"</span>).eachLine &#123;  </span><br><span class="line">         line -&gt; println <span class="string">"line : $line"</span>; </span><br><span class="line">      &#125; </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="string">line :</span> Example1</span><br><span class="line"><span class="string">line :</span> Example2</span><br></pre></td></tr></table></figure>
+<h4><span id="读取文件内容到字符串">读取文件内容到字符串</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123; </span><br><span class="line">      File file = <span class="keyword">new</span> File(<span class="string">"E:/Example.txt"</span>) </span><br><span class="line">      println file.text </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">line :</span> Example1 </span><br><span class="line"><span class="string">line :</span> Example2</span><br></pre></td></tr></table></figure>
+<h4><span id="写入文件">写入文件</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.File </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123; </span><br><span class="line">      <span class="keyword">new</span> File(<span class="string">'E:/'</span>,<span class="string">'Example.txt'</span>).withWriter(<span class="string">'utf-8'</span>) &#123; </span><br><span class="line">         writer -&gt; writer.writeLine <span class="string">'Hello World'</span> </span><br><span class="line">      &#125;  </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="获取文件的大小">获取文件的大小</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      File file = <span class="keyword">new</span> File(<span class="string">"E:/Example.txt"</span>)</span><br><span class="line">      println <span class="string">"The file $&#123;file.absolutePath&#125; has $&#123;file.length()&#125; bytes"</span></span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="浏览文件是否是目录">浏览文件是否是目录</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123; </span><br><span class="line">      <span class="keyword">def</span> file = <span class="keyword">new</span> File(<span class="string">'E:/'</span>) </span><br><span class="line">      println <span class="string">"File? $&#123;file.isFile()&#125;"</span> </span><br><span class="line">      println <span class="string">"Directory? $&#123;file.isDirectory()&#125;"</span> </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="创建目录">创建目录</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> file = <span class="keyword">new</span> File(<span class="string">'E:/Directory'</span>)</span><br><span class="line">      file.mkdir()</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="删除文件">删除文件</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> file = <span class="keyword">new</span> File(<span class="string">'E:/Example.txt'</span>)</span><br><span class="line">      file.delete()</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="复制文件">复制文件</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> src = <span class="keyword">new</span> File(<span class="string">"E:/Example.txt"</span>)</span><br><span class="line">      <span class="keyword">def</span> dst = <span class="keyword">new</span> File(<span class="string">"E:/Example1.txt"</span>)</span><br><span class="line">      dst &lt;&lt; src.text</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="获取目录内容">获取目录内容</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123; </span><br><span class="line">      <span class="keyword">def</span> rootFiles = <span class="keyword">new</span> File(<span class="string">"test"</span>).listRoots() </span><br><span class="line">      rootFiles.each &#123; </span><br><span class="line">         file -&gt; println file.absolutePath </span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="string">C:</span>\</span><br><span class="line"><span class="string">D:</span>\</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">new</span> File(<span class="string">"E:/Temp"</span>).eachFile() &#123;  </span><br><span class="line">          <span class="comment">//现实E:/Temp下的所有文件</span></span><br><span class="line">         file-&gt;println file.getAbsolutePath()</span><br><span class="line">      &#125;</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">new</span> File(<span class="string">"E:/temp"</span>).eachFileRecurse() &#123;</span><br><span class="line">          <span class="comment">//显示所有文件和所有子目录</span></span><br><span class="line">         file -&gt; println file.getAbsolutePath()</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="数字操作">数字操作</span></h3>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_xxxvalue.html" target="_blank" rel="noopener">xxxValue（）</a>此方法接受Number作为参数，并基于调用的方法返回基本类型。</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_compareto.html" target="_blank" rel="noopener">compareTo()</a>compareTo方法是使用比较一个数字与另一个数字。如果要比较数字的值，这是有用的。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_equals.html" target="_blank" rel="noopener">equals()</a>该方法确定调用方法的Number对象是否等于作为参数传递的对象。</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_valueof.html" target="_blank" rel="noopener">valueOf()</a>valueOf方法返回保存所传递的参数的值的相关Number对象。</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_tostring.html" target="_blank" rel="noopener">toString()</a>该方法用于获取表示Number对象的值的String对象。</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_parseint.html" target="_blank" rel="noopener">parseInt()</a>此方法用于获取某个String的原始数据类型。 parseXxx（）是一个静态方法，可以有一个参数或两个参数。</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_abs.html" target="_blank" rel="noopener">abs()</a>该方法给出了参数的绝对值。参数可以是int，float，long，double，short，byte。</td>
+</tr>
+<tr>
+<td>8</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_ceil.html" target="_blank" rel="noopener">ceil()</a>方法ceil给出大于或等于参数的最小整数。</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_floor.html" target="_blank" rel="noopener">floor()</a>方法floor给出小于或等于参数的最大整数。</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_rint.html" target="_blank" rel="noopener">rint()</a>方法rint返回值最接近参数的整数。</td>
+</tr>
+<tr>
+<td>11</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_round.html" target="_blank" rel="noopener">round()</a>方法round返回最接近的long或int，由方法返回类型给出。</td>
+</tr>
+<tr>
+<td>12</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_min.html" target="_blank" rel="noopener">min()</a>该方法给出两个参数中较小的一个。参数可以是int，float，long，double。</td>
+</tr>
+<tr>
+<td>13</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_max.html" target="_blank" rel="noopener">max()</a>该方法给出了两个参数的最大值。参数可以是int，float，long，double。</td>
+</tr>
+<tr>
+<td>14</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_exp.html" target="_blank" rel="noopener">exp()</a>该方法返回自然对数e的底数为参数的幂。</td>
+</tr>
+<tr>
+<td>15</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_log.html" target="_blank" rel="noopener">log()</a>该方法返回参数的自然对数。</td>
+</tr>
+<tr>
+<td>16</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_pow.html" target="_blank" rel="noopener">pow()</a>该方法返回第一个参数的值增加到第二个参数的幂。</td>
+</tr>
+<tr>
+<td>17</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_sqrt.html" target="_blank" rel="noopener">sqrt()</a>该方法返回参数的平方根。</td>
+</tr>
+<tr>
+<td>18</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_sin.html" target="_blank" rel="noopener">sin()</a>该方法返回指定double值的正弦值。</td>
+</tr>
+<tr>
+<td>19</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_cos.html" target="_blank" rel="noopener">cos()</a>该方法返回指定double值的余弦值。</td>
+</tr>
+<tr>
+<td>20</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_tan.html" target="_blank" rel="noopener">tan()</a>该方法返回指定double值的正切值。</td>
+</tr>
+<tr>
+<td>21</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_asin.html" target="_blank" rel="noopener">asin()</a>该方法返回指定double值的反正弦值。</td>
+</tr>
+<tr>
+<td>22</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_acos.html" target="_blank" rel="noopener">acos()</a>该方法返回指定double值的反余弦值。</td>
+</tr>
+<tr>
+<td>23</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_atan.html" target="_blank" rel="noopener">atan()</a>该方法返回指定double值的反正切。</td>
+</tr>
+<tr>
+<td>24</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_atan2.html" target="_blank" rel="noopener">atan2()</a>该方法将直角坐标（x，y）转换为极坐标（r，theta），并返回theta。</td>
+</tr>
+<tr>
+<td>25</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_numbers_parseint.html" target="_blank" rel="noopener">parseInt（）</a>该方法将参数值转换为度。</td>
+</tr>
+<tr>
+<td>26</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_radian.html" target="_blank" rel="noopener">radian()</a>该方法将参数值转换为弧度。</td>
+</tr>
+<tr>
+<td>27</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_random.html" target="_blank" rel="noopener">random()</a>该方法用于生成介于0.0和1.0之间的随机数。范围是：0.0 = &lt;Math.random &lt;1.0。通过使用算术可以实现不同的范围。</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="字符串操作">字符串操作</span></h3>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>字符串操作和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_concatenation_of_two_strings.html" target="_blank" rel="noopener">Concatenation of two strings</a>字符串的串联可以通过简单的’+'运算符来完成。</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_string_repetition.html" target="_blank" rel="noopener">String Repetition</a>字符串的重复可以通过简单的’*'运算符完成。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_string_length.html" target="_blank" rel="noopener">String Length</a>由字符串的length（）方法确定的字符串的长度。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_center.html" target="_blank" rel="noopener">center()</a>返回一个新的长度为numberOfChars的字符串，该字符串由左侧和右侧用空格字符填充的收件人组成。</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_comparetoignorecase.html" target="_blank" rel="noopener">compareToIgnoreCase()</a>按字母顺序比较两个字符串，忽略大小写差异。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_concat.html" target="_blank" rel="noopener">concat()</a>将指定的String连接到此String的结尾。</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_eachmatch.html" target="_blank" rel="noopener">eachMatch()</a>处理每个正则表达式组（参见下一节）匹配的给定String的子字符串。</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_endswith.html" target="_blank" rel="noopener">endsWith()</a>测试此字符串是否以指定的后缀结尾。</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_equalsignorecase.html" target="_blank" rel="noopener">equalsIgnoreCase()</a>将此字符串与另一个字符串进行比较，忽略大小写注意事项。</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_getat.html" target="_blank" rel="noopener">getAt()</a>它在索引位置返回字符串值</td>
+</tr>
+<tr>
+<td>8</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_indexof.html" target="_blank" rel="noopener">indexOf()</a>返回此字符串中指定子字符串第一次出现的索引。</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_matches.html" target="_blank" rel="noopener">matches()</a>它输出字符串是否匹配给定的正则表达式。</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_minus.html" target="_blank" rel="noopener">minus()</a>删除字符串的值部分。</td>
+</tr>
+<tr>
+<td>11</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_next.html" target="_blank" rel="noopener">next()</a>此方法由++运算符为String类调用。它增加给定字符串中的最后一个字符。</td>
+</tr>
+<tr>
+<td>12</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_padleft.html" target="_blank" rel="noopener">padLeft（）</a>填充字符串，并在左边附加空格。</td>
+</tr>
+<tr>
+<td>13</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_padright.html" target="_blank" rel="noopener">padRight()</a>填充字符串，并在右边附加空格。</td>
+</tr>
+<tr>
+<td>14</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_plus.html" target="_blank" rel="noopener">plus()</a>追加字符串</td>
+</tr>
+<tr>
+<td>15</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_previous.html" target="_blank" rel="noopener">previous()</a>此方法由CharSequence的 - 运算符调用。</td>
+</tr>
+<tr>
+<td>16</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_replaceall.html" target="_blank" rel="noopener">replaceAll（）</a>通过对该文本的关闭结果替换捕获的组的所有出现。</td>
+</tr>
+<tr>
+<td>17</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_strings_center.html" target="_blank" rel="noopener">center()</a>创建一个与此String相反的新字符串。</td>
+</tr>
+<tr>
+<td>18</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_split.html" target="_blank" rel="noopener">split()</a>将此String拆分为给定正则表达式的匹配项。</td>
+</tr>
+<tr>
+<td>19</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_substring.html" target="_blank" rel="noopener">subString()</a>返回一个新的String，它是此String的子字符串。</td>
+</tr>
+<tr>
+<td>20</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_touppercase.html" target="_blank" rel="noopener">toUpperCase()</a>将此字符串中的所有字符转换为大写。</td>
+</tr>
+<tr>
+<td>21</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_tolowercase.html" target="_blank" rel="noopener">toLowerCase()</a>将此字符串中的所有字符转换为小写。</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="范围运算">范围运算</span></h3>
+<ul>
+<li>1…10 - 包含范围的示例</li>
+<li>1 … &lt;10 - 独占范围的示例</li>
+<li>‘a’…‘x’ - 范围也可以由字符组成</li>
+<li>10…1 - 范围也可以按降序排列</li>
+<li>‘x’…‘a’ - 范围也可以由字符组成并按降序排列。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_contains.html" target="_blank" rel="noopener">contains()</a>检查范围是否包含特定值</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_get.html" target="_blank" rel="noopener">get()</a>返回此范围中指定位置处的元素。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_getfrom.html" target="_blank" rel="noopener">getFrom()</a>获得此范围的下限值。</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_getto.html" target="_blank" rel="noopener">getTo()</a>获得此范围的上限值。</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_isreverse.html" target="_blank" rel="noopener">isReverse()</a>这是一个反向的范围，反向迭代</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_size.html" target="_blank" rel="noopener">size()</a>返回此范围的元素数。</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_sublist.html" target="_blank" rel="noopener">subList()</a>返回此指定的fromIndex（包括）和toIndex（排除）之间的此范围部分的视图</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="列表">列表</span></h3>
+<ul>
+<li>[11，12，13，14] - 整数值列表</li>
+<li>[‘Angular’，‘Groovy’，‘Java’] - 字符串列表</li>
+<li>[1，2，[3，4]，5] - 嵌套列表</li>
+<li>[‘Groovy’，21，2.11] - 异构的对象引用列表</li>
+<li>[] - 一个空列表</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_add.html" target="_blank" rel="noopener">add()</a>将新值附加到此列表的末尾。</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_lists_contains.html" target="_blank" rel="noopener">contains()</a>如果此列表包含指定的值，则返回true。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_lists_get.html" target="_blank" rel="noopener">get()</a>返回此列表中指定位置的元素。</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_isempty.html" target="_blank" rel="noopener">isEmpty()</a>如果此列表不包含元素，则返回true</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_lists_minus.html" target="_blank" rel="noopener">minus()</a>创建一个由原始元素组成的新列表，而不是集合中指定的元素。</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_lists_plus.html" target="_blank" rel="noopener">plus()</a>创建由原始元素和集合中指定的元素组成的新列表。</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_pop.html" target="_blank" rel="noopener">pop()</a>从此列表中删除最后一个项目</td>
+</tr>
+<tr>
+<td>8</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_remove.html" target="_blank" rel="noopener">remove()</a>删除此列表中指定位置的元素。</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_reverse.html" target="_blank" rel="noopener">reverse()</a>创建与原始列表的元素相反的新列表</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_lists_size.html" target="_blank" rel="noopener">size()</a>获取此列表中的元素数。</td>
+</tr>
+<tr>
+<td>11</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_sort.html" target="_blank" rel="noopener">sort()</a>返回原始列表的排序副本。</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="映射">映射</span></h3>
+<ul>
+<li>[‘TopicName’：‘Lists’，‘TopicName’：‘Maps’] - 具有TopicName作为键的键值对的集合及其相应的值。</li>
+<li>[：] - 空映射。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_containskey.html" target="_blank" rel="noopener">containsKey()</a>此映射是否包含此键？</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_maps_get.html" target="_blank" rel="noopener">get()</a>查找此Map中的键并返回相应的值。如果此映射中没有键的条目，则返回null。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_keyset.html" target="_blank" rel="noopener">keySet()</a>获取此映射中的一组键。</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_put.html" target="_blank" rel="noopener">put()</a>将指定的值与此映射中的指定键相关联。如果此映射先前包含此键的映射，则旧值将替换为指定的值。</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_maps_size.html" target="_blank" rel="noopener">size()</a>返回此地图中的键值映射的数量。</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_values.html" target="_blank" rel="noopener">values()</a>返回此地图中包含的值的集合视图。</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="日期和时间">日期和时间</span></h3>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123; </span><br><span class="line">      Date date = <span class="keyword">new</span> Date(); </span><br><span class="line">      </span><br><span class="line">      <span class="comment">// display time and date using toString() </span></span><br><span class="line">       <span class="comment">//Thu Dec 10 21:31:15 GST 2015</span></span><br><span class="line">      System.out.println(date.toString()); </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      Date date = <span class="keyword">new</span> Date(<span class="number">100</span>);</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// display time and date using toString()</span></span><br><span class="line">       <span class="comment">//Thu Jan 01 04:00:00 GST 1970</span></span><br><span class="line">      System.out.println(date.toString());</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下是Date类的给定方法。在接受或返回年，月，日，小时，分钟和秒值的类Date的所有方法中，使用以下表示形式 -</p>
+<ul>
+<li>年y由整数y-1900表示。</li>
+<li>一个月份由0到11的整数表示; 0是1月，1是2月，等等;因此11是12月。</li>
+<li>日期（月中的日）以通常方式由1至31的整数表示。</li>
+<li>一个小时由从0到23的整数表示。因此，从午夜到上午1点的小时是小时0，而从中午到下午1点的小时是小时12。</li>
+<li>分钟由通常方式的0至59的整数表示。</li>
+<li>第二个由0至61的整数表示。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_after.html" target="_blank" rel="noopener">after()</a>测试此日期是否在指定日期之后。</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_dates_times_equals.html" target="_blank" rel="noopener">equals()</a>比较两个日期的相等性。当且仅当参数不为null时，结果为true，并且是表示与该对象时间相同的时间点（毫秒）的Date对象。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_dates_times_compareto.html" target="_blank" rel="noopener">compareTo()</a>比较两个日期的顺序。</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_dates_times_tostring.html" target="_blank" rel="noopener">toString()</a>将此Date对象转换为字符串</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_before.html" target="_blank" rel="noopener">before()</a>测试此日期是否在指定日期之前。</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_gettime.html" target="_blank" rel="noopener">getTime()</a>返回自此Date对象表示的1970年1月1日，00:00:00 GMT以来的毫秒数。</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_settime.html" target="_blank" rel="noopener">setTime()</a>设置此Date对象以表示一个时间点，即1970年1月1日00:00:00 GMT之后的时间毫秒。</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="正则表达式">正则表达式</span></h3>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> regex = ~<span class="string">'Groovy'</span></span><br></pre></td></tr></table></figure>
+<h3><span id="异常处理">异常处理</span></h3>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123; </span><br><span class="line">   <span class="comment">//Protected code </span></span><br><span class="line">&#125; <span class="keyword">catch</span>(ExceptionType1 e1) &#123; </span><br><span class="line">   <span class="comment">//Catch block </span></span><br><span class="line">&#125; <span class="keyword">catch</span>(ExceptionType2 e2) &#123; </span><br><span class="line">   <span class="comment">//Catch block </span></span><br><span class="line">&#125; <span class="keyword">catch</span>(ExceptionType3 e3) &#123; </span><br><span class="line">   <span class="comment">//Catch block </span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">   <span class="comment">//The finally block always executes. </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">         <span class="keyword">def</span> arr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">3</span>];</span><br><span class="line">         arr[<span class="number">5</span>] = <span class="number">5</span>;</span><br><span class="line">      &#125; <span class="keyword">catch</span>(Exception ex) &#123;</span><br><span class="line">         println(<span class="string">"Catching the exception"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">		</span><br><span class="line">      println(<span class="string">"Let's move on after the exception"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">         <span class="keyword">def</span> arr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">3</span>];</span><br><span class="line">         arr[<span class="number">5</span>] = <span class="number">5</span>;</span><br><span class="line">      &#125;<span class="keyword">catch</span>(ArrayIndexOutOfBoundsException ex) &#123;</span><br><span class="line">         println(<span class="string">"Catching the Array out of Bounds exception"</span>);</span><br><span class="line">      &#125;<span class="keyword">catch</span>(Exception ex) &#123;</span><br><span class="line">         println(<span class="string">"Catching the exception"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">		</span><br><span class="line">      println(<span class="string">"Let's move on after the exception"</span>);</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="闭包">闭包</span></h3>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> clos = &#123;println <span class="string">"Hello World"</span>&#125;;</span><br><span class="line">      clos.call();</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="带形参的闭包">带形参的闭包</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> clos = &#123;param-&gt;println <span class="string">"Hello $&#123;param&#125;"</span>&#125;;</span><br><span class="line">      clos.call(<span class="string">"World"</span>);</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="只有一个形参的时候进行隐藏">只有一个形参的时候进行隐藏</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> clos = &#123;println <span class="string">"Hello $&#123;it&#125;"</span>&#125;;</span><br><span class="line">      clos.call(<span class="string">"World"</span>);</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="闭包和变量">闭包和变量</span></h4>
+<p>闭包可以在定义闭包时候使用引用变量</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span>     </span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> str1 = <span class="string">"Hello"</span>;</span><br><span class="line">      <span class="keyword">def</span> clos = &#123;param -&gt; println <span class="string">"$&#123;str1&#125; $&#123;param&#125;"</span>&#125;</span><br><span class="line">      clos.call(<span class="string">"World"</span>);</span><br><span class="line">		</span><br><span class="line">      <span class="comment">// We are now changing the value of the String str1 which is referenced in the closure</span></span><br><span class="line">      str1 = <span class="string">"Welcome"</span>;</span><br><span class="line">      clos.call(<span class="string">"World"</span>);</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="用闭包作为参数传递">用闭包作为参数传递</span></h3>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span> </span><br><span class="line">   <span class="keyword">def</span> <span class="keyword">static</span> Display(clo) &#123;</span><br><span class="line">      <span class="comment">// This time the $param parameter gets replaced by the string "Inner"         </span></span><br><span class="line">      clo.call(<span class="string">"Inner"</span>);</span><br><span class="line">   &#125; </span><br><span class="line">	</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> str1 = <span class="string">"Hello"</span>;</span><br><span class="line">      <span class="keyword">def</span> clos = &#123; param -&gt; println <span class="string">"$&#123;str1&#125; $&#123;param&#125;"</span> &#125;</span><br><span class="line">      clos.call(<span class="string">"World"</span>);</span><br><span class="line">		</span><br><span class="line">      <span class="comment">// We are now changing the value of the String str1 which is referenced in the closure</span></span><br><span class="line">      str1 = <span class="string">"Welcome"</span>;</span><br><span class="line">      clos.call(<span class="string">"World"</span>);</span><br><span class="line">		</span><br><span class="line">      <span class="comment">// Passing our closure to a method</span></span><br><span class="line">      Example.Display(clos);</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="列表闭包">列表+闭包</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> lst = [<span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>];</span><br><span class="line">      lst.each &#123;println it&#125;</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="使用映射闭包">使用映射闭包</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> mp = [<span class="string">"TopicName"</span> : <span class="string">"Maps"</span>, <span class="string">"TopicDescription"</span> : <span class="string">"Methods in Maps"</span>]             </span><br><span class="line">      mp.each &#123;println it&#125;</span><br><span class="line">      mp.each &#123;println <span class="string">"$&#123;it.key&#125; maps to: $&#123;it.value&#125;"</span>&#125;</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行上面程序会得到以下结果</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TopicName = Maps </span><br><span class="line">TopicDescription = Methods <span class="keyword">in</span> Maps </span><br><span class="line">TopicName maps <span class="string">to:</span> Maps </span><br><span class="line">TopicDescription maps <span class="string">to:</span> Methods <span class="keyword">in</span> Maps</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> lst = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];</span><br><span class="line">      lst.each &#123;println it&#125;</span><br><span class="line">      println(<span class="string">"The list will only display those numbers which are divisible by 2"</span>)</span><br><span class="line">      lst.each&#123;num -&gt; <span class="keyword">if</span>(num % <span class="number">2</span> == <span class="number">0</span>) println num&#125;</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="闭包本身的一些api">闭包本身的一些API</span></h4>
+<p>闭包本身提供了一些方法。</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_find.html" target="_blank" rel="noopener">find()</a>find方法查找集合中与某个条件匹配的第一个值。</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_findall.html" target="_blank" rel="noopener">findAll（）</a>它找到接收对象中与闭合条件匹配的所有值。</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_any_every.html" target="_blank" rel="noopener">any() &amp; every()</a>方法any迭代集合的每个元素，检查布尔谓词是否对至少一个元素有效。</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="https://www.w3cschool.cn/groovy/groovy_collect.html" target="_blank" rel="noopener">collect()</a>该方法通过集合收集迭代，使用闭包作为变换器将每个元素转换为新值。</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="json处理">Json处理</span></h3>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JsonSlurper</td>
+<td>JsonSlurper是一个将JSON文本或阅读器内容解析为Groovy数据的类结构，例如地图，列表和原始类型，如整数，双精度，布尔和字符串。</td>
+</tr>
+<tr>
+<td>JsonOutput</td>
+<td>此方法负责将Groovy对象序列化为JSON字符串。</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> groovy.json.JsonSlurper </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> jsonSlurper = <span class="keyword">new</span> JsonSlurper()</span><br><span class="line">      <span class="keyword">def</span> object = jsonSlurper.parseText(<span class="string">'&#123; "name": "John", "ID" : "1"&#125;'</span>) </span><br><span class="line">		</span><br><span class="line">      println(object.name);</span><br><span class="line">      println(object.ID);</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">John </span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4><span id="解析整个列表">解析整个列表</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> groovy.json.JsonSlurper </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> jsonSlurper = <span class="keyword">new</span> JsonSlurper()</span><br><span class="line">      Object lst = jsonSlurper.parseText(<span class="string">'&#123; "List": [2, 3, 4, 5] &#125;'</span>)</span><br><span class="line">      lst.each &#123; println it &#125;</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List=[<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">23</span>, <span class="number">42</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> groovy.json.JsonSlurper </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> jsonSlurper = <span class="keyword">new</span> JsonSlurper()</span><br><span class="line">      <span class="keyword">def</span> obj = jsonSlurper.parseText <span class="string">''' &#123;"Integer": 12, "fraction": 12.55, "double": 12e13&#125;'''</span></span><br><span class="line">		</span><br><span class="line">      println(obj.Integer);</span><br><span class="line">      println(obj.fraction);</span><br><span class="line">      println(obj.<span class="keyword">double</span>); </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">12</span> </span><br><span class="line"><span class="number">12.55</span> </span><br><span class="line"><span class="number">1.2E+14</span></span><br></pre></td></tr></table></figure>
+<h4><span id="转化成json">转化成json</span></h4>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> groovy.json.JsonOutput </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> output = JsonOutput.toJson([<span class="string">name:</span> <span class="string">'John'</span>, <span class="string">ID:</span> <span class="number">1</span>])</span><br><span class="line">      println(output);  </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">"name"</span>:<span class="string">"John"</span>,<span class="string">"ID"</span>:<span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> groovy.json.JsonOutput  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Example</span> &#123;</span></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</span><br><span class="line">      <span class="keyword">def</span> output = JsonOutput.toJson([ <span class="keyword">new</span> Student(<span class="string">name:</span> <span class="string">'John'</span>,<span class="string">ID:</span><span class="number">1</span>),</span><br><span class="line">         <span class="keyword">new</span> Student(<span class="string">name:</span> <span class="string">'Mark'</span>,<span class="string">ID:</span><span class="number">2</span>)])</span><br><span class="line">      println(output);  </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> &#123;</span></span><br><span class="line">   String name</span><br><span class="line">   <span class="keyword">int</span> ID; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[&#123;<span class="string">"name"</span>:<span class="string">"John"</span>,<span class="string">"ID"</span>:<span class="number">1</span>&#125;,&#123;<span class="string">"name"</span>:<span class="string">"Mark"</span>,<span class="string">"ID"</span>:<span class="number">2</span>&#125;]</span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/11/10/热修复的一种实现/" data-toggle="tooltip" data-placement="top" title="Android热修复的一种实现">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">gradle是什么？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">gradle构建的三个阶段</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">构建</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">三大核心对象</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Groovy,gradle,java的关系</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">groovy的基础语法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">安装</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">语法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.1.</span> <span class="toc-nav-text">关键字</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.2.</span> <span class="toc-nav-text">数据类型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.2.1.</span> <span class="toc-nav-text">基本数据类型</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.2.2.</span> <span class="toc-nav-text">对象类型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.3.</span> <span class="toc-nav-text">变量</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.3.1.</span> <span class="toc-nav-text">变量命名</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.4.</span> <span class="toc-nav-text">运算符</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.4.1.</span> <span class="toc-nav-text">算数运算符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.4.2.</span> <span class="toc-nav-text">关系运算符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.4.3.</span> <span class="toc-nav-text">逻辑运算符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.4.4.</span> <span class="toc-nav-text">位运算符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.4.5.</span> <span class="toc-nav-text">赋值运算符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.4.6.</span> <span class="toc-nav-text">范围运算符</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.4.7.</span> <span class="toc-nav-text">运算符优先级</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.5.</span> <span class="toc-nav-text">循环</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">循环控制语句</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.1.</span> <span class="toc-nav-text">条件语句</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.2.</span> <span class="toc-nav-text">方法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.2.1.</span> <span class="toc-nav-text">带参数方法</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.2.2.</span> <span class="toc-nav-text">默认参数方法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.3.</span> <span class="toc-nav-text">IO操作</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.3.1.</span> <span class="toc-nav-text">操作文件的核心类</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.3.2.</span> <span class="toc-nav-text">读取文件内容到字符串</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.3.3.</span> <span class="toc-nav-text">写入文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.3.4.</span> <span class="toc-nav-text">获取文件的大小</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.3.5.</span> <span class="toc-nav-text">浏览文件是否是目录</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.3.6.</span> <span class="toc-nav-text">创建目录</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.3.7.</span> <span class="toc-nav-text">删除文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.3.8.</span> <span class="toc-nav-text">复制文件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.3.9.</span> <span class="toc-nav-text">获取目录内容</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.4.</span> <span class="toc-nav-text">数字操作</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.5.</span> <span class="toc-nav-text">字符串操作</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.6.</span> <span class="toc-nav-text">范围运算</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.7.</span> <span class="toc-nav-text">列表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.8.</span> <span class="toc-nav-text">映射</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.9.</span> <span class="toc-nav-text">日期和时间</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.10.</span> <span class="toc-nav-text">正则表达式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.11.</span> <span class="toc-nav-text">异常处理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.12.</span> <span class="toc-nav-text">闭包</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.12.1.</span> <span class="toc-nav-text">带形参的闭包</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.12.2.</span> <span class="toc-nav-text">只有一个形参的时候进行隐藏</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.12.3.</span> <span class="toc-nav-text">闭包和变量</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.13.</span> <span class="toc-nav-text">用闭包作为参数传递</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.13.1.</span> <span class="toc-nav-text">列表+闭包</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.13.2.</span> <span class="toc-nav-text">使用映射闭包</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.13.3.</span> <span class="toc-nav-text">闭包本身的一些API</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.14.</span> <span class="toc-nav-text">Json处理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.14.1.</span> <span class="toc-nav-text">解析整个列表</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.14.2.</span> <span class="toc-nav-text">转化成json</span></a></li></ol></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#gradle" title="gradle">gradle</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
