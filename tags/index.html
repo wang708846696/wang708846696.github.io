@@ -139,14 +139,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -202,17 +202,17 @@
                 
                     <a href="#Blog" title="Blog" rel="1">Blog</a>
                 
+                    <a href="#设计模式" title="设计模式" rel="1">设计模式</a>
+                
                     <a href="#Android APP" title="Android APP" rel="7">Android APP</a>
                 
-                    <a href="#类加载" title="类加载" rel="2">类加载</a>
-                
                     <a href="#线程" title="线程" rel="1">线程</a>
+                
+                    <a href="#类加载" title="类加载" rel="2">类加载</a>
                 
                     <a href="#热修复" title="热修复" rel="1">热修复</a>
                 
                     <a href="#gradle" title="gradle" rel="1">gradle</a>
-                
-                    <a href="#设计模式" title="设计模式" rel="1">设计模式</a>
                 
             </div>
 
@@ -469,8 +469,8 @@
             </div>
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="Android APP">
-                    <span class="tag-text">Android APP</span>
+                <span class="fa fa-tag listing-seperator" id="设计模式">
+                    <span class="tag-text">设计模式</span>
                 </span>
                 
                   <!-- <li class="listing-item">
@@ -478,19 +478,26 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/2018/11/04/滴滴插件化3_装载插件/">
+                     <a href="/2018/11/14/单例模式/">
                         <h2 class="post-title">
-                            滴滴插件化3_装载插件
+                            单例模式的核心点
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                这一部分主要是进行装载插件初始化的后续操作
+                                本节主要针对常见的几种单例模式作为介绍
                             </h3>
                         
                     </a>
                     <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
                 </div>
                 <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="Android APP">
+                    <span class="tag-text">Android APP</span>
+                </span>
                 
                   <!-- <li class="listing-item">
                   <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
@@ -516,13 +523,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/2018/11/05/滴滴插件化4_资源加载/">
+                     <a href="/2018/11/04/滴滴插件化3_装载插件/">
                         <h2 class="post-title">
-                            滴滴插件化4_资源加载
+                            滴滴插件化3_装载插件
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                本节主要是针对资源管理器进行补丁
+                                这一部分主要是进行装载插件初始化的后续操作
                             </h3>
                         
                     </a>
@@ -542,6 +549,25 @@
                         
                             <h3 class="post-subtitle">
                                 主要针对启动一个Activity看如何使用插件
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2018/11/05/滴滴插件化4_资源加载/">
+                        <h2 class="post-title">
+                            滴滴插件化4_资源加载
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                本节主要是针对资源管理器进行补丁
                             </h3>
                         
                     </a>
@@ -609,6 +635,32 @@
             </div>
             
             <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="线程">
+                    <span class="tag-text">线程</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2018/11/13/FutureTask学习/">
+                        <h2 class="post-title">
+                            FutureTask原理
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                本节主要针对FutureTask原理以及简单的使用做一个介绍
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="类加载">
                     <span class="tag-text">类加载</span>
                 </span>
@@ -644,32 +696,6 @@
                         
                             <h3 class="post-subtitle">
                                 本节主要针对Android8.0中的类加载器源码进行分析，只涉及到java层，native层暂时不涉及
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="线程">
-                    <span class="tag-text">线程</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2018/11/13/FutureTask学习/">
-                        <h2 class="post-title">
-                            FutureTask原理
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                本节主要针对FutureTask原理以及简单的使用做一个介绍
                             </h3>
                         
                     </a>
@@ -722,32 +748,6 @@
                         
                             <h3 class="post-subtitle">
                                 本节主要针对groovy语法&gradle与groovy和java的关系简要说明
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="设计模式">
-                    <span class="tag-text">设计模式</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2018/11/14/单例模式/">
-                        <h2 class="post-title">
-                            单例模式的核心点
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                本节主要针对常见的几种单例模式作为介绍
                             </h3>
                         
                     </a>
