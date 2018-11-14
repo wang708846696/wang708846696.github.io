@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -206,6 +206,39 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/11/14/单例模式/">
+        <h2 class="post-title">
+            单例模式的核心点
+        </h2>
+        <h3 class="post-subtitle">
+            本节主要针对常见的几种单例模式作为介绍
+        </h3>
+        <div class="post-content-preview">
+            常见的几种单例模式比较
+
+饿汉式(静态常量)[可用]
+
+很简单利用java虚拟机特性
+1234567public class Singleton &#123;    private final static Singleton INSTANCE = new Singleton();    private Singleton()&#123;&#125;    public static Sin......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#设计模式" title="设计模式">设计模式</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -497,37 +530,6 @@ H h主要负责Application这边对应AMS信号......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/04/滴滴插件化3_装载插件/">
-        <h2 class="post-title">
-            滴滴插件化3_装载插件
-        </h2>
-        <h3 class="post-subtitle">
-            这一部分主要是进行装载插件初始化的后续操作
-        </h3>
-        <div class="post-content-preview">
-            这一部分主要是收集测试核心类InstrumentationInfo以及四大组件的信息，同时最后创建了插件的Application对象。
-Part 6
-收集用于用于检测特定信息的类。该情景中数组为0
-123456Map&lt;ComponentName, InstrumentationInfo&gt; instrumentations = new HashMap&lt;ComponentNam......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-04
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -577,6 +579,8 @@ Part 6
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
+            
+        
             
         
             
@@ -637,6 +641,10 @@ Part 6
     <ul>
       
         <li>
+          <a href="/2018/11/14/单例模式/">单例模式的核心点</a>
+        </li>
+      
+        <li>
           <a href="/2018/11/13/FutureTask学习/">FutureTask原理</a>
         </li>
       
@@ -650,10 +658,6 @@ Part 6
       
         <li>
           <a href="/2018/11/10/Android中的类加载器(含源码)/">Android中的类加载器(含源码)</a>
-        </li>
-      
-        <li>
-          <a href="/2018/11/08/Java中类的加载机制（简介无源码）/">Java中类的加载机制（简介无源码）</a>
         </li>
       
     </ul>
