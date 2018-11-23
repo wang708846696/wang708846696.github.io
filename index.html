@@ -139,14 +139,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -206,6 +206,38 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/11/23/基础面试/">
+        <h2 class="post-title">
+            基础面试题1
+        </h2>
+        <h3 class="post-subtitle">
+            本章节将介绍一些基础面试题
+        </h3>
+        <div class="post-content-preview">
+            进程和线程的区别
+
+根本区别：进程是操作系统资源分配的基本单位，而线程是任务调度和执行的基本单位
+在开销方面：每个进程都有独立的代码和数据空间（程序上下文），程序之间的切换会有较大的开销；线程可以看做轻量级的进程，同一类线程共享代码和数据空间，每个线程都有自己独立的运行栈和程序计数器（PC），线程之间切换的开销小。
+所处环境：在操作系统中能同时运行多个进程（程序）；而在同一个进程（程序）中有......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-23
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#面试题" title="面试题">面试题</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -499,38 +531,6 @@ H h主要负责Application这边对应AMS信号......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/05/滴滴插件化5_使用插件/">
-        <h2 class="post-title">
-            滴滴插件化5_使用插件
-        </h2>
-        <h3 class="post-subtitle">
-            主要针对启动一个Activity看如何使用插件
-        </h3>
-        <div class="post-content-preview">
-            通过前几节的说明，了解到了在LoadedPlugin类的构造方法中将准备工作做好，包括资源管理器，类加载器，四大组件信息等等。生成了一个比较庞大的类，这个类是能够找到APK里面资源，类等信息的主要入口。下面我们就从startActivity这个方法进行突破
-
-12&gt; VAInstrumentation.handleMessage()&gt;
-
-首先了解一下framework中进行启动A......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-05
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -592,6 +592,8 @@ H h主要负责Application这边对应AMS信号......
         
             
         
+            
+        
     </div>
 </section>
 
@@ -644,6 +646,10 @@ H h主要负责Application这边对应AMS信号......
     <ul>
       
         <li>
+          <a href="/2018/11/23/基础面试/">基础面试题1</a>
+        </li>
+      
+        <li>
           <a href="/2018/11/15/事件分发机制/">Android事件传输机制</a>
         </li>
       
@@ -657,10 +663,6 @@ H h主要负责Application这边对应AMS信号......
       
         <li>
           <a href="/2018/11/13/gradle基本使用/">groovy语法&amp;gradle与groovy和java的关系简要说明</a>
-        </li>
-      
-        <li>
-          <a href="/2018/11/10/热修复的一种实现/">Android热修复的一种实现</a>
         </li>
       
     </ul>
