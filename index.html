@@ -132,13 +132,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -147,6 +140,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,37 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/12/04/动态代理模式/">
+        <h2 class="post-title">
+            动态代理模式
+        </h2>
+        <h3 class="post-subtitle">
+            动态代理模式讲解从反编译角度看
+        </h3>
+        <div class="post-content-preview">
+            静态代理大家都明白，就是相当于包装了一次，在包装这一次的时候可以加一些业务逻辑。同样静态代理的特点是一个接口对应一个代理类，当然委托类可以多个。
+静态代理
+123456/**  * 定义Demo接口  */  public interface Demo &#123;        public void save();  &#125;
+123456789/**  * DemoImpl实现De......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-04
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#设计模式" title="设计模式">设计模式</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -507,37 +538,6 @@ Android中的java.lang.ClassLoader这个类也不同于Java中的java.l......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/08/Java中类的加载机制（简介无源码）/">
-        <h2 class="post-title">
-            Java中类的加载机制（简介无源码）
-        </h2>
-        <h3 class="post-subtitle">
-            根据自问自答的方式简述了Java中类的加载机制，后续会有源码版
-        </h3>
-        <div class="post-content-preview">
-            简介
-说道类加载器可能大家第一反应就是啊这个东西我没有接触过很难，而且一般情况下对于app开发应用也用不到类加载器，但是对于框架开发者来说类加载器就是家常便饭一样，那类加载器到底是什么东西，真的难道我们都不敢接触了吗？下面就听菜鸟给你慢慢解答！我会通过小标题的方式一步步让大家理解最终的答案因为小标题是理解最终答案的基础
-什么是类加载？
-jvm(java虚拟机)将xx.class文件读取到内存......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#类加载" title="类加载">类加载</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -583,6 +583,8 @@ jvm(java虚拟机)将xx.class文件读取到内存......
         
             
         
+            
+            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
             
         
             
@@ -657,6 +659,10 @@ jvm(java虚拟机)将xx.class文件读取到内存......
     <ul>
       
         <li>
+          <a href="/2018/12/04/动态代理模式/">动态代理模式</a>
+        </li>
+      
+        <li>
           <a href="/2018/11/24/Android工程打包apk简介/">Android工程打包apk简介</a>
         </li>
       
@@ -670,10 +676,6 @@ jvm(java虚拟机)将xx.class文件读取到内存......
       
         <li>
           <a href="/2018/11/15/事件分发机制/">Android事件传输机制</a>
-        </li>
-      
-        <li>
-          <a href="/2018/11/14/单例模式/">单例模式的核心点</a>
         </li>
       
     </ul>
