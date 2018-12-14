@@ -7,8 +7,24 @@
     </url>
 
     <url>
+        <loc>http://yoursite-url/2018/11/01/Activity%E5%90%AF%E5%8A%A83-startActivityLocked%E6%96%B9%E6%B3%95/</loc>
+        <lastmod>2018-12-14T09:40:59.079Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://yoursite-url/2018/12/14/handler%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2/</loc>
-        <lastmod>2018-12-14T09:22:18.902Z</lastmod>
+        <lastmod>2018-12-14T09:39:08.879Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://yoursite-url/2018/11/01/Activity%E5%90%AF%E5%8A%A8_%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/</loc>
+        <lastmod>2018-12-14T09:38:42.808Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -215,24 +231,8 @@
     </url>
 
     <url>
-        <loc>http://yoursite-url/2018/11/01/Activity%E5%90%AF%E5%8A%A83-startActivityLocked%E6%96%B9%E6%B3%95/</loc>
-        <lastmod>2018-11-03T07:28:50.686Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>http://yoursite-url/2018/11/01/Activity%E5%90%AF%E5%8A%A82-startActivityMayWait%E6%96%B9%E6%B3%95/</loc>
         <lastmod>2018-11-03T07:28:37.582Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://yoursite-url/2018/11/01/Activity%E5%90%AF%E5%8A%A8_%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/</loc>
-        <lastmod>2018-11-03T07:28:10.664Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

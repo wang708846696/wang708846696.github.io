@@ -16,13 +16,6 @@
     </url>
 
     <url>
-        <loc>http://yoursite-url/tags/Android-Framework/</loc>
-        <lastmod>2018-11-03T07:29:35.383Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://yoursite-url/tags/Android-APP/</loc>
         <lastmod>2018-11-08T13:24:18.802Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -94,7 +87,14 @@
 
     <url>
         <loc>http://yoursite-url/tags/%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2/</loc>
-        <lastmod>2018-12-14T09:22:18.902Z</lastmod>
+        <lastmod>2018-12-14T09:39:08.879Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://yoursite-url/tags/Android-Framework/</loc>
+        <lastmod>2018-12-14T09:40:59.079Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
