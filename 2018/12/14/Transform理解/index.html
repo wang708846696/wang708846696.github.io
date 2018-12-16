@@ -224,7 +224,7 @@
 </ul>
 <h1><span id="注册自己的transform">注册自己的Transform</span></h1>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"NullableProblems"</span>)</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project project)</span> </span>&#123;</span><br><span class="line">        AppExtension appExtension = (AppExtension)project.getProperties().get(<span class="string">"android"</span>);</span><br><span class="line">        appExtension.registerTransform(<span class="keyword">new</span> CustomTransform(), Collections.EMPTY_LIST);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%E7%90%86%E8%A7%A3%5C16791ec6e48a2134.png" alt="img"></p>
+<p><img src="16791ec6e48a2134.png" alt="img"></p>
 <p>如图所示Transform就是对应的一个个流一样的节点，Jacoco，Desugar，MergeJavaRes，AdvancedProfiling，Shrinker，Proguard, JarMergeTransform, MultiDex, Dex都是通过Transform的形式一个个串联起来。其中也有将我们自定义的Transform插进去。</p>
 <h1><span id="transform的输入数据的过滤机制">Transform的输入数据的过滤机制</span></h1>
 <p>Transform的数据输入，可以通过Scope和ContentType两个维度进行过滤。</p>
@@ -233,16 +233,16 @@
 <li>一种是消费型的，当前Transform需要将消费型型输出给下一个Transform</li>
 <li>另一种是引用型的，当前Transform可以读取这些输入，而不需要输出给下一个Transform</li>
 </ul>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%E7%90%86%E8%A7%A3%5C16791ec6e317125f.png" alt="img"></p>
+<p><img src="16791ec6e317125f.png" alt="img"></p>
 <ul>
 <li>ContentType 数据类型，在插件开发中，我们一般只能使用CLASSES和RESOURCES两种类型，注意，其中的CLASSES已经包含了class文件和jar文件</li>
 </ul>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%E7%90%86%E8%A7%A3%5C16791ec6e28bf848.png" alt="img"></p>
+<p><img src="16791ec6e28bf848.png" alt="img"></p>
 <p>从图中可以看到，除了CLASSES和RESOURCES，还有一些我们开发过程无法使用的类型，比如DEX文件，这些隐藏类型在一个独立的枚举类<a href="https://link.juejin.im/?target=https%3A%2F%2Fandroid.googlesource.com%2Fplatform%2Ftools%2Fbase%2F%2B%2Fstudio-master-dev%2Fbuild-system%2Fgradle-core%2Fsrc%2Fmain%2Fjava%2Fcom%2Fandroid%2Fbuild%2Fgradle%2Finternal%2Fpipeline%2FExtendedContentType.java%3Fautodive%3D0%252F%252F%252F" target="_blank" rel="noopener">ExtendedContentType</a>中，这些类型只能给Android编译器使用。另外，我们一般使用 <a href="https://link.juejin.im/?target=https%3A%2F%2Fandroid.googlesource.com%2Fplatform%2Ftools%2Fbase%2F%2B%2Fgradle_2.0.0%2Fbuild-system%2Fgradle-core%2Fsrc%2Fmain%2Fgroovy%2Fcom%2Fandroid%2Fbuild%2Fgradle%2Finternal%2Ftransforms%2FShrinkResourcesTransform.java" target="_blank" rel="noopener">TransformManager</a>中提供的几个常用的ContentType集合和Scope集合，如果是要处理所有class和jar的字节码，ContentType我们一般使用<code>TransformManager.CONTENT_CLASS</code>。</p>
 <ul>
 <li>Scope相比ContentType则是另一个维度的过滤规则</li>
 </ul>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%E7%90%86%E8%A7%A3%5C16791ec7590005b0.png" alt="img"></p>
+<p><img src="16791ec7590005b0.png" alt="img"></p>
 <p>我们可以发现，左边几个类型可供我们使用，而我们一般都是组合使用这几个类型，<a href="https://link.juejin.im/?target=https%3A%2F%2Fandroid.googlesource.com%2Fplatform%2Ftools%2Fbase%2F%2B%2Fgradle_2.0.0%2Fbuild-system%2Fgradle-core%2Fsrc%2Fmain%2Fgroovy%2Fcom%2Fandroid%2Fbuild%2Fgradle%2Finternal%2Ftransforms%2FShrinkResourcesTransform.java" target="_blank" rel="noopener">TransformManager</a>有几个常用的Scope集合方便开发者使用。<br>
 如果是要处理所有class字节码，Scope我们一般使用<code>TransformManager.SCOPE_FULL_PROJECT</code>。</p>
 <blockquote>
@@ -258,7 +258,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span> </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isIncremental</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果不是增量编译，则清空output目录，然后按照前面的方式，逐个class/jar处理<br>
 如果是增量编译，则要检查每个文件的Status，Status分四种，并且对这四种文件的操作也不尽相同</p>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%E7%90%86%E8%A7%A3%5C16791ec765754c8c.png" alt="img"></p>
+<p><img src="16791ec765754c8c.png" alt="img"></p>
 <ul>
 <li>NOTCHANGED: 当前文件不需处理，甚至复制操作都不用；</li>
 <li>ADDED、CHANGED: 正常处理，输出给下一个任务；</li>
@@ -285,7 +285,7 @@
 <p>（2）<code>Format.JAR ==&gt; jars</code></p>
 <p>比如现在对于自定义的<code>Transform</code>来说</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transform</span><span class="params">(Context context, Collection&lt;TransformInput&gt; inputs, Collection&lt;TransformInput&gt; referencedInputs,</span></span></span><br><span class="line"><span class="function"><span class="params">               TransformOutputProvider outputProvider, <span class="keyword">boolean</span> isIncremental)</span> </span></span><br><span class="line"><span class="function">               <span class="keyword">throws</span> IOException, TransformException, InterruptedException </span>&#123;</span><br><span class="line">    inputs.each &#123; transformInput -&gt;</span><br><span class="line">        transformInput.directoryInputs.each &#123; directoryInput -&gt;</span><br><span class="line">            <span class="comment">//这里使用Format.DIRECTORY所以是folders</span></span><br><span class="line">            File dest = outputProvider.getContentLocation(</span><br><span class="line">                    directoryInput.name, directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY);</span><br><span class="line">            FileUtils.copyDirectory(directoryInput.file, dest)</span><br><span class="line">        &#125;</span><br><span class="line">                 </span><br><span class="line">        transformInput.jarInputs.each &#123; jarInput -&gt;</span><br><span class="line">            <span class="comment">//这里使用Format.JAR所以输出是jars目录</span></span><br><span class="line">            File dest = outputProvider.getContentLocation(</span><br><span class="line">                    destName, jarInput.contentTypes, jarInput.scopes, Format.JAR)</span><br><span class="line">            FileUtils.copyFile(jarInput.file, dest)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%E7%90%86%E8%A7%A3%5C20180903222803872.png" alt="img"></p>
+<p><img src="20180903222803872.png" alt="img"></p>
 <p>看几个例子：</p>
 <ul>
 <li>
@@ -334,7 +334,7 @@
 <p>根据前面的结论：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;ContentType&gt; CONTENT_JARS = ImmutableSet.of(CLASSES, RESOURCES);</span><br></pre></td></tr></table></figure>
 <p>所以：<code>TransformManager.CONTENT_JARS ==&gt; CLASSES + RESOURCES = 3</code></p>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%E7%90%86%E8%A7%A3%5C20180903223944487.png" alt="img"></p>
+<p><img src="20180903223944487.png" alt="img"></p>
 <h3><span id="对于dex-transform-task来说">对于<code>dex Transform Task</code>来说</span></h3>
 <p>源码：<code>com.android.build.gradle.internal.transforms.ProGuardTransform.java</code></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">File outputDir = outputProvider.getContentLocation(<span class="string">"main"</span>,</span><br><span class="line">        getOutputTypes(),</span><br><span class="line">        TransformManager.SCOPE_FULL_PROJECT,</span><br><span class="line">        Format.DIRECTORY);</span><br></pre></td></tr></table></figure>
@@ -343,7 +343,7 @@
 <p>点进去看定义</p>
 <p><code>com.android.build.gradle.internal.pipeline.ExtendedContentType.class</code></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> ExtendedContentType implements ContentType &#123;</span><br><span class="line">    DEX(<span class="number">0x1000</span>),</span><br><span class="line">    NATIVE_LIBS(<span class="number">0x2000</span>),</span><br><span class="line">    CLASSES_ENHANCED(<span class="number">0x4000</span>),</span><br><span class="line">    JACK(<span class="number">0x8000</span>),</span><br><span class="line">    DATA_BINDING(<span class="number">0x10000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%E7%90%86%E8%A7%A3%5C2018090322412791.png" alt="img"></p>
+<p><img src="2018090322412791.png" alt="img"></p>
 <h2><span id="outputtypes后面是-scopes"><code>OutputTypes</code>后面是 <code>${Scopes}</code></span></h2>
 <p>${Scopes} 是由 TransformOutputProvider#getContentLocation(name, types, scopes, format) 中的 scopes 决定的：其值常常来自：Transform#getScopes() ，也不一定。</p>
 <h3><span id="举例1自定义transform">举例1自定义Transform</span></h3>
@@ -358,11 +358,11 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;Scope&gt; SCOPE_FULL_PROJECT = Sets.immutableEnumSet(</span><br><span class="line">        Scope.PROJECT,</span><br><span class="line">        Scope.PROJECT_LOCAL_DEPS,</span><br><span class="line">        Scope.SUB_PROJECTS,</span><br><span class="line">        Scope.SUB_PROJECTS_LOCAL_DEPS,</span><br><span class="line">        Scope.EXTERNAL_LIBRARIES);</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Scope implements ScopeType &#123;</span><br><span class="line">    PROJECT(<span class="number">0x01</span>),</span><br><span class="line">    PROJECT_LOCAL_DEPS(<span class="number">0x02</span>),</span><br><span class="line">    SUB_PROJECTS(<span class="number">0x04</span>),</span><br><span class="line">    SUB_PROJECTS_LOCAL_DEPS(<span class="number">0x08</span>),</span><br><span class="line">    EXTERNAL_LIBRARIES(<span class="number">0x10</span>),</span><br><span class="line">    TESTED_CODE(<span class="number">0x20</span>),</span><br><span class="line">    PROVIDED_ONLY(<span class="number">0x40</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>所以是：0x1+0x2+0x4+0x8+0x10 = 1F</p>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%E7%90%86%E8%A7%A3%5C20180903224517690.png" alt="img"></p>
+<p><img src="20180903224517690.png" alt="img"></p>
 <h3><span id="举例3dex-transform-task">举例3<code>dex Transform Task</code></span></h3>
 <p>源码：<code>com.android.build.gradle.internal.transforms.ProGuardTransform.java</code></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">File outputDir = outputProvider.getContentLocation(<span class="string">"main"</span>,</span><br><span class="line">        getOutputTypes(),</span><br><span class="line">        TransformManager.SCOPE_FULL_PROJECT,</span><br><span class="line">        Format.DIRECTORY);</span><br></pre></td></tr></table></figure>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%E7%90%86%E8%A7%A3%5C20180903224610192.png" alt="img"></p>
+<p><img src="20180903224610192.png" alt="img"></p>
 <p>同上</p>
 
                 
