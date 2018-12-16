@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          Beantech | 王菜鸟
+          位运算 - Beantech | 王菜鸟
         
     </title>
 
-    <link rel="canonical" href="http://yoursite-url/archives/4/">
+    <link rel="canonical" href="http://yoursite-url/2018/12/16/位运算符常见用法/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -69,8 +69,8 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('/img/header_img/tag-bg.png') 
-            /*config*/
+            background-image: url('Demo.png')
+            /*post*/
         
     }
     
@@ -83,10 +83,18 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
-                    <div class="site-heading">
-                        <h1>Wangcainiao</h1>
-                        <!--<hr class="small">-->
-                        <span class="subheading">Keep on going never give up</span>
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#位运算" title="位运算">位运算</a>
+                            
+                        </div>
+                        <h1>位运算</h1>
+                        <h2 class="subheading">位运算</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-12-16
+                        </span>
                     </div>
                 
 
@@ -189,265 +197,173 @@
 
 
     <!-- Main Content -->
-    <!-- Main Content -->
-<div class="container">
-    <div class="row">
-        
+    <!-- Modify by Yu-Hsuan Yen -->
 
-<!-- USE SIDEBAR -->
-    <!-- Post Container -->
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
-            
-                <!-- Main Content -->
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
-
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动_参数解析/">
-        <h2 class="post-title">
-            Activity启动_参数解析
-        </h2>
-        <h3 class="post-subtitle">
-            主要进行Activity启动时候必要参数的说明
-        </h3>
-        <div class="post-content-preview">
-            
-Am.java
-
-123public static void main(String[] args) &#123;    (new Am()).run(args);&#125;
-12345678910111213141516public void run(String[] args) &#123;    if (args.length &lt; 1) &#123;        onSho......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/03/18/hexo-theme-beantech/">
-        <h2 class="post-title">
-            [Hexo] Theme BeanTech
-        </h2>
-        <h3 class="post-subtitle">
-            This is hexo theme Demo.
-        </h3>
-        <div class="post-content-preview">
-            
-Ported Theme of Hux Blog, Thank Huxpro for designing such a flawless theme.
-This BeanTech theme created by YuHsuan modified from the original Porter Kaijun
-
-
-
-
-Usage
-
-I publish the whole project f......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2017-03-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hexo" title="Hexo">Hexo</a>
-            
-              <a href="/tags/#Blog" title="Blog">Blog</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-
-
-<!-- Pager -->
-
-<ul class="pager">
-    
-        <li class="previous">
-            <a href="/archives/3/">&larr; Newer Posts</a>
-        </li>
-    
-    
+                <ul>
+<li>测试第 k 位: <code>s &amp; (1 &lt;&lt; k)</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//举个例子</span></span><br><span class="line"><span class="comment">//	1&lt;&lt;0=1	1&lt;&lt;1=2   1&lt;&lt;2=4  1&lt;&lt;3=8</span></span><br><span class="line"><span class="comment">//	0001	0010	0100	1000</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>设置第 k 位: <code>s |= (1 &lt;&lt; k)</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将第多少位设置成1，比如将0000的第三位设置成1，结果是1000</span></span><br><span class="line"><span class="comment">//所以0 |= (1&lt;&lt;3)结果就是1000</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>第 k 位置零: <code>s &amp;= ~(1 &lt;&lt; k)</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将1挪到第k位，比如0001，先挪到第三位编程1000，然后进行取反操作变成0111，然后在和s进行&amp;运算这样</span></span><br><span class="line"><span class="comment">//就会把s的第三位变成0</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>切换第 k 位值: <code>s ^= ~(1 &lt;&lt; k)</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将1挪到第k位，比如0001，先挪到第三位编程1000，然后进行取反操作变成0111，然后在和s进行^运算这样</span></span><br><span class="line"><span class="comment">//就会把s的第三位进行相反的操作，原本是1就会变成0，原本是0就会变成1</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>乘以 2n: <code>s &lt;&lt; n</code></li>
+</ul>
+<ul>
+<li>除以 2n: <code>s &gt;&gt; n</code></li>
+<li>交集: <code>s &amp; t</code></li>
+<li>并集: <code>s | t</code></li>
+<li>减法: <code>s &amp; ~t</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将在s这个数中减去t对应的那些位的1</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>交换 <code>x = x ^ y ^ (y = x)</code></li>
+<li>取出最小非 0 位（Extract lowest set bit）: <code>s &amp; (-s)</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先看补码和原码</span></span><br><span class="line"><span class="comment">//3的原码是：	0000 0000 0000 0000 0000 0000 0000 0011</span></span><br><span class="line"><span class="comment">//补码即原码除符号位外，全部取反再+1</span></span><br><span class="line"><span class="comment">//所以3的补码是：0111 1111 1111 1111 1111 1111 1111 1101</span></span><br><span class="line"><span class="comment">//所以-3就是:	1111 1111 1111 1111 1111 1111 1111 1101</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//重新举个例子</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//	0000 0000 0000 0000 0000 0000 0000 1000	原码8</span></span><br><span class="line"><span class="comment">//	0111 1111 1111 1111 1111 1111 1111 1000 原码除符号位外，全部取反再+1</span></span><br><span class="line"><span class="comment">//	1111 1111 1111 1111 1111 1111 1111 1000 补码8</span></span><br><span class="line"><span class="comment">//	0000 0000 0000 0000 0000 0000 0000 1000 计算取出最小非 0 位</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>取出最小 0 位（Extract lowest unset bit）: <code>~s &amp; (s + 1)</code></li>
+<li>交换值: <code>x ^= y; y ^= x; x ^= y;</code></li>
 </ul>
 
+                
 
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/14/Transform/" data-toggle="tooltip" data-placement="top" title="Java中类的加载机制（简介无源码）">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
 
-                <!-- 如果开启评论功能 -->
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="nav">none</ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#位运算" title="位运算">位运算</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
                 
             </div>
-
-          <!-- Sidebar Container -->
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
-    col-xs-12
-    sidebar-container
-">
-    
-        <!-- Featured Tags -->
-
-<section>
-    <!-- no hr -->
-    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-    <div class="tags">
-        
-            
-            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
-            
-        
-            
-            <a href="/tags/#Android APP" title="Android APP" rel="7">Android APP</a>
-            
-        
-            
-        
-            
-            <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
+        </div>
     </div>
-</section>
+</article>
 
-        <hr>
-    
-        <!-- Short About -->
-<section class="visible-md visible-lg">
-    <h5><a href="/about/">ABOUT ME</a></h5>
-    <div class="short-about">
 
-        
-            <img id="avatar_pic" src="/img/ironman-draw.png">
-        
 
-        
-            <p>Welcome to my blog! I am also wish making more friends.</p>
-        
 
-        <!-- SNS Link -->
-        <ul class="list-inline">
-            
-            
-            
-                <li>
-                    <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
-                        <span class="fa-stack fa-lg">
-                            <i class="fa fa-circle fa-stack-2x"></i>
-                            <i class="fa  fa-stack-1x fa-inverse">知</i>
-                        </span>
-                    </a>
-                </li>
-            
 
-            
 
-            
 
-            
-            
-            
-            
-        </ul>
-    </div>
-</section>
-        <hr>
-    
-        
-  <h5>热门文章
-  <div class="widget">
-    <ul>
-      
-        <li>
-          <a href="/2018/12/16/位运算符常见用法/">位运算</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/14/Transform/">Java中类的加载机制（简介无源码）</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/14/handler内存泄露/">常用Handler导致内存泄露</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/04/动态代理模式/">动态代理模式</a>
-        </li>
-      
-        <li>
-          <a href="/2018/11/24/Android工程打包apk简介/">Android工程打包apk简介</a>
-        </li>
-      
-    </ul>
-  </div>
-</h5>
-        <hr>
-    
-        <!-- Friends Blog -->
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
 
-<h5>FRIENDS</h5>
-<ul class="list-inline">
-
-    
-        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
-    
-        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
-    
-</ul>
-
-        <hr>
-    
-</div>
-
-        
-    </div>
-</div>
 
 
     <!-- Footer -->
