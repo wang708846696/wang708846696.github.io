@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Java中类的加载机制（简介无源码） - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/12/14/Transform/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Transform" title="Transform">Transform</a>
+                            
+                        </div>
+                        <h1>Java中类的加载机制（简介无源码）</h1>
+                        <h2 class="subheading">根据自问自答的方式简述了Java中类的加载机制，后续会有源码版</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-12-14
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>来源于https://juejin.im/entry/5c0cc7c15188257d5e39647d</p>
+</blockquote>
+<h1><span id="transform历史">Transform历史</span></h1>
+<p>gradle2.0之前Transform单独需要引入</p>
+<p><a href="https://dl.bintray.com/android/android-tools/com/android/tools/build/transform-api/" target="_blank" rel="noopener">transform的历史版本</a></p>
+<p>gradle2.0之后代码就放入了gradle-api中</p>
+<h1><span id="transform依赖方式">Transform依赖方式</span></h1>
+<ul>
+<li>api&lt;=2.0 <code>compile 'com.android.tools.build:transform-api:1.5.0'</code></li>
+<li>api&gt;2.0<code>implementation 'com.android.tools.build:gradle-api:3.1.4'</code></li>
+</ul>
+<h1><span id="注册自己的transform">注册自己的Transform</span></h1>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"NullableProblems"</span>)</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project project)</span> </span>&#123;</span><br><span class="line">        AppExtension appExtension = (AppExtension)project.getProperties().get(<span class="string">"android"</span>);</span><br><span class="line">        appExtension.registerTransform(<span class="keyword">new</span> CustomTransform(), Collections.EMPTY_LIST);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%5C16791ec6e48a2134.png" alt="img"></p>
+<p>如图所示Transform就是对应的一个个流一样的节点，Jacoco，Desugar，MergeJavaRes，AdvancedProfiling，Shrinker，Proguard, JarMergeTransform, MultiDex, Dex都是通过Transform的形式一个个串联起来。其中也有将我们自定义的Transform插进去。</p>
+<h1><span id="transform的输入数据的过滤机制">Transform的输入数据的过滤机制</span></h1>
+<p>Transform的数据输入，可以通过Scope和ContentType两个维度进行过滤。</p>
+<h1><span id="transform的输入类型">Transform的输入类型</span></h1>
+<ul>
+<li>一种是消费型的，当前Transform需要将消费型型输出给下一个Transform</li>
+<li>另一种是引用型的，当前Transform可以读取这些输入，而不需要输出给下一个Transform</li>
+</ul>
+<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%5C16791ec6e317125f.png" alt="img"></p>
+<ul>
+<li>ContentType 数据类型，在插件开发中，我们一般只能使用CLASSES和RESOURCES两种类型，注意，其中的CLASSES已经包含了class文件和jar文件</li>
+</ul>
+<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%5C16791ec6e28bf848.png" alt="img"></p>
+<p>从图中可以看到，除了CLASSES和RESOURCES，还有一些我们开发过程无法使用的类型，比如DEX文件，这些隐藏类型在一个独立的枚举类<a href="https://link.juejin.im/?target=https%3A%2F%2Fandroid.googlesource.com%2Fplatform%2Ftools%2Fbase%2F%2B%2Fstudio-master-dev%2Fbuild-system%2Fgradle-core%2Fsrc%2Fmain%2Fjava%2Fcom%2Fandroid%2Fbuild%2Fgradle%2Finternal%2Fpipeline%2FExtendedContentType.java%3Fautodive%3D0%252F%252F%252F" target="_blank" rel="noopener">ExtendedContentType</a>中，这些类型只能给Android编译器使用。另外，我们一般使用 <a href="https://link.juejin.im/?target=https%3A%2F%2Fandroid.googlesource.com%2Fplatform%2Ftools%2Fbase%2F%2B%2Fgradle_2.0.0%2Fbuild-system%2Fgradle-core%2Fsrc%2Fmain%2Fgroovy%2Fcom%2Fandroid%2Fbuild%2Fgradle%2Finternal%2Ftransforms%2FShrinkResourcesTransform.java" target="_blank" rel="noopener">TransformManager</a>中提供的几个常用的ContentType集合和Scope集合，如果是要处理所有class和jar的字节码，ContentType我们一般使用<code>TransformManager.CONTENT_CLASS</code>。</p>
+<ul>
+<li>Scope相比ContentType则是另一个维度的过滤规则</li>
+</ul>
+<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%5C16791ec7590005b0.png" alt="img"></p>
+<p>我们可以发现，左边几个类型可供我们使用，而我们一般都是组合使用这几个类型，<a href="https://link.juejin.im/?target=https%3A%2F%2Fandroid.googlesource.com%2Fplatform%2Ftools%2Fbase%2F%2B%2Fgradle_2.0.0%2Fbuild-system%2Fgradle-core%2Fsrc%2Fmain%2Fgroovy%2Fcom%2Fandroid%2Fbuild%2Fgradle%2Finternal%2Ftransforms%2FShrinkResourcesTransform.java" target="_blank" rel="noopener">TransformManager</a>有几个常用的Scope集合方便开发者使用。<br>
+如果是要处理所有class字节码，Scope我们一般使用<code>TransformManager.SCOPE_FULL_PROJECT</code>。</p>
+<blockquote>
+<p>自定义的Transform</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomTransform</span> <span class="keyword">extends</span> <span class="title">Transform</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"CustomTransform"</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CustomTransform</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"CustomTransform"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">transform</span><span class="params">(TransformInvocation transformInvocation)</span> <span class="keyword">throws</span> TransformException, InterruptedException, IOException </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.transform(transformInvocation);</span><br><span class="line">        <span class="comment">//当前是否是增量编译</span></span><br><span class="line">        <span class="keyword">boolean</span> isIncremental = transformInvocation.isIncremental();</span><br><span class="line">        <span class="comment">//消费型输入，可以从中获取jar包和class文件夹路径。需要输出给下一个任务</span></span><br><span class="line">        Collection&lt;TransformInput&gt; inputs = transformInvocation.getInputs();</span><br><span class="line">        <span class="comment">//引用型输入，无需输出。</span></span><br><span class="line">        Collection&lt;TransformInput&gt; referencedInputs = transformInvocation.getReferencedInputs();</span><br><span class="line">        <span class="comment">//OutputProvider管理输出路径，如果消费型输入为空，你会发现OutputProvider == null</span></span><br><span class="line">        TransformOutputProvider outputProvider = transformInvocation.getOutputProvider();</span><br><span class="line">        <span class="keyword">for</span>(TransformInput input : inputs) &#123;</span><br><span class="line">            <span class="keyword">for</span>(JarInput jarInput : input.getJarInputs()) &#123;</span><br><span class="line">                File dest = outputProvider.getContentLocation(</span><br><span class="line">                        jarInput.getFile().getAbsolutePath(),</span><br><span class="line">                        jarInput.getContentTypes(),</span><br><span class="line">                        jarInput.getScopes(),</span><br><span class="line">                        Format.JAR);</span><br><span class="line">                <span class="comment">//将修改过的字节码copy到dest，就可以实现编译期间干预字节码的目的了        </span></span><br><span class="line">                FileUtils.copyFile(jarInput.getFile(), dest);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(DirectoryInput directoryInput : input.getDirectoryInputs()) &#123;</span><br><span class="line">                File dest = outputProvider.getContentLocation(directoryInput.getName(),</span><br><span class="line">                        directoryInput.getContentTypes(), directoryInput.getScopes(),</span><br><span class="line">                        Format.DIRECTORY);</span><br><span class="line">                <span class="comment">//将修改过的字节码copy到dest，就可以实现编译期间干预字节码的目的了        </span></span><br><span class="line">                FileUtils.copyDirectory(directoryInput.getFile(), dest);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Set&lt;QualifiedContent.ContentType&gt; getInputTypes() &#123;</span><br><span class="line">        <span class="comment">//过滤的是class和jar包</span></span><br><span class="line">        <span class="keyword">return</span> TransformManager.CONTENT_CLASS;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Set&lt;? <span class="keyword">super</span> QualifiedContent.Scope&gt; getScopes() &#123;</span><br><span class="line">        <span class="keyword">return</span> TransformManager.SCOPE_FULL_PROJECT;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Set&lt;QualifiedContent.ContentType&gt; getOutputTypes() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getOutputTypes();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Set&lt;? <span class="keyword">super</span> QualifiedContent.Scope&gt; getReferencedScopes() &#123;</span><br><span class="line">        <span class="keyword">return</span> TransformManager.EMPTY_SCOPES;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getParameterInputs</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getParameterInputs();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isCacheable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="meta">@Override</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isIncremental</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>; <span class="comment">//是否开启增量编译</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，在transform方法中，我们将每个jar包和class文件复制到dest路径，这个dest路径就是下一个Transform的输入数据，而在复制时，我们就可以做一些狸猫换太子，偷天换日的事情了，先将jar包和class文件的字节码做一些修改，再进行复制即可，至于怎么修改字节码，就要借助我们后面介绍的ASM了。而如果开发过程要看你当前transform处理之后的class/jar包，可以到<br>
+/build/intermediates/transforms/CustomTransform/下查看，你会发现所有jar包命名都是123456递增，这是正常的，这里的命名规则可以在OutputProvider.getContentLocation的具体实现中找到</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> File <span class="title">getContentLocation</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        @NonNull String name,</span></span></span><br><span class="line"><span class="function"><span class="params">        @NonNull Set&lt;ContentType&gt; types,</span></span></span><br><span class="line"><span class="function"><span class="params">        @NonNull Set&lt;? <span class="keyword">super</span> Scope&gt; scopes,</span></span></span><br><span class="line"><span class="function"><span class="params">        @NonNull Format format)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// runtime check these since it's (indirectly) called by 3rd party transforms.</span></span><br><span class="line">    checkNotNull(name);</span><br><span class="line">    checkNotNull(types);</span><br><span class="line">    checkNotNull(scopes);</span><br><span class="line">    checkNotNull(format);</span><br><span class="line">    checkState(!name.isEmpty());</span><br><span class="line">    checkState(!types.isEmpty());</span><br><span class="line">    checkState(!scopes.isEmpty());</span><br><span class="line">    <span class="comment">// search for an existing matching substream.</span></span><br><span class="line">    <span class="keyword">for</span> (SubStream subStream : subStreams) &#123;</span><br><span class="line">        <span class="comment">// look for an existing match. This means same name, types, scopes, and format.</span></span><br><span class="line">        <span class="keyword">if</span> (name.equals(subStream.getName())</span><br><span class="line">                &amp;&amp; types.equals(subStream.getTypes())</span><br><span class="line">                &amp;&amp; scopes.equals(subStream.getScopes())</span><br><span class="line">                &amp;&amp; format == subStream.getFormat()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> File(rootFolder, subStream.getFilename());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//按位置递增！！	</span></span><br><span class="line">    <span class="comment">// didn't find a matching output. create the new output</span></span><br><span class="line">    SubStream newSubStream = <span class="keyword">new</span> SubStream(name, nextIndex++, scopes, types, format, <span class="keyword">true</span>);</span><br><span class="line">    subStreams.add(newSubStream);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> File(rootFolder, newSubStream.getFilename());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1><span id="transfrom的输出路径">Transfrom的输出路径</span></h1>
+<p>先给个结论：</p>
+<p>主要是由 <strong>TransformOutputProvider#getContentLocation(name, types, scopes, format)</strong> 中的参数决定的！</p>
+<p><code>com.android.build.api.transform.TransformOutputProvider.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TransformOutputProvider</span> </span>&#123;</span><br><span class="line">    ......</span><br><span class="line">    <span class="meta">@NonNull</span></span><br><span class="line">    <span class="function">File <span class="title">getContentLocation</span><span class="params">(@NonNull String name,</span></span></span><br><span class="line"><span class="function"><span class="params">            @NonNull Set&lt;QualifiedContent.ContentType&gt; types,</span></span></span><br><span class="line"><span class="function"><span class="params">            @NonNull Set&lt;? <span class="keyword">super</span> QualifiedContent.Scope&gt; scopes,</span></span></span><br><span class="line"><span class="function"><span class="params">            @NonNull Format format)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2><span id="transforms路径下首先是各个transform-task的名字所代表的路径">transforms路径下首先是各个Transform Task的名字所代表的路径</span></h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">transforms/dex</span><br><span class="line">transforms/proguard</span><br></pre></td></tr></table></figure>
+<h2><span id="productflavorbuildtype"><code>${productFlavor}/${buildType}</code></span></h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">proguard下下面，紧接着的路径是：$&#123;productFlavor&#125;/$&#123;buildType&#125;，没有productFlavor就省略，如：</span><br><span class="line">transforms/proguard/qihoo/release/jars/<span class="number">3</span>/<span class="number">1f</span>/main.jar</span><br><span class="line">transforms/proguard/qihoo/debug/jars/<span class="number">3</span>/<span class="number">1f</span>/main.jar</span><br><span class="line">transforms/proguard/xiaomi/release/jars/<span class="number">3</span>/<span class="number">1f</span>/main.jar</span><br><span class="line">transforms/proguard/xiaomi/debug/jars/<span class="number">3</span>/<span class="number">1f</span>/main.jar</span><br></pre></td></tr></table></figure>
+<h2><span id="release后面是-jars-或-folders"><code>release后面是 jars 或 folders</code></span></h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">release/folders</span><br><span class="line">release/jars</span><br></pre></td></tr></table></figure>
+<p>如何确定是 <code>jars</code>还是 <code>folders</code>？</p>
+<p><code>jars</code>或 <code>folders</code>是由 TransformOutputProvider#getContentLocation(name, types, scopes, <strong>format</strong>) 中的 <code>format</code>决定的：</p>
+<p>（1）<code>Format.DIRECTORY ==&gt; folders</code></p>
+<p>（2）<code>Format.JAR ==&gt; jars</code></p>
+<p>比如现在对于自定义的<code>Transform</code>来说</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transform</span><span class="params">(Context context, Collection&lt;TransformInput&gt; inputs, Collection&lt;TransformInput&gt; referencedInputs,</span></span></span><br><span class="line"><span class="function"><span class="params">               TransformOutputProvider outputProvider, <span class="keyword">boolean</span> isIncremental)</span> </span></span><br><span class="line"><span class="function">               <span class="keyword">throws</span> IOException, TransformException, InterruptedException </span>&#123;</span><br><span class="line">    inputs.each &#123; transformInput -&gt;</span><br><span class="line">        transformInput.directoryInputs.each &#123; directoryInput -&gt;</span><br><span class="line">            <span class="comment">//这里使用Format.DIRECTORY所以是folders</span></span><br><span class="line">            File dest = outputProvider.getContentLocation(</span><br><span class="line">                    directoryInput.name, directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY);</span><br><span class="line">            FileUtils.copyDirectory(directoryInput.file, dest)</span><br><span class="line">        &#125;</span><br><span class="line">                 </span><br><span class="line">        transformInput.jarInputs.each &#123; jarInput -&gt;</span><br><span class="line">            <span class="comment">//这里使用Format.JAR所以输出是jars目录</span></span><br><span class="line">            File dest = outputProvider.getContentLocation(</span><br><span class="line">                    destName, jarInput.contentTypes, jarInput.scopes, Format.JAR)</span><br><span class="line">            FileUtils.copyFile(jarInput.file, dest)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%5C20180903222803872.png" alt="img"></p>
+<p>看几个例子：</p>
+<ul>
+<li>
+<p><code>Proguard Transform Task</code></p>
+<p>代码：<code>com.android.build.gradle.internal.transforms.ProGuardTransform.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;ContentType&gt; outputTypes = getOutputTypes();</span><br><span class="line">Set&lt;Scope&gt; scopes = getScopes();</span><br><span class="line">File outFile = output.getContentLocation(<span class="string">"main"</span>, outputTypes, scopes,</span><br><span class="line">        asJar ? Format.JAR : Format.DIRECTORY);</span><br></pre></td></tr></table></figure>
+<p>在 <code>com.android.tools.build:gradle:2.3.2</code> 版本的时候，asJar 总是为true的</p>
+<p>所以在<code>Proguard</code>目录下的<code>release</code>下的目录是jar</p>
+</li>
+<li>
+<p><code>dex Transform Task</code></p>
+</li>
+</ul>
+<p>代码：<code>com.android.build.gradle.internal.transforms.ProGuardTransform.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">File outputDir = outputProvider.getContentLocation(<span class="string">"main"</span>,</span><br><span class="line">        getOutputTypes(),</span><br><span class="line">        TransformManager.SCOPE_FULL_PROJECT,</span><br><span class="line">        Format.DIRECTORY);</span><br></pre></td></tr></table></figure>
+<h2><span id="foldersjars-后面是-outputtypes">folders|jars 后面是 ${OutputTypes}</span></h2>
+<p>注意 OutputTypes 是一个数字的十六进制表示。</p>
+<p>先给结论：</p>
+<p>${OutputTypes} 是由 TransformOutputProvider#getContentLocation(name, <strong>types</strong>, scopes, format) 中的 types 决定的。</p>
+<p>types 一般会取自 Transform#<strong>getOutputTypes</strong>() 的值，也不一定，看具体的参数吧。</p>
+<p>但是注意：Transform#getOutputTypes() 如果子类没有复写的话，默认返回值等于Transform#<strong>getInputTypes</strong>()</p>
+<p>源码：</p>
+<p><code>com.android.build.api.transform.Transform.class</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NonNull</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Set&lt;ContentType&gt; <span class="title">getOutputTypes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> getInputTypes();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="举例1-自定义transform">举例1 自定义Transform：</span></h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transform</span><span class="params">(Context context, Collection&lt;TransformInput&gt; inputs, Collection&lt;TransformInput&gt; referencedInputs,</span></span></span><br><span class="line"><span class="function"><span class="params">               TransformOutputProvider outputProvider, <span class="keyword">boolean</span> isIncremental)</span> </span></span><br><span class="line"><span class="function">               <span class="keyword">throws</span> IOException, TransformException, InterruptedException </span>&#123;</span><br><span class="line">    inputs.each &#123; transformInput -&gt;</span><br><span class="line">        <span class="comment">// Bypass the directories</span></span><br><span class="line">        transformInput.directoryInputs.each &#123; directoryInput -&gt;</span><br><span class="line">            File dest = outputProvider.getContentLocation(</span><br><span class="line">                    directoryInput.name, directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY);</span><br><span class="line">            FileUtils.copyDirectory(directoryInput.file, dest)</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// Filter the jars</span></span><br><span class="line">        transformInput.jarInputs.each &#123; jarInput -&gt;</span><br><span class="line">            File dest = outputProvider.getContentLocation(</span><br><span class="line">                    destName, jarInput.contentTypes, jarInput.scopes, Format.JAR)</span><br><span class="line">            FileUtils.copyFile(jarInput.file, dest)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的 types 不是来自 getOutputTypes() 的，而是来自实际输入文件的types,如：</p>
+<ul>
+<li>
+<p>对于<code>folders: types = directoryInput.contentTypes</code></p>
+<p><code>directoryInput</code>的<code>Types</code>一般等于：<code>TransformManager.CONTENT_CLASS</code></p>
+<p>​</p>
+<p><code>TransformManager.CONTENT_CLASS</code> 定义在：<code>com.android.build.gradle.internal.pipeline.TransformManager.class</code>中</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TransformManager</span> <span class="keyword">extends</span> <span class="title">FilterableStreamCollection</span> </span>&#123;</span><br><span class="line">    <span class="comment">//对应着CLASS</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;ContentType&gt; CONTENT_CLASS = ImmutableSet.of(CLASSES);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;ContentType&gt; CONTENT_JARS = ImmutableSet.of(CLASSES, RESOURCES);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;ContentType&gt; CONTENT_RESOURCES = ImmutableSet.of(RESOURCES);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;ContentType&gt; CONTENT_NATIVE_LIBS = ImmutableSet.of(ExtendedContentType.NATIVE_LIBS);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;ContentType&gt; CONTENT_DEX = ImmutableSet.of(ExtendedContentType.DEX);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;ContentType&gt; CONTENT_JACK = ImmutableSet.of(JACK);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">QualifiedContent</span> </span>&#123;</span><br><span class="line">    <span class="keyword">enum</span> DefaultContentType implements ContentType &#123;</span><br><span class="line">        CLASSES(<span class="number">0x01</span>),</span><br><span class="line">        RESOURCES(<span class="number">0x02</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>TransformManager.CONTENT_CLASS ==&gt; 1</code></p>
+<p>所以目录对应命名是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Transform对应名称/release/jars/<span class="number">1</span>/xxx</span><br><span class="line">Transform对应名称/release/folders/<span class="number">1</span>/xxx</span><br></pre></td></tr></table></figure>
+<h3><span id="举例2proguard-transform-task">举例2<code>Proguard Transform Task</code></span></h3>
+<p>源码：<code>com.android.build.gradle.internal.transforms.ProGuardTransform.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;ContentType&gt; outputTypes = getOutputTypes();</span><br><span class="line">Set&lt;Scope&gt; scopes = getScopes();</span><br><span class="line"><span class="comment">//outputTypes = getOutputTypes() = getInputTypes() </span></span><br><span class="line">File outFile = output.getContentLocation(<span class="string">"main"</span>, outputTypes, scopes,</span><br><span class="line">        asJar ? Format.JAR : Format.DIRECTORY);</span><br></pre></td></tr></table></figure>
+<p>对应源码<code>com.android.build.gradle.internal.transforms.ProGuardTransform.class</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Set&lt;ContentType&gt; <span class="title">getInputTypes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> TransformManager.CONTENT_JARS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据前面的结论：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;ContentType&gt; CONTENT_JARS = ImmutableSet.of(CLASSES, RESOURCES);</span><br></pre></td></tr></table></figure>
+<p>所以：<code>TransformManager.CONTENT_JARS ==&gt; CLASSES + RESOURCES = 3</code></p>
+<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%5C20180903223944487.png" alt="img"></p>
+<h3><span id="对于dex-transform-task来说">对于<code>dex Transform Task</code>来说</span></h3>
+<p>源码：<code>com.android.build.gradle.internal.transforms.ProGuardTransform.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">File outputDir = outputProvider.getContentLocation(<span class="string">"main"</span>,</span><br><span class="line">        getOutputTypes(),</span><br><span class="line">        TransformManager.SCOPE_FULL_PROJECT,</span><br><span class="line">        Format.DIRECTORY);</span><br></pre></td></tr></table></figure>
+<p>上面 outputTypes = getOutputTypes()，且有复写的实现，对应源码<code>com.android.build.gradle.internal.transforms.DexTransform.class</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Set&lt;ContentType&gt; <span class="title">getOutputTypes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> TransformManager.CONTENT_DEX;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>点进去看定义</p>
+<p><code>com.android.build.gradle.internal.pipeline.ExtendedContentType.class</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> ExtendedContentType implements ContentType &#123;</span><br><span class="line">    DEX(<span class="number">0x1000</span>),</span><br><span class="line">    NATIVE_LIBS(<span class="number">0x2000</span>),</span><br><span class="line">    CLASSES_ENHANCED(<span class="number">0x4000</span>),</span><br><span class="line">    JACK(<span class="number">0x8000</span>),</span><br><span class="line">    DATA_BINDING(<span class="number">0x10000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%5C2018090322412791.png" alt="img"></p>
+<h2><span id="outputtypes后面是-scopes"><code>OutputTypes</code>后面是 <code>${Scopes}</code></span></h2>
+<p>${Scopes} 是由 TransformOutputProvider#getContentLocation(name, types, scopes, format) 中的 scopes 决定的：其值常常来自：Transform#getScopes() ，也不一定。</p>
+<h3><span id="举例1自定义transform">举例1自定义Transform</span></h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transform</span><span class="params">(Context context, Collection&lt;TransformInput&gt; inputs, Collection&lt;TransformInput&gt; referencedInputs,</span></span></span><br><span class="line"><span class="function"><span class="params">               TransformOutputProvider outputProvider, <span class="keyword">boolean</span> isIncremental)</span> </span></span><br><span class="line"><span class="function">               <span class="keyword">throws</span> IOException, TransformException, InterruptedException </span>&#123;</span><br><span class="line">    inputs.each &#123; transformInput -&gt;</span><br><span class="line">        <span class="comment">// Bypass the directories</span></span><br><span class="line">        transformInput.directoryInputs.each &#123; directoryInput -&gt;</span><br><span class="line">            File dest = outputProvider.getContentLocation(</span><br><span class="line">                    directoryInput.name, directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY);</span><br><span class="line">            FileUtils.copyDirectory(directoryInput.file, dest)</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// Filter the jars</span></span><br><span class="line">        transformInput.jarInputs.each &#123; jarInput -&gt;</span><br><span class="line">            File dest = outputProvider.getContentLocation(</span><br><span class="line">                    destName, jarInput.contentTypes, jarInput.scopes, Format.JAR)</span><br><span class="line">            FileUtils.copyFile(jarInput.file, dest)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的 scopes 不是来自 <code>getScopes()</code> 的，而是来自实际输入文件的 <code>scopes</code></p>
+<p><code>scopes</code>定义在：<code>com.android.build.api.transform.QualifiedContent.class</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Scope implements ScopeType &#123;</span><br><span class="line">    PROJECT(<span class="number">0x01</span>),</span><br><span class="line">    PROJECT_LOCAL_DEPS(<span class="number">0x02</span>),</span><br><span class="line">    SUB_PROJECTS(<span class="number">0x04</span>),</span><br><span class="line">    SUB_PROJECTS_LOCAL_DEPS(<span class="number">0x08</span>),</span><br><span class="line">    EXTERNAL_LIBRARIES(<span class="number">0x10</span>),</span><br><span class="line">    TESTED_CODE(<span class="number">0x20</span>),</span><br><span class="line">    PROVIDED_ONLY(<span class="number">0x40</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">针对于getScopes()的PROJECT(<span class="number">0x01</span>)</span><br><span class="line">Transform对应名称/release/jars/<span class="number">1</span>/<span class="number">1</span>/xxx</span><br></pre></td></tr></table></figure>
+<h3><span id="举例2proguard-transform-task">举例2<code>Proguard Transform Task</code></span></h3>
+<p>源码<code>com.android.build.gradle.internal.transforms.ProGuardTransform.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;ContentType&gt; outputTypes = getOutputTypes();</span><br><span class="line">Set&lt;Scope&gt; scopes = getScopes();</span><br><span class="line">File outFile = output.getContentLocation(<span class="string">"main"</span>, outputTypes, scopes,</span><br><span class="line">        asJar ? Format.JAR : Format.DIRECTORY);</span><br><span class="line"></span><br><span class="line"><span class="comment">//对应于getScopes()</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Set&lt;Scope&gt; <span class="title">getScopes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (variantType == VariantType.LIBRARY) &#123;</span><br><span class="line">        <span class="keyword">return</span> Sets.immutableEnumSet(Scope.PROJECT, Scope.PROJECT_LOCAL_DEPS);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> TransformManager.SCOPE_FULL_PROJECT;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;Scope&gt; SCOPE_FULL_PROJECT = Sets.immutableEnumSet(</span><br><span class="line">        Scope.PROJECT,</span><br><span class="line">        Scope.PROJECT_LOCAL_DEPS,</span><br><span class="line">        Scope.SUB_PROJECTS,</span><br><span class="line">        Scope.SUB_PROJECTS_LOCAL_DEPS,</span><br><span class="line">        Scope.EXTERNAL_LIBRARIES);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Scope implements ScopeType &#123;</span><br><span class="line">    PROJECT(<span class="number">0x01</span>),</span><br><span class="line">    PROJECT_LOCAL_DEPS(<span class="number">0x02</span>),</span><br><span class="line">    SUB_PROJECTS(<span class="number">0x04</span>),</span><br><span class="line">    SUB_PROJECTS_LOCAL_DEPS(<span class="number">0x08</span>),</span><br><span class="line">    EXTERNAL_LIBRARIES(<span class="number">0x10</span>),</span><br><span class="line">    TESTED_CODE(<span class="number">0x20</span>),</span><br><span class="line">    PROVIDED_ONLY(<span class="number">0x40</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以是：0x1+0x2+0x4+0x8+0x10 = 1F</p>
+<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%5C20180903224517690.png" alt="img"></p>
+<h3><span id="举例3dex-transform-task">举例3<code>dex Transform Task</code></span></h3>
+<p>源码：<code>com.android.build.gradle.internal.transforms.ProGuardTransform.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">File outputDir = outputProvider.getContentLocation(<span class="string">"main"</span>,</span><br><span class="line">        getOutputTypes(),</span><br><span class="line">        TransformManager.SCOPE_FULL_PROJECT,</span><br><span class="line">        Format.DIRECTORY);</span><br></pre></td></tr></table></figure>
+<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%5C20180903224610192.png" alt="img"></p>
+<p>同上</p>
+<h1><span id="transform的优化增量与并发">Transform的优化：增量与并发</span></h1>
+<p>如果直接这样使用，会大大拖慢编译时间，为了解决这个问题，摸索了一段时间后，也借鉴了Android编译器中Desugar等几个Transform的实现，发现我们可以使用增量编译，并且上面transform方法遍历处理每个jar/class的流程，其实可以并发处理，加上一般编译流程都是在PC上，所以我们可以尽量敲诈机器的资源</p>
+<p>想要开启增量编译，我们需要重写Transform的这个接口，返回true。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span> </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isIncremental</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果不是增量编译，则清空output目录，然后按照前面的方式，逐个class/jar处理<br>
+如果是增量编译，则要检查每个文件的Status，Status分四种，并且对这四种文件的操作也不尽相同</p>
+<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5CTransform%5C16791ec765754c8c.png" alt="img"></p>
+<ul>
+<li>NOTCHANGED: 当前文件不需处理，甚至复制操作都不用；</li>
+<li>ADDED、CHANGED: 正常处理，输出给下一个任务；</li>
+<li>REMOVED: 移除outputProvider获取路径对应的文件。</li>
+</ul>
+<p>大概实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">transform</span><span class="params">(TransformInvocation transformInvocation)</span></span>&#123;</span><br><span class="line">    Collection&lt;TransformInput&gt; inputs = transformInvocation.getInputs();</span><br><span class="line">    TransformOutputProvider outputProvider = transformInvocation.getOutputProvider();</span><br><span class="line">    <span class="keyword">boolean</span> isIncremental = transformInvocation.isIncremental();</span><br><span class="line">    <span class="comment">//如果非增量，则清空旧的输出内容</span></span><br><span class="line">    <span class="keyword">if</span>(!isIncremental) &#123;</span><br><span class="line">        outputProvider.deleteAll();</span><br><span class="line">    &#125;	</span><br><span class="line">    <span class="keyword">for</span>(TransformInput input : inputs) &#123;</span><br><span class="line">        <span class="keyword">for</span>(JarInput jarInput : input.getJarInputs()) &#123;</span><br><span class="line">            Status status = jarInput.getStatus();</span><br><span class="line">            File dest = outputProvider.getContentLocation(</span><br><span class="line">                    jarInput.getName(),</span><br><span class="line">                    jarInput.getContentTypes(),</span><br><span class="line">                    jarInput.getScopes(),</span><br><span class="line">                    Format.JAR);</span><br><span class="line">            <span class="keyword">if</span>(isIncremental &amp;&amp; !emptyRun) &#123;</span><br><span class="line">                <span class="comment">//在这里针对status的值进行区分</span></span><br><span class="line">                <span class="keyword">switch</span>(status) &#123;</span><br><span class="line">                    <span class="keyword">case</span> NOTCHANGED:</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    <span class="keyword">case</span> ADDED:</span><br><span class="line">                    <span class="keyword">case</span> CHANGED:</span><br><span class="line">                        transformJar(jarInput.getFile(), dest, status);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">case</span> REMOVED:</span><br><span class="line">                        <span class="keyword">if</span> (dest.exists()) &#123;</span><br><span class="line">                            FileUtils.forceDelete(dest);</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                transformJar(jarInput.getFile(), dest, status);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(DirectoryInput directoryInput : input.getDirectoryInputs()) &#123;</span><br><span class="line">            File dest = outputProvider.getContentLocation(directoryInput.getName(),</span><br><span class="line">                    directoryInput.getContentTypes(), directoryInput.getScopes(),</span><br><span class="line">                    Format.DIRECTORY);</span><br><span class="line">            FileUtils.forceMkdir(dest);</span><br><span class="line">            <span class="keyword">if</span>(isIncremental &amp;&amp; !emptyRun) &#123;</span><br><span class="line">                String srcDirPath = directoryInput.getFile().getAbsolutePath();</span><br><span class="line">                String destDirPath = dest.getAbsolutePath();</span><br><span class="line">                Map&lt;File, Status&gt; fileStatusMap = directoryInput.getChangedFiles();</span><br><span class="line">                <span class="keyword">for</span> (Map.Entry&lt;File, Status&gt; changedFile : fileStatusMap.entrySet()) &#123;</span><br><span class="line">                    Status status = changedFile.getValue();</span><br><span class="line">                    File inputFile = changedFile.getKey();</span><br><span class="line">                    String destFilePath = inputFile.getAbsolutePath().replace(srcDirPath, destDirPath);</span><br><span class="line">                    File destFile = <span class="keyword">new</span> File(destFilePath);</span><br><span class="line">                    <span class="keyword">switch</span> (status) &#123;</span><br><span class="line">                        <span class="keyword">case</span> NOTCHANGED:</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> REMOVED:</span><br><span class="line">                            <span class="keyword">if</span>(destFile.exists()) &#123;</span><br><span class="line">                                FileUtils.forceDelete(destFile);</span><br><span class="line">                            &#125;</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> ADDED:</span><br><span class="line">                        <span class="keyword">case</span> CHANGED:</span><br><span class="line">                            FileUtils.touch(destFile);</span><br><span class="line">                            transformSingleFile(inputFile, destFile, srcDirPath);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                transformDir(directoryInput.getFile(), dest);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现了增量编译后，我们最好也支持并发编译，并发编译的实现并不复杂，只需要将上面处理单个jar/class的逻辑，并发处理，最后阻塞等待所有任务结束即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> WaitableExecutor waitableExecutor = WaitableExecutor.useGlobalSharedThreadPool();</span><br><span class="line"><span class="comment">//异步并发处理jar/class</span></span><br><span class="line">waitableExecutor.execute(() -&gt; &#123;</span><br><span class="line">    bytecodeWeaver.weaveJar(srcJar, destJar);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;);</span><br><span class="line">waitableExecutor.execute(() -&gt; &#123;</span><br><span class="line">    bytecodeWeaver.weaveSingleClassToFile(file, outputFile, inputDirPath);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;);  </span><br><span class="line"><span class="comment">//等待所有任务结束</span></span><br><span class="line">waitableExecutor.waitForTasksWithQuickFail(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/14/handler内存泄露/" data-toggle="tooltip" data-placement="top" title="常用Handler导致内存泄露">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Transform历史</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Transform依赖方式</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">注册自己的Transform</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Transform的输入数据的过滤机制</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Transform的输入类型</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Transfrom的输出路径</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">transforms路径下首先是各个Transform Task的名字所代表的路径</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">${productFlavor}/${buildType}</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">release后面是 jars 或 folders</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.4.</span> <span class="toc-nav-text">folders|jars 后面是 ${OutputTypes}</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.4.1.</span> <span class="toc-nav-text">举例1 自定义Transform：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.4.2.</span> <span class="toc-nav-text">举例2Proguard Transform Task</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.4.3.</span> <span class="toc-nav-text">对于dex Transform Task来说</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.5.</span> <span class="toc-nav-text">OutputTypes后面是 ${Scopes}</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.5.1.</span> <span class="toc-nav-text">举例1自定义Transform</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.5.2.</span> <span class="toc-nav-text">举例2Proguard Transform Task</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.5.3.</span> <span class="toc-nav-text">举例3dex Transform Task</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Transform的优化：增量与并发</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Transform" title="Transform">Transform</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
