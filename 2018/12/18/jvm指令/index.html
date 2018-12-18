@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          jvm指令 - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/12/18/jvm指令/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#jvm" title="jvm">jvm</a>
+                            
+                        </div>
+                        <h1>jvm指令</h1>
+                        <h2 class="subheading">jvm指令</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-12-18
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p><a href="http://www.blogjava.net/DLevin/archive/2011/09/13/358497.html" target="_blank" rel="noopener">来源点这里</a></p>
+<table>
+<thead>
+<tr>
+<th><strong>常量入栈指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>aconst_null</td>
+<td></td>
+<td>null值入栈。</td>
+</tr>
+<tr>
+<td>iconst_m1</td>
+<td></td>
+<td>-1(int)值入栈。</td>
+</tr>
+<tr>
+<td>iconst_0</td>
+<td></td>
+<td>0(int)值入栈。</td>
+</tr>
+<tr>
+<td>iconst_1</td>
+<td></td>
+<td>1(int)值入栈。</td>
+</tr>
+<tr>
+<td>iconst_2</td>
+<td></td>
+<td>2(int)值入栈。</td>
+</tr>
+<tr>
+<td>iconst_3</td>
+<td></td>
+<td>3(int)值入栈。</td>
+</tr>
+<tr>
+<td>iconst_4</td>
+<td></td>
+<td>4(int)值入栈。</td>
+</tr>
+<tr>
+<td>iconst_5</td>
+<td></td>
+<td>5(int)值入栈。</td>
+</tr>
+<tr>
+<td>lconst_0</td>
+<td></td>
+<td>0(long)值入栈。</td>
+</tr>
+<tr>
+<td>lconst_1</td>
+<td></td>
+<td>1(long)值入栈。</td>
+</tr>
+<tr>
+<td>fconst_0</td>
+<td></td>
+<td>0(float)值入栈。</td>
+</tr>
+<tr>
+<td>fconst_1</td>
+<td></td>
+<td>1(float)值入栈。</td>
+</tr>
+<tr>
+<td>fconst_2</td>
+<td></td>
+<td>2(float)值入栈。</td>
+</tr>
+<tr>
+<td>dconst_0</td>
+<td></td>
+<td>0(double)值入栈。</td>
+</tr>
+<tr>
+<td>dconst_1</td>
+<td></td>
+<td>1(double)值入栈。</td>
+</tr>
+<tr>
+<td>bipush</td>
+<td>valuebyte</td>
+<td>valuebyte值带符号扩展成int值入栈。</td>
+</tr>
+<tr>
+<td>sipush</td>
+<td>valuebyte1valuebyte2</td>
+<td>(valuebyte1 &lt;&lt; 8) | valuebyte2 值带符号扩展成int值入栈。</td>
+</tr>
+<tr>
+<td>ldc</td>
+<td>indexbyte1</td>
+<td>常量池中的常量值（int, float, string reference, object reference）入栈。</td>
+</tr>
+<tr>
+<td>ldc_w</td>
+<td>indexbyte1indexbyte2</td>
+<td>常量池中常量（int, float, string reference, object reference）入栈。</td>
+</tr>
+<tr>
+<td>ldc2_w</td>
+<td>indexbyte1indexbyte2</td>
+<td>常量池中常量（long, double）入栈。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>局部变量值转载到栈中指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>(wide)aload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载引用类型值入栈。</td>
+</tr>
+<tr>
+<td>aload_0</td>
+<td></td>
+<td>从局部变量0中装载引用类型值入栈。</td>
+</tr>
+<tr>
+<td>aload_1</td>
+<td></td>
+<td>从局部变量1中装载引用类型值入栈。</td>
+</tr>
+<tr>
+<td>aload_2</td>
+<td></td>
+<td>从局部变量2中装载引用类型值入栈。</td>
+</tr>
+<tr>
+<td>aload_3</td>
+<td></td>
+<td>从局部变量3中装载引用类型值入栈。</td>
+</tr>
+<tr>
+<td>(wide)iload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>iload_0</td>
+<td></td>
+<td>从局部变量0中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>iload_1</td>
+<td></td>
+<td>从局部变量1中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>iload_2</td>
+<td></td>
+<td>从局部变量2中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>iload_3</td>
+<td></td>
+<td>从局部变量3中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>(wide)lload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载long类型值入栈。</td>
+</tr>
+<tr>
+<td>lload_0</td>
+<td></td>
+<td>从局部变量0中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>lload_1</td>
+<td></td>
+<td>从局部变量1中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>lload_2</td>
+<td></td>
+<td>从局部变量2中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>lload_3</td>
+<td></td>
+<td>从局部变量3中装载int类型值入栈。</td>
+</tr>
+<tr>
+<td>(wide)fload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载float类型值入栈。</td>
+</tr>
+<tr>
+<td>fload_0</td>
+<td></td>
+<td>从局部变量0中装载float类型值入栈。</td>
+</tr>
+<tr>
+<td>fload_1</td>
+<td></td>
+<td>从局部变量1中装载float类型值入栈。</td>
+</tr>
+<tr>
+<td>fload_2</td>
+<td></td>
+<td>从局部变量2中装载float类型值入栈。</td>
+</tr>
+<tr>
+<td>fload_3</td>
+<td></td>
+<td>从局部变量3中装载float类型值入栈。</td>
+</tr>
+<tr>
+<td>(wide)dload</td>
+<td>indexbyte</td>
+<td>从局部变量indexbyte中装载double类型值入栈。</td>
+</tr>
+<tr>
+<td>dload_0</td>
+<td></td>
+<td>从局部变量0中装载double类型值入栈。</td>
+</tr>
+<tr>
+<td>dload_1</td>
+<td></td>
+<td>从局部变量1中装载double类型值入栈。</td>
+</tr>
+<tr>
+<td>dload_2</td>
+<td></td>
+<td>从局部变量2中装载double类型值入栈。</td>
+</tr>
+<tr>
+<td>dload_3</td>
+<td></td>
+<td>从局部变量3中装载double类型值入栈。</td>
+</tr>
+<tr>
+<td>aaload</td>
+<td></td>
+<td>从引用类型数组中装载指定项的值。</td>
+</tr>
+<tr>
+<td>iaload</td>
+<td></td>
+<td>从int类型数组中装载指定项的值。</td>
+</tr>
+<tr>
+<td>laload</td>
+<td></td>
+<td>从long类型数组中装载指定项的值。</td>
+</tr>
+<tr>
+<td>faload</td>
+<td></td>
+<td>从float类型数组中装载指定项的值。</td>
+</tr>
+<tr>
+<td>daload</td>
+<td></td>
+<td>从double类型数组中装载指定项的值。</td>
+</tr>
+<tr>
+<td>baload</td>
+<td></td>
+<td>从boolean类型数组或byte类型数组中装载指定项的值（先转换为int类型值，后压栈）。</td>
+</tr>
+<tr>
+<td>caload</td>
+<td></td>
+<td>从char类型数组中装载指定项的值（先转换为int类型值，后压栈）。</td>
+</tr>
+<tr>
+<td>saload</td>
+<td></td>
+<td>从short类型数组中装载指定项的值（先转换为int类型值，后压栈）。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>将栈顶值保存到局部变量中指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>(wide)astore</td>
+<td>indexbyte</td>
+<td>将栈顶引用类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>astroe_0</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>astore_1</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>astore_2</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>astore_3</td>
+<td></td>
+<td>将栈顶引用类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>(wide)istore</td>
+<td>indexbyte</td>
+<td>将栈顶int类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>istore_0</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>istore_1</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>istore_2</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>istore_3</td>
+<td></td>
+<td>将栈顶int类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>(wide)lstore</td>
+<td>indexbyte</td>
+<td>将栈顶long类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>lstore_0</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>lstore_1</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>lstore_2</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>lstroe_3</td>
+<td></td>
+<td>将栈顶long类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>(wide)fstore</td>
+<td>indexbyte</td>
+<td>将栈顶float类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>fstore_0</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>fstore_1</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>fstore_2</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>fstore_3</td>
+<td></td>
+<td>将栈顶float类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>(wide)dstore</td>
+<td>indexbyte</td>
+<td>将栈顶double类型值保存到局部变量indexbyte中。</td>
+</tr>
+<tr>
+<td>dstore_0</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量0中。</td>
+</tr>
+<tr>
+<td>dstore_1</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量1中。</td>
+</tr>
+<tr>
+<td>dstore_2</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量2中。</td>
+</tr>
+<tr>
+<td>dstore_3</td>
+<td></td>
+<td>将栈顶double类型值保存到局部变量3中。</td>
+</tr>
+<tr>
+<td>aastore</td>
+<td></td>
+<td>将栈顶引用类型值保存到指定引用类型数组的指定项。</td>
+</tr>
+<tr>
+<td>iastore</td>
+<td></td>
+<td>将栈顶int类型值保存到指定int类型数组的指定项。</td>
+</tr>
+<tr>
+<td>lastore</td>
+<td></td>
+<td>将栈顶long类型值保存到指定long类型数组的指定项。</td>
+</tr>
+<tr>
+<td>fastore</td>
+<td></td>
+<td>将栈顶float类型值保存到指定float类型数组的指定项。</td>
+</tr>
+<tr>
+<td>dastore</td>
+<td></td>
+<td>将栈顶double类型值保存到指定double类型数组的指定项。</td>
+</tr>
+<tr>
+<td>bastroe</td>
+<td></td>
+<td>将栈顶boolean类型值或byte类型值保存到指定boolean类型数组或byte类型数组的指定项。</td>
+</tr>
+<tr>
+<td>castore</td>
+<td></td>
+<td>将栈顶char类型值保存到指定char类型数组的指定项。</td>
+</tr>
+<tr>
+<td>sastore</td>
+<td></td>
+<td>将栈顶short类型值保存到指定short类型数组的指定项。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>wide指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>wide</td>
+<td></td>
+<td>使用附加字节扩展局部变量索引（iinc指令特殊）。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>通用（无类型）栈操作指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>nop</td>
+<td></td>
+<td>空操作。</td>
+</tr>
+<tr>
+<td>pop</td>
+<td></td>
+<td>从栈顶弹出一个字长的数据。</td>
+</tr>
+<tr>
+<td>pop2</td>
+<td></td>
+<td>从栈顶弹出两个字长的数据。</td>
+</tr>
+<tr>
+<td>dup</td>
+<td></td>
+<td>复制栈顶一个字长的数据，将复制后的数据压栈。</td>
+</tr>
+<tr>
+<td>dup_x1</td>
+<td></td>
+<td>复制栈顶一个字长的数据，弹出栈顶两个字长数据，先将复制后的数据压栈，再将弹出的两个字长数据压栈。</td>
+</tr>
+<tr>
+<td>dup_x2</td>
+<td></td>
+<td>复制栈顶一个字长的数据，弹出栈顶三个字长的数据，将复制后的数据压栈，再将弹出的三个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>dup2</td>
+<td></td>
+<td>复制栈顶两个字长的数据，将复制后的两个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>dup2_x1</td>
+<td></td>
+<td>复制栈顶两个字长的数据，弹出栈顶三个字长的数据，将复制后的两个字长的数据压栈，再将弹出的三个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>dup2_x2</td>
+<td></td>
+<td>复制栈顶两个字长的数据，弹出栈顶四个字长的数据，将复制后的两个字长的数据压栈，再将弹出的四个字长的数据压栈。</td>
+</tr>
+<tr>
+<td>swap</td>
+<td></td>
+<td>交换栈顶两个字长的数据的位置。Java指令中没有提供以两个字长为单位的交换指令。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>类型转换指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>i2f</td>
+<td></td>
+<td>将栈顶int类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>i2l</td>
+<td></td>
+<td>将栈顶int类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>i2d</td>
+<td></td>
+<td>将栈顶int类型值转换为double类型值。</td>
+</tr>
+<tr>
+<td>f2i</td>
+<td></td>
+<td>将栈顶float类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>f2l</td>
+<td></td>
+<td>将栈顶float类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>f2d</td>
+<td></td>
+<td>将栈顶float类型值转换为double类型值。</td>
+</tr>
+<tr>
+<td>l2i</td>
+<td></td>
+<td>将栈顶long类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>l2f</td>
+<td></td>
+<td>将栈顶long类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>l2d</td>
+<td></td>
+<td>将栈顶long类型值转换double类型值。</td>
+</tr>
+<tr>
+<td>d2i</td>
+<td></td>
+<td>将栈顶double类型值转换为int类型值。</td>
+</tr>
+<tr>
+<td>d2f</td>
+<td></td>
+<td>将栈顶double类型值转换为float类型值。</td>
+</tr>
+<tr>
+<td>d2l</td>
+<td></td>
+<td>将栈顶double类型值转换为long类型值。</td>
+</tr>
+<tr>
+<td>i2b</td>
+<td></td>
+<td>将栈顶int类型值截断成byte类型，后带符号扩展成int类型值入栈。</td>
+</tr>
+<tr>
+<td>i2c</td>
+<td></td>
+<td>将栈顶int类型值截断成char类型值，后带符号扩展成int类型值入栈。</td>
+</tr>
+<tr>
+<td>i2s</td>
+<td></td>
+<td>将栈顶int类型值截断成short类型值，后带符号扩展成int类型值入栈。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>整数运算</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>iadd</td>
+<td></td>
+<td>将栈顶两int类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>isub</td>
+<td></td>
+<td>将栈顶两int类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>imul</td>
+<td></td>
+<td>将栈顶两int类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>idiv</td>
+<td></td>
+<td>将栈顶两int类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>irem</td>
+<td></td>
+<td>将栈顶两int类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>ineg</td>
+<td></td>
+<td>将栈顶int类型值取负，结果入栈。</td>
+</tr>
+<tr>
+<td>ladd</td>
+<td></td>
+<td>将栈顶两long类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>lsub</td>
+<td></td>
+<td>将栈顶两long类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>lmul</td>
+<td></td>
+<td>将栈顶两long类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>ldiv</td>
+<td></td>
+<td>将栈顶两long类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>lrem</td>
+<td></td>
+<td>将栈顶两long类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>lneg</td>
+<td></td>
+<td>将栈顶long类型值取负，结果入栈。</td>
+</tr>
+<tr>
+<td>(wide)iinc</td>
+<td>indexbyteconstbyte</td>
+<td>将整数值constbyte加到indexbyte指定的int类型的局部变量中。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>浮点运算</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>fadd</td>
+<td></td>
+<td>将栈顶两float类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>fsub</td>
+<td></td>
+<td>将栈顶两float类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>fmul</td>
+<td></td>
+<td>将栈顶两float类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>fdiv</td>
+<td></td>
+<td>将栈顶两float类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>frem</td>
+<td></td>
+<td>将栈顶两float类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>fneg</td>
+<td></td>
+<td>将栈顶float类型值取反，结果入栈。</td>
+</tr>
+<tr>
+<td>dadd</td>
+<td></td>
+<td>将栈顶两double类型数相加，结果入栈。</td>
+</tr>
+<tr>
+<td>dsub</td>
+<td></td>
+<td>将栈顶两double类型数相减，结果入栈。</td>
+</tr>
+<tr>
+<td>dmul</td>
+<td></td>
+<td>将栈顶两double类型数相乘，结果入栈。</td>
+</tr>
+<tr>
+<td>ddiv</td>
+<td></td>
+<td>将栈顶两double类型数相除，结果入栈。</td>
+</tr>
+<tr>
+<td>drem</td>
+<td></td>
+<td>将栈顶两double类型数取模，结果入栈。</td>
+</tr>
+<tr>
+<td>dneg</td>
+<td></td>
+<td>将栈顶double类型值取负，结果入栈。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>逻辑运算——移位运算</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>ishl</td>
+<td></td>
+<td>左移int类型值。</td>
+</tr>
+<tr>
+<td>lshl</td>
+<td></td>
+<td>左移long类型值。</td>
+</tr>
+<tr>
+<td>ishr</td>
+<td></td>
+<td>算术右移int类型值。</td>
+</tr>
+<tr>
+<td>lshr</td>
+<td></td>
+<td>算术右移long类型值。</td>
+</tr>
+<tr>
+<td>iushr</td>
+<td></td>
+<td>逻辑右移int类型值。</td>
+</tr>
+<tr>
+<td>lushr</td>
+<td></td>
+<td>逻辑右移long类型值。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>逻辑运算——按位布尔运算</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>iand</td>
+<td></td>
+<td>对int类型按位与运算。</td>
+</tr>
+<tr>
+<td>land</td>
+<td></td>
+<td>对long类型的按位与运算。</td>
+</tr>
+<tr>
+<td>ior</td>
+<td></td>
+<td>对int类型的按位或运算。</td>
+</tr>
+<tr>
+<td>lor</td>
+<td></td>
+<td>对long类型的按位或运算。</td>
+</tr>
+<tr>
+<td>ixor</td>
+<td></td>
+<td>对int类型的按位异或运算。</td>
+</tr>
+<tr>
+<td>lxor</td>
+<td></td>
+<td>对long类型的按位异或运算。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>控制流指令——条件跳转指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>ifeq</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶int类型值为0则跳转。</td>
+</tr>
+<tr>
+<td>ifne</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶int类型值不为0则跳转。</td>
+</tr>
+<tr>
+<td>iflt</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶int类型值小于0则跳转。</td>
+</tr>
+<tr>
+<td>ifle</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶int类型值小于等于0则跳转。</td>
+</tr>
+<tr>
+<td>ifgt</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶int类型值大于0则跳转。</td>
+</tr>
+<tr>
+<td>ifge</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶int类型值大于等于0则跳转。</td>
+</tr>
+<tr>
+<td>if_icmpeq</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶两int类型值相等则跳转。</td>
+</tr>
+<tr>
+<td>if_icmpne</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶两int类型值不相等则跳转。</td>
+</tr>
+<tr>
+<td>if_icmplt</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶两int类型值前小于后则跳转。</td>
+</tr>
+<tr>
+<td>if_icmple</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶两int类型值前小于等于后则跳转。</td>
+</tr>
+<tr>
+<td>if_icmpgt</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶两int类型值前大于后则跳转。</td>
+</tr>
+<tr>
+<td>if_icmpge</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶两int类型值前大于等于后则跳转。</td>
+</tr>
+<tr>
+<td>ifnull</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶引用值为null则跳转。</td>
+</tr>
+<tr>
+<td>ifnonnull</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶引用值不为null则跳转。</td>
+</tr>
+<tr>
+<td>if_acmpeq</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶两引用类型值相等则跳转。</td>
+</tr>
+<tr>
+<td>if_acmpne</td>
+<td>branchbyte1   branchbyte2</td>
+<td>若栈顶两引用类型值不相等则跳转。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>控制流指令——比较指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>lcmp</td>
+<td></td>
+<td>比较栈顶两long类型值，前者大，1入栈；相等，0入栈；后者大，-1入栈。</td>
+</tr>
+<tr>
+<td>fcmpl</td>
+<td></td>
+<td>比较栈顶两float类型值，前者大，1入栈；相等，0入栈；后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>fcmpg</td>
+<td></td>
+<td>比较栈顶两float类型值，前者大，1入栈；相等，0入栈；后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>dcmpl</td>
+<td></td>
+<td>比较栈顶两double类型值，前者大，1入栈；相等，0入栈；后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+<tr>
+<td>dcmpg</td>
+<td></td>
+<td>比较栈顶两double类型值，前者大，1入栈；相等，0入栈；后者大，-1入栈；有NaN存在，-1入栈。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>控制流指令——无条件跳转指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>goto</td>
+<td>branchbyte1    branchbyte2</td>
+<td>无条件跳转到指定位置。</td>
+</tr>
+<tr>
+<td>goto_w</td>
+<td>branchbyte1  branchbyte2   branchbyte3   branchbyte4</td>
+<td>无条件跳转到指定位置（宽索引）。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>控制流指令——表跳转指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>tableswitch</td>
+<td>&lt;0-3bytepad&gt;</td>
+<td>通过索引访问跳转表，并跳转。</td>
+</tr>
+<tr>
+<td></td>
+<td>defaultbyte1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>defaultbyte2</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>defaultbyte3</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>defaultbyte4</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>lowbyte1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>lowbyte2</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>lowbyte3</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>lowbyte4</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>highbyte1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>highbyte2</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>highbyte3</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>highbyte4</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>jump offsets…</td>
+<td></td>
+</tr>
+<tr>
+<td>lookupswitch</td>
+<td>&lt;0-3bytepad&gt;</td>
+<td>通过键值访问跳转表，并跳转</td>
+</tr>
+<tr>
+<td></td>
+<td>defaultbyte1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>defaultbyte2</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>defaultbyte3</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>defaultbyte4</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>npairs1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>npairs2</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>npairs3</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>npairs4</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>match offsets</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>控制流指令——异常和finally</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>athrow</td>
+<td></td>
+<td>抛出异常。</td>
+</tr>
+<tr>
+<td>jsr</td>
+<td>branchbyte1   branchbyte2</td>
+<td>跳转到子例程序。</td>
+</tr>
+<tr>
+<td>jsr_w</td>
+<td>branchbyte1   branchbyte2   branchbyte3   branchbyte4</td>
+<td>跳转到子例程序（宽索引）。</td>
+</tr>
+<tr>
+<td>(wide)ret</td>
+<td>indexbyte</td>
+<td>返回子例程序。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>对象操作指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>new</td>
+<td>indexbyte1   indexbyte2</td>
+<td>创建新的对象实例。</td>
+</tr>
+<tr>
+<td>checkcast</td>
+<td>indexbyte1   indexbyte</td>
+<td>类型强转。</td>
+</tr>
+<tr>
+<td>instanceof</td>
+<td>indexbyte1   indexbyte2</td>
+<td>判断类型。</td>
+</tr>
+<tr>
+<td>getfield</td>
+<td>indexbyte1   indexbyte2</td>
+<td>获取对象字段的值。</td>
+</tr>
+<tr>
+<td>putfield</td>
+<td>indexbyte1   indexbyte2</td>
+<td>给对象字段赋值。</td>
+</tr>
+<tr>
+<td>getstatic</td>
+<td>indexbyte1   indexbyte2</td>
+<td>获取静态字段的值。</td>
+</tr>
+<tr>
+<td>putstatic</td>
+<td>indexbyte1   indexbyte2</td>
+<td>给静态字段赋值。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>数组操作指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>newarray</td>
+<td>atype</td>
+<td>创建type类型的数组。</td>
+</tr>
+<tr>
+<td>anewarray</td>
+<td>indexbyte1   indexbyte2</td>
+<td>创建引用类型的数组。</td>
+</tr>
+<tr>
+<td>arraylength</td>
+<td></td>
+<td>获取一维数组的长度。</td>
+</tr>
+<tr>
+<td>multianewarray</td>
+<td>indexbyte1   indexbyte2   dimension</td>
+<td>创建dimension维度的数组。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>方法调用指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>invokespecial</td>
+<td>indexbyte1   indexbyte2</td>
+<td>编译时方法绑定调用方法。</td>
+</tr>
+<tr>
+<td>invokevirtual</td>
+<td>indexbyte1   indexbyte2</td>
+<td>运行时方法绑定调用方法。</td>
+</tr>
+<tr>
+<td>invokestatic</td>
+<td>indexbyte1   indexbyte2</td>
+<td>调用静态方法。</td>
+</tr>
+<tr>
+<td>invokeinterface</td>
+<td>indexbyte1   indexbyte2   count  0</td>
+<td>调用接口方法。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>方法返回指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>ireturn</td>
+<td></td>
+<td>返回int类型值。</td>
+</tr>
+<tr>
+<td>lreturn</td>
+<td></td>
+<td>返回long类型值。</td>
+</tr>
+<tr>
+<td>freturn</td>
+<td></td>
+<td>返回float类型值。</td>
+</tr>
+<tr>
+<td>dreturn</td>
+<td></td>
+<td>返回double类型值。</td>
+</tr>
+<tr>
+<td>areturn</td>
+<td></td>
+<td>返回引用类型值。</td>
+</tr>
+<tr>
+<td>return</td>
+<td></td>
+<td>void函数返回。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>线程同步指令</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>操作码（助记符）</strong></td>
+<td><strong>操作数</strong></td>
+<td><strong>描述（栈指操作数栈）</strong></td>
+</tr>
+<tr>
+<td>monitorenter</td>
+<td></td>
+<td>进入并获得对象监视器。</td>
+</tr>
+<tr>
+<td>monitorexit</td>
+<td></td>
+<td>释放并退出对象监视器。</td>
+</tr>
+</tbody>
+</table>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/18/字符串拼接/" data-toggle="tooltip" data-placement="top" title="字符串拼接">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="nav">none</ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#jvm" title="jvm">jvm</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
