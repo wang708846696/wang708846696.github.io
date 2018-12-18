@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>http://yoursite-url/2018/12/18/jvm%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/</loc>
+        <lastmod>2018-12-18T12:07:39.618Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://yoursite-url/2018/12/18/jvm%E6%8C%87%E4%BB%A4/</loc>
         <lastmod>2018-12-18T06:47:14.076Z</lastmod>
         <changefreq>weekly</changefreq>
