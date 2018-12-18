@@ -132,13 +132,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -147,6 +140,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,35 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/11/04/滴滴插件化2_装载插件/">
+        <h2 class="post-title">
+            滴滴插件化2_装载插件
+        </h2>
+        <h3 class="post-subtitle">
+            主要针对装载插件的代码进行分析，具体看看装载插件的时候需要初始化那些内容以及替换那些核心的类
+        </h3>
+        <div class="post-content-preview">
+            装载插件（apk）
+123456789101112131415public void loadPlugin(File apk) throws Exception &#123;    ...    //创建LoadedPlugin    LoadedPlugin plugin = createLoadedPlugin(apk);//【1.2】    if (null == plugin) &#......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-04
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -463,35 +492,6 @@
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动2-startActivityMayWait方法/">
-        <h2 class="post-title">
-            Activity启动2-startActivityMayWait方法
-        </h2>
-        <h3 class="post-subtitle">
-            startActivityMayWait()方法的主要说明
-        </h3>
-        <div class="post-content-preview">
-            我们从上一节分析参数开始最终达到：
-123result = mInterface.startActivityAndWait(null, null, intent, mimeType,                                         null, null, 0, mStartFlags, profilerInfo,                        ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -550,6 +550,10 @@
             
         
             
+            <a href="/tags/#面试题" title="面试题" rel="2">面试题</a>
+            
+        
+            
             <a href="/tags/#Android APP" title="Android APP" rel="7">Android APP</a>
             
         
@@ -557,8 +561,6 @@
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
-            
-        
             
         
             
@@ -623,6 +625,10 @@
     <ul>
       
         <li>
+          <a href="/2018/12/18/字符串拼接/">字符串拼接</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/16/位运算符常见用法/">位运算</a>
         </li>
       
@@ -636,10 +642,6 @@
       
         <li>
           <a href="/2018/12/04/动态代理模式/">动态代理模式</a>
-        </li>
-      
-        <li>
-          <a href="/2018/11/24/Android工程打包apk简介/">Android工程打包apk简介</a>
         </li>
       
     </ul>
