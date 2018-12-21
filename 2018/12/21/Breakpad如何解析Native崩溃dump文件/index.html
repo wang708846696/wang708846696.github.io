@@ -138,6 +138,13 @@
 
                         
                         <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -146,13 +153,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -208,7 +208,19 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1><span id="breakpad如何解析native崩溃dump文件">Breakpad如何解析Native崩溃dump文件</span></h1>
+                <hr>
+<p>title: &quot;Breakpad如何解析Native崩溃dump文件&quot;<br>
+catalog: true<br>
+subtitle: &quot;Breakpad如何解析Native崩溃dump文件&quot;<br>
+header-img: &quot;Demo.png&quot;<br>
+tags:</p>
+<ul>
+<li>nativecrash<br>
+catagories:</li>
+<li>nativecrash</li>
+</ul>
+<hr>
+<h1><span id="breakpad如何解析native崩溃dump文件">Breakpad如何解析Native崩溃dump文件</span></h1>
 <p>breakpad是google针对native层crash的一套通用的框架如何使用请看下文</p>
 <p>如果想省去找报错文件调试等直接下载我上传的代码即可：</p>
 <p><a href="https://github.com/wang708846696/nativecrash" target="_blank" rel="noopener">点这里传送已经添加缺失文件的代码</a></p>
@@ -223,9 +235,9 @@
 <p>运行这个命令完成之后，工具将产生在如下路径：<br>
 <code>src/processor/minidump_stackwalk</code>, <code>src/tools/linux/dump_syms/dump_syms</code></p>
 <p>这个时候可能会报错，意思缺少这个头文件</p>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5Cnativecrash.assets%5C1545380590197.png" alt="1545380590197"></p>
+<p><img src="1545380590197.png" alt="1545380590197"></p>
 <p>这个头文件的来源，网上参差不齐。但是最终决定还是在aosp最新代码中查找</p>
-<p><img src="D:%5Cmarkdown%5Cmybolg%5Chexo-beantech%5Chexo-beantech%5Csource_posts%5Cnativecrash.assets%5C1545380824058.png" alt="1545380824058"></p>
+<p><img src="1545380824058.png" alt="1545380824058"></p>
 <p><a href="https://android.googlesource.com/platform/external/google-breakpad/+/master/src/third_party/lss/" target="_blank" rel="noopener">下载代码找这里</a></p>
 <hr>
 <p>title: &quot;Breakpad如何解析Native崩溃dump文件&quot;<br>
