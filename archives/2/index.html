@@ -139,14 +139,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,54 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/11/24/Android工程打包apk简介/">
+        <h2 class="post-title">
+            Android工程打包apk简介
+        </h2>
+        <h3 class="post-subtitle">
+            本章节将介绍Android工程打包apk
+        </h3>
+        <div class="post-content-preview">
+            首先来一张官网给的图
+
+然后在来一张build流程图
+
+打包过程中使用的工具
+
+
+
+名称
+功能介绍
+在操作系统中的路径
+源码路径
+
+
+
+
+aapt（Android Asset Package Tool）
+Android资源打包工具
+${ANDROID_SDK_HOME} /build-tools/ ANDROID_VERSION/aapt
+frameworks\base\tools\aap
+......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-24
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#构建" title="构建">构建</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -490,38 +538,6 @@ jvm(java虚拟机)将xx.class文件读取到内存......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/08/反射优雅使用/">
-        <h2 class="post-title">
-            反射优雅使用
-        </h2>
-        <h3 class="post-subtitle">
-            本节根据滴滴插件中摘取出来的反射优雅使用
-        </h3>
-        <div class="post-content-preview">
-            先看如何使用
-
-替换一个实例中的字段
-
-123final VAInstrumentation instrumentation = createInstrumentation(baseInstrumentation);//替换ActivityThread中的mInstrumentationReflector.with(activityThread).field("mInstrumentatio......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -578,9 +594,13 @@ jvm(java虚拟机)将xx.class文件读取到内存......
             
         
             
+            <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
+            
         
             
-            <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
+        
+            
+            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
             
         
             
@@ -592,13 +612,9 @@ jvm(java虚拟机)将xx.class文件读取到内存......
             
         
             
-            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
-            
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
-            
-        
             
         
             
@@ -663,6 +679,10 @@ jvm(java虚拟机)将xx.class文件读取到内存......
     <ul>
       
         <li>
+          <a href="/2018/12/21/Breakpad如何解析Native崩溃dump文件/">(no title)</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/20/gradle生命周期/">Gradle生命周期</a>
         </li>
       
@@ -676,10 +696,6 @@ jvm(java虚拟机)将xx.class文件读取到内存......
       
         <li>
           <a href="/2018/12/18/jvm指令/">jvm指令</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/18/字符串拼接/">字符串拼接</a>
         </li>
       
     </ul>
