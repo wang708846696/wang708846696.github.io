@@ -14,7 +14,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          Beantech | 王菜鸟
+          gradle脚本将带符号表的so拷贝到指定目录 - Beantech | 王菜鸟
         
     </title>
 
@@ -69,7 +69,7 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('undefined')
+            background-image: url('Demo.png')
             /*post*/
         
     }
@@ -86,9 +86,11 @@
                     <div class="post-heading">
                         <div class="tags">
                             
+                              <a class="tag" href="/tags/#gradle脚本" title="gradle脚本">gradle脚本</a>
+                            
                         </div>
-                        <h1></h1>
-                        <h2 class="subheading"></h2>
+                        <h1>gradle脚本将带符号表的so拷贝到指定目录</h1>
+                        <h2 class="subheading">gradle脚本将带符号表的so拷贝到指定目录</h2>
                         <span class="meta">
                             Posted by WangWei on
                             2018-12-19
@@ -138,14 +140,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -210,6 +212,8 @@
 
                 <p><strong>需求背景：</strong></p>
 <p>由于nativecrash使用google的breakpad库的时候会收集dump文件，但是dump文件必须翻译才能精确定位到native出错的哪一行。这个时候在编译的时候需要带有符号表的so文件制作翻译。所以我们必须收集带有符号表的so文件。</p>
+<p><strong>实际操作</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">writeStream2File</span><span class="params">(@Nullable <span class="keyword">final</span> File file, @Nullable <span class="keyword">final</span> InputStream inputStream)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> optValue = <span class="keyword">false</span></span><br><span class="line">    <span class="keyword">if</span> (file == <span class="keyword">null</span> || inputStream == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> optValue</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    OutputStream outputStream = <span class="keyword">null</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        outputStream = <span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(file))</span><br><span class="line">        <span class="keyword">byte</span>[] data = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>]</span><br><span class="line">        <span class="keyword">int</span> len</span><br><span class="line">        <span class="keyword">while</span> ((len = inputStream.read(data, <span class="number">0</span>, data.length)) != -<span class="number">1</span>) &#123;</span><br><span class="line">            outputStream.write(data, <span class="number">0</span>, len)</span><br><span class="line">        &#125;</span><br><span class="line">        optValue = <span class="keyword">true</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        optValue = <span class="keyword">false</span></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (outputStream != <span class="keyword">null</span>) &#123;</span><br><span class="line">            outputStream.close()</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (inputStream != <span class="keyword">null</span>) &#123;</span><br><span class="line">            inputStream.close()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> optValue</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">copyFile</span><span class="params">(@Nullable <span class="keyword">final</span> File srcFile, @Nullable <span class="keyword">final</span> File destFile)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (srcFile == <span class="keyword">null</span> || destFile == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!srcFile.exists() || !srcFile.isFile()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (destFile.exists()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    File destDir = destFile.getParentFile();</span><br><span class="line">    <span class="keyword">if</span> (destDir == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!destDir.exists()) &#123;</span><br><span class="line">        destDir.mkdirs()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> writeStream2File(destFile, <span class="keyword">new</span> FileInputStream(srcFile))</span><br><span class="line">    &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">def nativeCrashDirPath = <span class="string">"xxxx"</span><span class="comment">//自己新建的crash文件目录</span></span><br><span class="line">def ndkMakefileDir = <span class="string">"ndk make file产生的带符号表的so的目录"</span></span><br><span class="line">def ndkCMakefileDir = <span class="string">"ndk针对cmake文件产生带符号表的目录"</span></span><br><span class="line">def ndkFileSuffix = <span class="string">".so"</span></span><br><span class="line"></span><br><span class="line">gradle.buildFinished &#123;</span><br><span class="line">    File nativeCrashDir = <span class="keyword">null</span></span><br><span class="line">    nativeCrashDir = <span class="keyword">new</span> File(project.getRootDir().path + nativeCrashDirPath)</span><br><span class="line">    <span class="keyword">if</span> (!nativeCrashDir.exists()) &#123;</span><br><span class="line">        nativeCrashDir.mkdirs()</span><br><span class="line">    &#125;</span><br><span class="line">    project.subprojects.each &#123; Project proj -&gt;</span><br><span class="line">        println(<span class="string">"start copy project name is "</span> + proj)</span><br><span class="line">        List ndkDirList = <span class="keyword">new</span> ArrayList&lt;File&gt;()</span><br><span class="line">        ndkDirList.add(<span class="keyword">new</span> File(proj.getProjectDir().path + ndkMakefileDir))</span><br><span class="line">        ndkDirList.add(<span class="keyword">new</span> File(proj.buildDir.path + ndkCMakefileDir))</span><br><span class="line">        <span class="keyword">for</span> (File ndkDir : ndkDirList) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!ndkDir.exists() || !ndkDir.isDirectory()) &#123;</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            &#125;</span><br><span class="line">            println(<span class="string">"need copy ndkDir is "</span> + ndkDir.path)</span><br><span class="line">            def ndkFile = ndkDir.listFiles()</span><br><span class="line">            ndkFile.each &#123; file -&gt;</span><br><span class="line">                <span class="keyword">if</span> (file.exists() &amp;&amp; file.path.toString().endsWith(ndkFileSuffix)) &#123;</span><br><span class="line">                    File ndkDirFile = <span class="keyword">new</span> File(nativeCrashDir.path, file.getName())</span><br><span class="line">                    <span class="keyword">boolean</span> isSuccess = copyFile(file, ndkDirFile)</span><br><span class="line">                    println(<span class="string">"xx.so file collect copy is success ?"</span> + isSuccess)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
                 
 
@@ -244,6 +248,17 @@
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="nav">none</ol>
+        
+        </div>
+      </aside>
+    
+
                 
             <!-- Sidebar Container -->
             <div class="
@@ -258,6 +273,8 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
+                          <a class="tag" href="/tags/#gradle脚本" title="gradle脚本">gradle脚本</a>
+                        
                     </div>
                 </section>
                 
