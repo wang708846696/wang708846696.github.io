@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>http://yoursite-url/2018/12/16/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/</loc>
+        <lastmod>2018-12-25T06:28:49.815Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://yoursite-url/2018/12/25/gradle%E5%AE%89%E5%8D%93%E5%BA%94%E7%94%A8%E6%8F%92%E4%BB%B6%E6%BA%90%E7%A0%81/</loc>
         <lastmod>2018-12-25T04:18:55.289Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -81,14 +89,6 @@
     <url>
         <loc>http://yoursite-url/2018/12/14/Transform%E7%90%86%E8%A7%A3/</loc>
         <lastmod>2018-12-16T12:23:02.876Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://yoursite-url/2018/12/16/%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/</loc>
-        <lastmod>2018-12-16T11:58:05.707Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

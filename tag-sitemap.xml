@@ -79,13 +79,6 @@
     </url>
 
     <url>
-        <loc>http://yoursite-url/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/</loc>
-        <lastmod>2018-12-16T11:58:05.707Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://yoursite-url/tags/Transform/</loc>
         <lastmod>2018-12-16T12:23:02.876Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -130,6 +123,13 @@
     <url>
         <loc>http://yoursite-url/tags/gradle/</loc>
         <lastmod>2018-12-25T04:18:55.289Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://yoursite-url/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/</loc>
+        <lastmod>2018-12-25T06:28:49.815Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
