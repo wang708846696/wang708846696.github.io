@@ -209,6 +209,40 @@
 
 <div class="post-preview">
 
+    <a href="/2018/12/24/gradle文档/">
+        <h2 class="post-title">
+            Gradle如何学习
+        </h2>
+        <h3 class="post-subtitle">
+            Gradle如何学习
+        </h3>
+        <div class="post-content-preview">
+            首先知道如何查看Gradle源码
+新建一个工程：
+
+在build.gradle中写入：
+1234dependencies &#123;    compile gradleApi()    compile 'com.android.tools.build:gradle:3.2.1'&#125;
+在项目根目录的settings.gradle下将该工程引入：include 'library'即可
+......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-24
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#gradle" title="gradle">gradle</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/12/21/Breakpad在Android上的使用/">
         <h2 class="post-title">
             Breakpad在Android上的使用
@@ -548,34 +582,6 @@ api&lt;=2.0 compile 'com.android.tools.build:......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/14/handler内存泄露/">
-        <h2 class="post-title">
-            常用Handler导致内存泄露
-        </h2>
-        <h3 class="post-subtitle">
-            Handler导致的内存泄露
-        </h3>
-        <div class="post-content-preview">
-            1234567891011121314151617181920212223242526272829303132333435363738394041public class MainActivity extends Activity &#123;    private MyHandler mMyHandler;    @Override    protected void onCreate(B......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#内存泄露" title="内存泄露">内存泄露</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -632,6 +638,10 @@ api&lt;=2.0 compile 'com.android.tools.build:......
             
         
             
+            <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
+            
+        
+            
         
             
             <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
@@ -639,10 +649,6 @@ api&lt;=2.0 compile 'com.android.tools.build:......
         
             
             <a href="/tags/#面试题" title="面试题" rel="2">面试题</a>
-            
-        
-            
-            <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
             
         
             
@@ -661,6 +667,8 @@ api&lt;=2.0 compile 'com.android.tools.build:......
         
             
         
+            
+            <a href="/tags/#gradle" title="gradle" rel="2">gradle</a>
             
         
             
@@ -717,6 +725,10 @@ api&lt;=2.0 compile 'com.android.tools.build:......
     <ul>
       
         <li>
+          <a href="/2018/12/24/gradle文档/">Gradle如何学习</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/21/Breakpad在Android上的使用/">Breakpad在Android上的使用</a>
         </li>
       
@@ -730,10 +742,6 @@ api&lt;=2.0 compile 'com.android.tools.build:......
       
         <li>
           <a href="/2018/12/19/gradle脚本将带符号表的so拷贝到指定目录/">gradle脚本将带符号表的so拷贝到指定目录</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/18/jvm垃圾回收机制/">jvm垃圾回收机制</a>
         </li>
       
     </ul>

@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          About - Beantech | 王菜鸟
+          Gradle如何学习 - Beantech | 王菜鸟
         
     </title>
 
-    <link rel="canonical" href="http://yoursite-url/about/">
+    <link rel="canonical" href="http://yoursite-url/2018/12/24/gradle文档/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -69,8 +69,8 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('/img/header_img/Iron-Man-3.jpg')
-            /*page*/
+            background-image: url('Demo.png')
+            /*post*/
         
     }
     
@@ -83,10 +83,18 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
-                    <div class="site-heading">
-                        <h1>About</h1>
-                        <!--<hr class="small">-->
-                        <span class="subheading">All things in their being are good for something</span>
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#gradle" title="gradle">gradle</a>
+                            
+                        </div>
+                        <h1>Gradle如何学习</h1>
+                        <h2 class="subheading">Gradle如何学习</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-12-24
+                        </span>
                     </div>
                 
 
@@ -189,210 +197,154 @@
 
 
     <!-- Main Content -->
-    <!-- Main Content -->
-<div class="container">
-    <div class="row">
-        
+    <!-- Modify by Yu-Hsuan Yen -->
 
-<!-- USE SIDEBAR -->
-    <!-- Post Container -->
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
-            
-                <blockquote>
-<p>Life’s like a bar of chocolate. You’ll never know what you are gonna get.</p>
-</blockquote>
-<p>Dear friends, I am glad that you can visit my blog and click to this page，My name is wang wei, an Android development engineer. I used to work in the system group of mi MIUI department, and now I work in the WPS team of kingsoft. Like programming, like photography and like fitness. So if the blog I share is helpful to you, or if you have any questions please feel free to contact me and I’m happy to be your friend.</p>
-<p><img src="639656026208343677.png" alt="639656026208343677"></p>
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
+                <p>首先知道如何查看Gradle源码</p>
+<p>新建一个工程：</p>
+<p><img src="1545644911251.png" alt="1545644911251"></p>
+<p>在build.gradle中写入：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    <span class="function">compile <span class="title">gradleApi</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    compile 'com.android.tools.build:gradle:3.2.1'</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>在项目根目录的<code>settings.gradle</code>下将该工程引入：<code>include 'library'</code>即可</p>
+<p>如果不想搞，可以直接clone我上传的项目：点<a href="https://github.com/wang708846696/gradlesource" target="_blank" rel="noopener">这里</a></p>
+<ul>
+<li>如何初步学习gradle</li>
+</ul>
+<p>使用gradle的时候会有一个gradle对应的all包下载下来，对应有不同的版本请注意，我下载下来的目录如下：</p>
+<p><img src="1545636815144.png" alt="1545636815144"></p>
+<p>进入到docs目录下：</p>
+<p><img src="1545636865564.png" alt="1545636865564"></p>
+<p>dsl就是我们在android的gradle.build中经常使用到的，javadoc对应的java文档包含gradle中各种java写的方法和类字段等。我们进行userguide的探索。</p>
+<p><a href="https://fucknmb.com/2017/06/01/Android-Gradle-Plugin%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E7%BC%96%E8%AF%91/" target="_blank" rel="noopener">附上源码如何查看链接</a></p>
 
-                <!-- 如果开启评论功能 -->
                 
-                    <hr>
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/21/Breakpad在Android上的使用/" data-toggle="tooltip" data-placement="top" title="Breakpad在Android上的使用">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="nav">none</ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#gradle" title="gradle">gradle</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
 
                     
-
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
                     
-
-
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
                     
-
-                    
+                </ul>
                 
             </div>
-
-          <!-- Sidebar Container -->
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
-    col-xs-12
-    sidebar-container
-">
-    
-        <!-- Featured Tags -->
-
-<section>
-    <!-- no hr -->
-    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-    <div class="tags">
-        
-            
-            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
-            
-        
-            
-            <a href="/tags/#构建" title="构建" rel="2">构建</a>
-            
-        
-            
-            <a href="/tags/#nativecrash" title="nativecrash" rel="2">nativecrash</a>
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-            <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
-            
-        
-            
-        
-            
-            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
-            
-        
-            
-            <a href="/tags/#面试题" title="面试题" rel="2">面试题</a>
-            
-        
-            
-            <a href="/tags/#Android APP" title="Android APP" rel="7">Android APP</a>
-            
-        
-            
-        
-            
-            <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
-            
-        
-            
-        
-            
-        
-            
-        
-            
-            <a href="/tags/#gradle" title="gradle" rel="2">gradle</a>
-            
-        
-            
-        
+        </div>
     </div>
-</section>
+</article>
 
-        <hr>
-    
-        <!-- Short About -->
-<section class="visible-md visible-lg">
-    <h5><a href="/about/">ABOUT ME</a></h5>
-    <div class="short-about">
 
-        
-            <img id="avatar_pic" src="/img/ironman-draw.png">
-        
 
-        
-            <p>Welcome to my blog! I am also wish making more friends.</p>
-        
 
-        <!-- SNS Link -->
-        <ul class="list-inline">
-            
-            
-            
-                <li>
-                    <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
-                        <span class="fa-stack fa-lg">
-                            <i class="fa fa-circle fa-stack-2x"></i>
-                            <i class="fa  fa-stack-1x fa-inverse">知</i>
-                        </span>
-                    </a>
-                </li>
-            
 
-            
 
-            
 
-            
-            
-            
-            
-        </ul>
-    </div>
-</section>
-        <hr>
-    
-        
-  <h5>热门文章
-  <div class="widget">
-    <ul>
-      
-        <li>
-          <a href="/2018/12/24/gradle文档/">Gradle如何学习</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/21/Breakpad在Android上的使用/">Breakpad在Android上的使用</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/21/Breakpad如何解析Native崩溃dump文件/">Breakpad如何解析Native崩溃dump文件</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/20/gradle生命周期/">Gradle生命周期</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/19/gradle脚本将带符号表的so拷贝到指定目录/">gradle脚本将带符号表的so拷贝到指定目录</a>
-        </li>
-      
-    </ul>
-  </div>
-</h5>
-        <hr>
-    
-        <!-- Friends Blog -->
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
 
-<h5>FRIENDS</h5>
-<ul class="list-inline">
-
-    
-        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
-    
-        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
-    
-</ul>
-
-        <hr>
-    
-</div>
-
-        
-    </div>
-</div>
 
 
     <!-- Footer -->
