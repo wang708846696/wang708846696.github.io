@@ -132,6 +132,13 @@
 
                         
                         <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -140,13 +147,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,43 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/12/14/Transform理解/">
+        <h2 class="post-title">
+            Transform介绍
+        </h2>
+        <h3 class="post-subtitle">
+            Transform介绍
+        </h3>
+        <div class="post-content-preview">
+            
+来源于https://juejin.im/entry/5c0cc7c15188257d5e39647d
+
+Transform历史
+gradle2.0之前Transform单独需要引入
+transform的历史版本
+gradle2.0之后代码就放入了gradle-api中
+Transform依赖方式
+
+api&lt;=2.0 compile 'com.android.tools.build:......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Transform" title="Transform">Transform</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -503,38 +540,6 @@ We said earlier that the core of Gradle is a language for dependency based progr
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/10/热修复的一种实现/">
-        <h2 class="post-title">
-            Android热修复的一种实现
-        </h2>
-        <h3 class="post-subtitle">
-            本章节将介绍一种常用的热修复的实现
-        </h3>
-        <div class="post-content-preview">
-            回顾
-
-在 Android 中，App 安装到手机后，apk 里面的 class.dex 中的 class 均是通过 PathClassLoader 来加载的。
-DexClassLoader 可以用来加载外置sd卡等包含 class.dex 的 .jar 和 .apk 文件
-DexClassLoader 和 PathClassLoader 的基类 BaseDexClassLoader 查找 ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-10
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#热修复" title="热修复">热修复</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -587,6 +592,10 @@ DexClassLoader 和 PathClassLoader 的基类 BaseDexClassLoader 查找 ......
             
         
             
+            <a href="/tags/#gradle" title="gradle" rel="3">gradle</a>
+            
+        
+            
         
             
         
@@ -622,10 +631,6 @@ DexClassLoader 和 PathClassLoader 的基类 BaseDexClassLoader 查找 ......
         
             
         
-            
-        
-            
-            <a href="/tags/#gradle" title="gradle" rel="2">gradle</a>
             
         
             
@@ -682,6 +687,10 @@ DexClassLoader 和 PathClassLoader 的基类 BaseDexClassLoader 查找 ......
     <ul>
       
         <li>
+          <a href="/2018/12/25/gradle安卓应用插件源码/">Android DSL源码阅读</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/24/gradle文档/">Gradle如何学习</a>
         </li>
       
@@ -695,10 +704,6 @@ DexClassLoader 和 PathClassLoader 的基类 BaseDexClassLoader 查找 ......
       
         <li>
           <a href="/2018/12/20/gradle生命周期/">Gradle生命周期</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/19/gradle脚本将带符号表的so拷贝到指定目录/">gradle脚本将带符号表的so拷贝到指定目录</a>
         </li>
       
     </ul>

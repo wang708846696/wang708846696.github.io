@@ -132,6 +132,13 @@
 
                         
                         <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -140,13 +147,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,36 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/12/25/gradle安卓应用插件源码/">
+        <h2 class="post-title">
+            Android DSL源码阅读
+        </h2>
+        <h3 class="post-subtitle">
+            gradle在Android中的应用
+        </h3>
+        <div class="post-content-preview">
+            gradle中的写法：
+1apply plugin: 'com.android.application'
+这样就引用到了com.android.tools.build:gradle:3.1.2@jar中的文件com.android.application.properties，对应执行的就是文件中的类：implementation-class=com.android.build.gradle......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-25
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#gradle" title="gradle">gradle</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -545,43 +575,6 @@ iconst_4......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/14/Transform理解/">
-        <h2 class="post-title">
-            Transform介绍
-        </h2>
-        <h3 class="post-subtitle">
-            Transform介绍
-        </h3>
-        <div class="post-content-preview">
-            
-来源于https://juejin.im/entry/5c0cc7c15188257d5e39647d
-
-Transform历史
-gradle2.0之前Transform单独需要引入
-transform的历史版本
-gradle2.0之后代码就放入了gradle-api中
-Transform依赖方式
-
-api&lt;=2.0 compile 'com.android.tools.build:......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Transform" title="Transform">Transform</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -630,6 +623,10 @@ api&lt;=2.0 compile 'com.android.tools.build:......
             
         
             
+            <a href="/tags/#gradle" title="gradle" rel="3">gradle</a>
+            
+        
+            
         
             
         
@@ -665,10 +662,6 @@ api&lt;=2.0 compile 'com.android.tools.build:......
         
             
         
-            
-        
-            
-            <a href="/tags/#gradle" title="gradle" rel="2">gradle</a>
             
         
             
@@ -725,6 +718,10 @@ api&lt;=2.0 compile 'com.android.tools.build:......
     <ul>
       
         <li>
+          <a href="/2018/12/25/gradle安卓应用插件源码/">Android DSL源码阅读</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/24/gradle文档/">Gradle如何学习</a>
         </li>
       
@@ -738,10 +735,6 @@ api&lt;=2.0 compile 'com.android.tools.build:......
       
         <li>
           <a href="/2018/12/20/gradle生命周期/">Gradle生命周期</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/19/gradle脚本将带符号表的so拷贝到指定目录/">gradle脚本将带符号表的so拷贝到指定目录</a>
         </li>
       
     </ul>
