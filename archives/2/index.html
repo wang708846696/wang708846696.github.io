@@ -209,6 +209,109 @@
 
 <div class="post-preview">
 
+    <a href="/2018/12/18/jvm指令/">
+        <h2 class="post-title">
+            jvm指令
+        </h2>
+        <h3 class="post-subtitle">
+            jvm指令
+        </h3>
+        <div class="post-content-preview">
+            来源点这里
+
+
+
+常量入栈指令
+
+
+
+
+
+
+操作码（助记符）
+操作数
+描述（栈指操作数栈）
+
+
+aconst_null
+
+null值入栈。
+
+
+iconst_m1
+
+-1(int)值入栈。
+
+
+iconst_0
+
+0(int)值入栈。
+
+
+iconst_1
+
+1(int)值入栈。
+
+
+iconst_2
+
+2(int)值入栈。
+
+
+iconst_3
+
+3(int)值入栈。
+
+
+iconst_4......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#jvm" title="jvm">jvm</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/18/字符串拼接/">
+        <h2 class="post-title">
+            字符串拼接
+        </h2>
+        <h3 class="post-subtitle">
+            字符串拼接
+        </h3>
+        <div class="post-content-preview">
+            今天主要分析字符串拼接
+1234567891011public class Test4 &#123;    public static void main(String[] args) &#123;        String s1 = "ab";        String s2 = "a" + "b";        String s3 = "a";        String s4 =......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#面试题" title="面试题">面试题</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/12/16/位运算符常见用法/">
         <h2 class="post-title">
             位运算
@@ -476,72 +579,6 @@ frameworks\base\tools\aap
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/14/单例模式/">
-        <h2 class="post-title">
-            单例模式的核心点
-        </h2>
-        <h3 class="post-subtitle">
-            本节主要针对常见的几种单例模式作为介绍
-        </h3>
-        <div class="post-content-preview">
-            常见的几种单例模式比较
-
-饿汉式(静态常量)[可用]
-
-很简单利用java虚拟机特性
-1234567public class Singleton &#123;    private final static Singleton INSTANCE = new Singleton();    private Singleton()&#123;&#125;    public static Sin......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#设计模式" title="设计模式">设计模式</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/13/FutureTask学习/">
-        <h2 class="post-title">
-            FutureTask原理
-        </h2>
-        <h3 class="post-subtitle">
-            本节主要针对FutureTask原理以及简单的使用做一个介绍
-        </h3>
-        <div class="post-content-preview">
-            本节介绍FutureTask这种方式使用线程。其实不能算是创建线程。只能属于一种包装。
-FutureTask组成部分
-Callable接口
-123public interface Callable&lt;V&gt; &#123;    V call() throws Exception;&#125;
-Future接口
-1234567public interface Future&lt;V&g......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-13
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#线程" title="线程">线程</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -602,11 +639,15 @@ Future接口
             
         
             
+        
+            
+        
+            
             <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
             
         
             
-        
+            <a href="/tags/#Python" title="Python" rel="3">Python</a>
             
         
             
@@ -627,8 +668,6 @@ Future接口
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
-            
-        
             
         
             
@@ -691,6 +730,14 @@ Future接口
     <ul>
       
         <li>
+          <a href="/2018/12/26/Python面向对象/">Python面向对象</a>
+        </li>
+      
+        <li>
+          <a href="/2018/12/26/python字符串/">Python字符串</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/25/Python装饰器/">Python装饰器</a>
         </li>
       
@@ -700,14 +747,6 @@ Future接口
       
         <li>
           <a href="/2018/12/24/gradle文档/">Gradle如何学习</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/21/Breakpad在Android上的使用/">Breakpad在Android上的使用</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/21/Breakpad如何解析Native崩溃dump文件/">Breakpad如何解析Native崩溃dump文件</a>
         </li>
       
     </ul>

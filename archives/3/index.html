@@ -209,6 +209,72 @@
 
 <div class="post-preview">
 
+    <a href="/2018/11/14/单例模式/">
+        <h2 class="post-title">
+            单例模式的核心点
+        </h2>
+        <h3 class="post-subtitle">
+            本节主要针对常见的几种单例模式作为介绍
+        </h3>
+        <div class="post-content-preview">
+            常见的几种单例模式比较
+
+饿汉式(静态常量)[可用]
+
+很简单利用java虚拟机特性
+1234567public class Singleton &#123;    private final static Singleton INSTANCE = new Singleton();    private Singleton()&#123;&#125;    public static Sin......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#设计模式" title="设计模式">设计模式</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/11/13/FutureTask学习/">
+        <h2 class="post-title">
+            FutureTask原理
+        </h2>
+        <h3 class="post-subtitle">
+            本节主要针对FutureTask原理以及简单的使用做一个介绍
+        </h3>
+        <div class="post-content-preview">
+            本节介绍FutureTask这种方式使用线程。其实不能算是创建线程。只能属于一种包装。
+FutureTask组成部分
+Callable接口
+123public interface Callable&lt;V&gt; &#123;    V call() throws Exception;&#125;
+Future接口
+1234567public interface Future&lt;V&g......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-13
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#线程" title="线程">线程</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/11/13/gradle基本使用/">
         <h2 class="post-title">
             groovy语法&gradle与groovy和java的关系简要说明
@@ -464,66 +530,6 @@ H h主要负责Application这边对应AMS信号......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/04/滴滴插件化3_装载插件/">
-        <h2 class="post-title">
-            滴滴插件化3_装载插件
-        </h2>
-        <h3 class="post-subtitle">
-            这一部分主要是进行装载插件初始化的后续操作
-        </h3>
-        <div class="post-content-preview">
-            这一部分主要是收集测试核心类InstrumentationInfo以及四大组件的信息，同时最后创建了插件的Application对象。
-Part 6
-收集用于用于检测特定信息的类。该情景中数组为0
-123456Map&lt;ComponentName, InstrumentationInfo&gt; instrumentations = new HashMap&lt;ComponentNam......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-04
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/04/滴滴插件化2_装载插件/">
-        <h2 class="post-title">
-            滴滴插件化2_装载插件
-        </h2>
-        <h3 class="post-subtitle">
-            主要针对装载插件的代码进行分析，具体看看装载插件的时候需要初始化那些内容以及替换那些核心的类
-        </h3>
-        <div class="post-content-preview">
-            装载插件（apk）
-123456789101112131415public void loadPlugin(File apk) throws Exception &#123;    ...    //创建LoadedPlugin    LoadedPlugin plugin = createLoadedPlugin(apk);//【1.2】    if (null == plugin) &#......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-04
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -584,11 +590,15 @@ Part 6
             
         
             
+        
+            
+        
+            
             <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
             
         
             
-        
+            <a href="/tags/#Python" title="Python" rel="3">Python</a>
             
         
             
@@ -609,8 +619,6 @@ Part 6
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
-            
-        
             
         
             
@@ -673,6 +681,14 @@ Part 6
     <ul>
       
         <li>
+          <a href="/2018/12/26/Python面向对象/">Python面向对象</a>
+        </li>
+      
+        <li>
+          <a href="/2018/12/26/python字符串/">Python字符串</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/25/Python装饰器/">Python装饰器</a>
         </li>
       
@@ -682,14 +698,6 @@ Part 6
       
         <li>
           <a href="/2018/12/24/gradle文档/">Gradle如何学习</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/21/Breakpad在Android上的使用/">Breakpad在Android上的使用</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/21/Breakpad如何解析Native崩溃dump文件/">Breakpad如何解析Native崩溃dump文件</a>
         </li>
       
     </ul>
