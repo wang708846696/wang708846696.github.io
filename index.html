@@ -132,6 +132,13 @@
 
                         
                         <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -140,13 +147,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,43 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/12/26/Python异常捕获/">
+        <h2 class="post-title">
+            Python异常捕获
+        </h2>
+        <h3 class="post-subtitle">
+            Python异常捕获
+        </h3>
+        <div class="post-content-preview">
+            
+基础语法
+
+1234try:    尝试执行的代码except:    出现错误的处理
+比如：
+12345try:    # 提示用户输入一个数字    num = int(input("请输入数字："))except:    print("请输入正确的数字")
+
+错误类型捕获
+
+1234567891011try:    # 尝试执行的代码    passexcept 错误类型1:    ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-26
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Python" title="Python">Python</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -537,45 +574,6 @@ breakpad下载地址
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/18/jvm垃圾回收机制/">
-        <h2 class="post-title">
-            jvm垃圾回收机制
-        </h2>
-        <h3 class="post-subtitle">
-            jvm垃圾回收机制
-        </h3>
-        <div class="post-content-preview">
-            1. 标记——清除算法（Mark-Sweep）
-
-过程
-
-标记正所有需要回收的对象
-标记完成后清除被标记的对象。
-
-理解
-图书管里有好多人在看书，图书管理员想要收集起没有被看的书的时候，他决定让所有正在看书的人站起来，然后询问每个人：那一本书是不看的。询问完所有的人之后，同学们做下继续看书。这时候，图书管理员开始寻找所有做过标记的书，把它们收集起来。
-缺点
-
-每次进行垃圾回收时，会暂停当前用......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#jvm" title="jvm">jvm</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -624,6 +622,10 @@ breakpad下载地址
             
         
             
+            <a href="/tags/#Python" title="Python" rel="4">Python</a>
+            
+        
+            
             <a href="/tags/#gradle" title="gradle" rel="3">gradle</a>
             
         
@@ -637,10 +639,6 @@ breakpad下载地址
         
             
             <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
-            
-        
-            
-            <a href="/tags/#Python" title="Python" rel="3">Python</a>
             
         
             
@@ -723,6 +721,10 @@ breakpad下载地址
     <ul>
       
         <li>
+          <a href="/2018/12/26/Python异常捕获/">Python异常捕获</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/26/Python面向对象/">Python面向对象</a>
         </li>
       
@@ -736,10 +738,6 @@ breakpad下载地址
       
         <li>
           <a href="/2018/12/25/gradle安卓应用插件源码/">Android DSL源码阅读</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/24/gradle文档/">Gradle如何学习</a>
         </li>
       
     </ul>

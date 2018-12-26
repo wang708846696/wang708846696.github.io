@@ -132,6 +132,13 @@
 
                         
                         <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -140,13 +147,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,36 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/11/15/事件分发机制/">
+        <h2 class="post-title">
+            Android事件传输机制
+        </h2>
+        <h3 class="post-subtitle">
+            本章节将介绍Android中事件传输机制
+        </h3>
+        <div class="post-content-preview">
+            Activity.dispatchTouchEvent()来源
+首先我们在Activity的dispatchTouchEvent方法中打印堆栈。大概了解下事件的源头。但是我们并不会涉及太深的代码逻辑。
+123456789101112131415161718192021222324252627282930313233java.lang.Exception: Stack trace    at ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-15
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#事件传输" title="事件传输">事件传输</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -501,35 +531,6 @@ H h主要负责Application这边对应AMS信号......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/05/滴滴插件化4_资源加载/">
-        <h2 class="post-title">
-            滴滴插件化4_资源加载
-        </h2>
-        <h3 class="post-subtitle">
-            本节主要是针对资源管理器进行补丁
-        </h3>
-        <div class="post-content-preview">
-            本节主要是针对资源管理器进行补丁。主要思想是添加路径资源管理器中。核心地方有ApplicationInfo中的splitSourceDirs中,LoadedApk中的mSplitResDirs中,ResourcesManager.mResourceImpls需要将ResourcesKey进行更新成带有新添加的apk目录的key。
-12345public LoadedPlugin(Plugin......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-05
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -582,6 +583,10 @@ H h主要负责Application这边对应AMS信号......
             
         
             
+            <a href="/tags/#Python" title="Python" rel="4">Python</a>
+            
+        
+            
             <a href="/tags/#gradle" title="gradle" rel="3">gradle</a>
             
         
@@ -595,10 +600,6 @@ H h主要负责Application这边对应AMS信号......
         
             
             <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
-            
-        
-            
-            <a href="/tags/#Python" title="Python" rel="3">Python</a>
             
         
             
@@ -681,6 +682,10 @@ H h主要负责Application这边对应AMS信号......
     <ul>
       
         <li>
+          <a href="/2018/12/26/Python异常捕获/">Python异常捕获</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/26/Python面向对象/">Python面向对象</a>
         </li>
       
@@ -694,10 +699,6 @@ H h主要负责Application这边对应AMS信号......
       
         <li>
           <a href="/2018/12/25/gradle安卓应用插件源码/">Android DSL源码阅读</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/24/gradle文档/">Gradle如何学习</a>
         </li>
       
     </ul>
