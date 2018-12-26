@@ -132,13 +132,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -147,6 +140,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,37 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/12/25/Python装饰器/">
+        <h2 class="post-title">
+            Python装饰器
+        </h2>
+        <h3 class="post-subtitle">
+            Python装饰器
+        </h3>
+        <div class="post-content-preview">
+            闭包
+要想明白python中装饰器，则需要先知道python中的闭包规则
+1234567891011121314def test1():    print("--- in test1 func----")# 调用函数test1()# 引用函数ret = test1print(id(ret))print(id(test1))#通过引用调用函数ret()
+1234--- in test1 fun......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-25
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Python" title="Python">Python</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -540,41 +571,6 @@ iconst_4......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/16/位运算符常见用法/">
-        <h2 class="post-title">
-            位运算
-        </h2>
-        <h3 class="post-subtitle">
-            位运算
-        </h3>
-        <div class="post-content-preview">
-            
-测试第 k 位: s &amp; (1 &lt;&lt; k)
-
-123//举个例子//	1&lt;&lt;0=1	1&lt;&lt;1=2   1&lt;&lt;2=4  1&lt;&lt;3=8//	0001	0010	0100	1000
-
-设置第 k 位: s |= (1 &lt;&lt; k)
-
-12//将第多少位设置成1，比如将0000的第三位设置成1，结果是1000//所以0 ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-16
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#位运算" title="位运算">位运算</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -631,11 +627,11 @@ iconst_4......
             
         
             
-        
-            
-        
-            
             <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
+            
+        
+            
+        
             
         
             
@@ -656,6 +652,8 @@ iconst_4......
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
+            
+        
             
         
             
@@ -718,6 +716,10 @@ iconst_4......
     <ul>
       
         <li>
+          <a href="/2018/12/25/Python装饰器/">Python装饰器</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/25/gradle安卓应用插件源码/">Android DSL源码阅读</a>
         </li>
       
@@ -731,10 +733,6 @@ iconst_4......
       
         <li>
           <a href="/2018/12/21/Breakpad如何解析Native崩溃dump文件/">Breakpad如何解析Native崩溃dump文件</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/20/gradle生命周期/">Gradle生命周期</a>
         </li>
       
     </ul>
