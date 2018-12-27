@@ -132,13 +132,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -147,6 +140,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,81 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/12/27/Java虚拟机理解简要总结/">
+        <h2 class="post-title">
+            Java虚拟机理解简要总结
+        </h2>
+        <h3 class="post-subtitle">
+            Java虚拟机理解简要总结
+        </h3>
+        <div class="post-content-preview">
+            运行时数据区域包括哪些？
+
+程序计数器
+Java 虚拟机栈
+本地方法栈
+Java 堆
+方法区
+运行时常量池
+直接内存
+
+程序计数器（线程私有）
+程序计数器（Program Counter Register）是一块较小的内存空间，可以看作是当前线程所执行字节码的行号指示器。分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器完成。
+由于 Java 虚拟机的多线程是通过线程轮流切换......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-27
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#jvm" title="jvm">jvm</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/26/设计模式Python版(创建型)/">
+        <h2 class="post-title">
+            Untitled
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            创建型
+
+Factory Method（工厂方法）
+Abstract Factory（抽象工厂）
+Builder（建造者）
+Prototype（原型）
+Singleton（单例）
+
+Factory Method（工厂方法）
+1234567891011121314151617181920212223242526272829303132333435#!/usr/bin/python# codin......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-26
+        </p>
+        <div class="tags">
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -513,67 +588,6 @@ breakpad下载地址
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/20/gradle生命周期/">
-        <h2 class="post-title">
-            Gradle生命周期
-        </h2>
-        <h3 class="post-subtitle">
-            Gradle生命周期
-        </h3>
-        <div class="post-content-preview">
-            from:https://blog.csdn.net/wolfcode_cn/article/details/83658015
-
-...
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-20
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#构建" title="构建">构建</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/19/gradle脚本将带符号表的so拷贝到指定目录/">
-        <h2 class="post-title">
-            gradle脚本将带符号表的so拷贝到指定目录
-        </h2>
-        <h3 class="post-subtitle">
-            gradle脚本将带符号表的so拷贝到指定目录
-        </h3>
-        <div class="post-content-preview">
-            需求背景：
-由于nativecrash使用google的breakpad库的时候会收集dump文件，但是dump文件必须翻译才能精确定位到native出错的哪一行。这个时候在编译的时候需要带有符号表的so文件制作翻译。所以我们必须收集带有符号表的so文件。
-实际操作
-123456789101112131415161718192021222324252627282930313233343536......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-19
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#gradle脚本" title="gradle脚本">gradle脚本</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -638,7 +652,7 @@ breakpad下载地址
             
         
             
-            <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
+            <a href="/tags/#jvm" title="jvm" rel="3">jvm</a>
             
         
             
@@ -721,6 +735,14 @@ breakpad下载地址
     <ul>
       
         <li>
+          <a href="/2018/12/27/Java虚拟机理解简要总结/">Java虚拟机理解简要总结</a>
+        </li>
+      
+        <li>
+          <a href="/2018/12/26/设计模式Python版(创建型)/">(no title)</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/26/Python异常捕获/">Python异常捕获</a>
         </li>
       
@@ -730,14 +752,6 @@ breakpad下载地址
       
         <li>
           <a href="/2018/12/26/python字符串/">Python字符串</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/25/Python装饰器/">Python装饰器</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/25/gradle安卓应用插件源码/">Android DSL源码阅读</a>
         </li>
       
     </ul>

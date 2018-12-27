@@ -132,13 +132,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -147,6 +140,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,66 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/11/24/Volley源码解析/">
+        <h2 class="post-title">
+            Volley源码分析
+        </h2>
+        <h3 class="post-subtitle">
+            本节主要介绍Volley源码分析
+        </h3>
+        <div class="post-content-preview">
+            使用Volley可以让我们轻松访问网络，不用每次都要写大量重复的代码，而且它是异步的，不用我们再去写异步任务，这样代码非常简洁。还有很重要的一点，他还可以异步加载图片并且有缓存机制，防止OOM发生，Volley把该干的全都干了，我们只需要专注于我们自己的业务逻辑就可以了。Volley适合于小数据量，多次数的网络访问情况，比如常见的一个listview，每行都是从网络上获取的一个图片和几行文本......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-24
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#开源框架" title="开源框架">开源框架</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/11/23/基础面试/">
+        <h2 class="post-title">
+            基础面试题1
+        </h2>
+        <h3 class="post-subtitle">
+            本章节将介绍一些基础面试题
+        </h3>
+        <div class="post-content-preview">
+            进程和线程的区别
+
+根本区别：进程是操作系统资源分配的基本单位，而线程是任务调度和执行的基本单位
+在开销方面：每个进程都有独立的代码和数据空间（程序上下文），程序之间的切换会有较大的开销；线程可以看做轻量级的进程，同一类线程共享代码和数据空间，每个线程都有自己独立的运行栈和程序计数器（PC），线程之间切换的开销小。
+所处环境：在操作系统中能同时运行多个进程（程序）；而在同一个进程（程序）中有......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-23
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#面试题" title="面试题">面试题</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -462,75 +522,6 @@ jvm(java虚拟机)将xx.class文件读取到内存......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/07/滴滴插件化6_插件化期中总结/">
-        <h2 class="post-title">
-            滴滴插件化6_插件化期中总结
-        </h2>
-        <h3 class="post-subtitle">
-            总结前面讲的核心知识点
-        </h3>
-        <div class="post-content-preview">
-            我们回顾之前的章节，我们主要干的事情。
-初始化
-我们要在应用程序启动最初的时候做好一些准备操作。所以我们将我们的初始化放入Application.attachBaseContext()主要的初始化操作有：
-
-hook核心服务包括
-
-ActivityThread
-
-Instrumentation mInstrumentation监听性能等
-H h主要负责Application这边对应AMS信号......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-07
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/05/滴滴插件化5_使用插件/">
-        <h2 class="post-title">
-            滴滴插件化5_使用插件
-        </h2>
-        <h3 class="post-subtitle">
-            主要针对启动一个Activity看如何使用插件
-        </h3>
-        <div class="post-content-preview">
-            通过前几节的说明，了解到了在LoadedPlugin类的构造方法中将准备工作做好，包括资源管理器，类加载器，四大组件信息等等。生成了一个比较庞大的类，这个类是能够找到APK里面资源，类等信息的主要入口。下面我们就从startActivity这个方法进行突破
-
-12&gt; VAInstrumentation.handleMessage()&gt;
-
-首先了解一下framework中进行启动A......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-05
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -599,7 +590,7 @@ H h主要负责Application这边对应AMS信号......
             
         
             
-            <a href="/tags/#jvm" title="jvm" rel="2">jvm</a>
+            <a href="/tags/#jvm" title="jvm" rel="3">jvm</a>
             
         
             
@@ -682,6 +673,14 @@ H h主要负责Application这边对应AMS信号......
     <ul>
       
         <li>
+          <a href="/2018/12/27/Java虚拟机理解简要总结/">Java虚拟机理解简要总结</a>
+        </li>
+      
+        <li>
+          <a href="/2018/12/26/设计模式Python版(创建型)/">(no title)</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/26/Python异常捕获/">Python异常捕获</a>
         </li>
       
@@ -691,14 +690,6 @@ H h主要负责Application这边对应AMS信号......
       
         <li>
           <a href="/2018/12/26/python字符串/">Python字符串</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/25/Python装饰器/">Python装饰器</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/25/gradle安卓应用插件源码/">Android DSL源码阅读</a>
         </li>
       
     </ul>

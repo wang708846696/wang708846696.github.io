@@ -132,13 +132,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -147,6 +140,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -208,13 +208,13 @@
                 
                     <a href="#gradle脚本" title="gradle脚本" rel="1">gradle脚本</a>
                 
-                    <a href="#内存泄露" title="内存泄露" rel="1">内存泄露</a>
-                
                     <a href="#Hexo" title="Hexo" rel="1">Hexo</a>
                 
                     <a href="#Blog" title="Blog" rel="1">Blog</a>
                 
-                    <a href="#jvm" title="jvm" rel="2">jvm</a>
+                    <a href="#内存泄露" title="内存泄露" rel="1">内存泄露</a>
+                
+                    <a href="#jvm" title="jvm" rel="3">jvm</a>
                 
                     <a href="#位运算" title="位运算" rel="1">位运算</a>
                 
@@ -251,13 +251,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/2018/11/01/Activity启动7-scheduleLaunchActivity方法/">
+                     <a href="/2018/11/01/Activity启动9-Content的区别/">
                         <h2 class="post-title">
-                            Activity启动7-scheduleLaunchActivity方法
+                            Content的创建过程
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                scheduleLaunchActivity()方法的主要说明
+                                Content的创建过程主要说明
                             </h3>
                         
                     </a>
@@ -270,13 +270,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/2018/11/01/Activity启动9-Content的区别/">
+                     <a href="/2018/11/01/Activity启动7-scheduleLaunchActivity方法/">
                         <h2 class="post-title">
-                            Content的创建过程
+                            Activity启动7-scheduleLaunchActivity方法
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                Content的创建过程主要说明
+                                scheduleLaunchActivity()方法的主要说明
                             </h3>
                         
                     </a>
@@ -327,13 +327,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/2018/11/01/Activity启动3-startActivityLocked方法/">
+                     <a href="/2018/11/01/Activity启动2-startActivityMayWait方法/">
                         <h2 class="post-title">
-                            Activity启动3-startActivityLocked方法
+                            Activity启动2-startActivityMayWait方法
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                startActivityLocked()方法的主要说明
+                                startActivityMayWait()方法的主要说明
                             </h3>
                         
                     </a>
@@ -346,13 +346,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/2018/11/01/Activity启动2-startActivityMayWait方法/">
+                     <a href="/2018/11/01/Activity启动3-startActivityLocked方法/">
                         <h2 class="post-title">
-                            Activity启动2-startActivityMayWait方法
+                            Activity启动3-startActivityLocked方法
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                startActivityMayWait()方法的主要说明
+                                startActivityLocked()方法的主要说明
                             </h3>
                         
                     </a>
@@ -702,32 +702,6 @@
             </div>
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="内存泄露">
-                    <span class="tag-text">内存泄露</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2018/12/14/handler内存泄露/">
-                        <h2 class="post-title">
-                            常用Handler导致内存泄露
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                Handler导致的内存泄露
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="Hexo">
                     <span class="tag-text">Hexo</span>
                 </span>
@@ -780,6 +754,32 @@
             </div>
             
             <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="内存泄露">
+                    <span class="tag-text">内存泄露</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2018/12/14/handler内存泄露/">
+                        <h2 class="post-title">
+                            常用Handler导致内存泄露
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                Handler导致的内存泄露
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="jvm">
                     <span class="tag-text">jvm</span>
                 </span>
@@ -796,6 +796,25 @@
                         
                             <h3 class="post-subtitle">
                                 jvm垃圾回收机制
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2018/12/27/Java虚拟机理解简要总结/">
+                        <h2 class="post-title">
+                            Java虚拟机理解简要总结
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                Java虚拟机理解简要总结
                             </h3>
                         
                     </a>
@@ -988,6 +1007,25 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
+                     <a href="/2018/11/07/滴滴插件化6_插件化期中总结/">
+                        <h2 class="post-title">
+                            滴滴插件化6_插件化期中总结
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                总结前面讲的核心知识点
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
                      <a href="/2018/11/05/滴滴插件化4_资源加载/">
                         <h2 class="post-title">
                             滴滴插件化4_资源加载
@@ -1014,25 +1052,6 @@
                         
                             <h3 class="post-subtitle">
                                 主要针对启动一个Activity看如何使用插件
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2018/11/07/滴滴插件化6_插件化期中总结/">
-                        <h2 class="post-title">
-                            滴滴插件化6_插件化期中总结
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                总结前面讲的核心知识点
                             </h3>
                         
                     </a>

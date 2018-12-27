@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Java虚拟机理解简要总结 - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/12/27/Java虚拟机理解简要总结/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#jvm" title="jvm">jvm</a>
+                            
+                        </div>
+                        <h1>Java虚拟机理解简要总结</h1>
+                        <h2 class="subheading">Java虚拟机理解简要总结</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-12-27
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1><span id="运行时数据区域包括哪些">运行时数据区域包括哪些？</span></h1>
+<ol>
+<li>程序计数器</li>
+<li>Java 虚拟机栈</li>
+<li>本地方法栈</li>
+<li>Java 堆</li>
+<li>方法区</li>
+<li>运行时常量池</li>
+<li>直接内存</li>
+</ol>
+<h3><span id="程序计数器线程私有">程序计数器（线程私有）</span></h3>
+<p>程序计数器（Program Counter Register）是一块较小的内存空间，可以看作是当前线程所执行字节码的行号指示器。分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器完成。</p>
+<p>由于 Java 虚拟机的多线程是通过线程轮流切换并分配处理器执行时间的方式实现的。为了线程切换后能恢复到正确的执行位置，每条线程都需要一个独立的程序计数器，各线程之间的计数器互不影响，独立存储。</p>
+<ol>
+<li>如果线程正在执行的是一个 Java 方法，计数器记录的是正在执行的虚拟机字节码指令的地址；</li>
+<li>如果正在执行的是 Native 方法，这个计数器的值为空。</li>
+</ol>
+<p>程序计数器是唯一一个没有规定任何 OutOfMemoryError 的区域。</p>
+<h3><span id="java-虚拟机栈线程私有">Java 虚拟机栈（线程私有）</span></h3>
+<p>Java 虚拟机栈（Java Virtual Machine Stacks）是线程私有的，生命周期与线程相同。<br>
+虚拟机栈描述的是 Java 方法执行的内存模型：每个方法被执行的时候都会创建一个栈帧（Stack Frame），存储</p>
+<ol>
+<li>局部变量表</li>
+<li>操作栈</li>
+<li>动态链接</li>
+<li>方法出口</li>
+</ol>
+<p>每一个方法被调用到执行完成的过程，就对应着一个栈帧在虚拟机栈中从入栈到出栈的过程。</p>
+<p>这个区域有两种异常情况：</p>
+<ol>
+<li>StackOverflowError：线程请求的栈深度大于虚拟机所允许的深度</li>
+<li>OutOfMemoryError：虚拟机栈扩展到无法申请足够的内存时</li>
+</ol>
+<h3><span id="本地方法栈线程私有">本地方法栈（线程私有）</span></h3>
+<p>虚拟机栈为虚拟机执行 Java 方法（字节码）服务。</p>
+<p>本地方法栈（Native Method Stacks）为虚拟机使用到的 Native 方法服务。</p>
+<h3><span id="java-堆线程共享">Java 堆（线程共享）</span></h3>
+<p>Java 堆（Java Heap）是 Java 虚拟机中内存最大的一块。Java 堆在虚拟机启动时创建，被所有线程共享。</p>
+<p>作用：存放对象实例。垃圾收集器主要管理的就是 Java 堆。Java 堆在物理上可以不连续，只要逻辑上连续即可。</p>
+<h3><span id="方法区线程共享">方法区（线程共享）</span></h3>
+<p>方法区（Method Area）被所有线程共享，用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。</p>
+<p>和 Java 堆一样，不需要连续的内存，可以选择固定的大小，更可以选择不实现垃圾收集。</p>
+<h3><span id="运行时常量池">运行时常量池</span></h3>
+<p>运行时常量池（Runtime Constant Pool）是方法区的一部分。保存 Class 文件中的符号引用、翻译出来的直接引用。运行时常量池可以在运行期间将新的常量放入池中。</p>
+<h1><span id="java-中对象访问是如何进行的">Java 中对象访问是如何进行的？</span></h1>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object obj =  new  Object();</span><br></pre></td></tr></table></figure>
+<p>对于上述最简单的访问，也会涉及到 Java 栈、Java 堆、方法区这三个最重要内存区域。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object obj</span><br></pre></td></tr></table></figure>
+<p>如果出现在方法体中，则上述代码会反映到 Java 栈的本地变量表中，作为 reference 类型数据出现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new  Object()</span><br></pre></td></tr></table></figure>
+<p>反映到 Java 堆中，形成一块存储了 Object 类型所有对象实例数据值的内存。Java堆中还包含对象类型数据的地址信息，这些类型数据存储在方法区中。</p>
+<h1><span id="如何判断对象是否死去">如何判断对象是否“死去”？</span></h1>
+<ol>
+<li>引用计数法</li>
+<li>根搜索算法</li>
+</ol>
+<h2><span id="什么是引用计数法">什么是引用计数法？</span></h2>
+<p>给对象添加一个引用计数器，每当有一个地方引用它，计数器就+1,；当引用失效时，计数器就-1；任何时刻计数器都为0的对象就是不能再被使用的。</p>
+<h3><span id="引用计数法的缺点">引用计数法的缺点？</span></h3>
+<p>很难解决对象之间的循环引用问题。</p>
+<h2><span id="什么是根搜索算法">什么是根搜索算法？</span></h2>
+<p>通过一系列的名为“GC Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径称为引用链（Reference Chain），当一个对象到 GC Roots 没有任何引用链相连（用图论的话来说就是从 GC Roots 到这个对象不可达）时，则证明此对象是不可用的。</p>
+<p><img src="1.jpg" alt="1.jpg-40.4kB"></p>
+<h1><span id="java-的4种引用方式">Java 的4种引用方式？</span></h1>
+<p>在 JDK 1.2 之后，Java 对引用的概念进行了扩充，将引用分为</p>
+<ol>
+<li>强引用 Strong Reference</li>
+<li>软引用 Soft Reference</li>
+<li>弱引用 Weak Reference</li>
+<li>虚引用 Phantom Reference</li>
+</ol>
+<h3><span id="强引用">强引用</span></h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object obj =  new  Object();</span><br></pre></td></tr></table></figure>
+<p>代码中普遍存在的，像上述的引用。只要强引用还在，垃圾收集器永远不会回收掉被引用的对象。</p>
+<h3><span id="软引用">软引用</span></h3>
+<p>用来描述一些还有用，但并非必须的对象。软引用所关联的对象，有在系统将要发生内存溢出异常之前，将会把这些对象列进回收范围，并进行第二次回收。如果这次回收还是没有足够的内存，才会抛出内存异常。提供了 SoftReference 类实现软引用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SoftReference ref = <span class="keyword">new</span> SoftReference(<span class="keyword">new</span> MyDate());</span><br></pre></td></tr></table></figure>
+<h3><span id="弱引用">弱引用</span></h3>
+<p>描述非必须的对象，强度比软引用更弱一些，被弱引用关联的对象，只能生存到下一次垃圾收集发生前。当垃圾收集器工作时，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。提供了 WeakReference 类来实现弱引用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WeakReference ref = <span class="keyword">new</span> WeakReference(<span class="keyword">new</span> MyDate());</span><br></pre></td></tr></table></figure>
+<h3><span id="虚引用">虚引用</span></h3>
+<p>一个对象是否有虚引用，完全不会对其生存时间够成影响，也无法通过虚引用来取得一个对象实例。为一个对象关联虚引用的唯一目的，就是希望在这个对象被收集器回收时，收到一个系统通知。提供了 PhantomReference 类来实现虚引用。</p>
+<p>可以用以下表格总结上面的内容：</p>
+<table>
+<thead>
+<tr>
+<th><strong>级别</strong></th>
+<th><strong>什么时候被垃圾回收</strong></th>
+<th><strong>用途</strong></th>
+<th><strong>生存时间</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>强引用</td>
+<td>从来不会</td>
+<td>对象的一般状态</td>
+<td>JVM停止运行时终止</td>
+</tr>
+<tr>
+<td>软引用</td>
+<td>在内存不足时</td>
+<td>对象简单？缓存</td>
+<td>内存不足时终止</td>
+</tr>
+<tr>
+<td>弱引用</td>
+<td>在垃圾回收时</td>
+<td>对象缓存</td>
+<td>gc运行后终止</td>
+</tr>
+<tr>
+<td>虚引用</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td>Unknown</td>
+</tr>
+</tbody>
+</table>
+<h1><span id="java-内存">Java 内存</span></h1>
+<h2><span id="为什么要将堆内存分区">为什么要将堆内存分区？</span></h2>
+<p>对于一个大型的系统，当创建的对象及方法变量比较多时，即堆内存中的对象比较多，如果逐一分析对象是否该回收，效率很低。分区是为了进行模块化管理，管理不同的对象及变量，以提高 JVM 的执行效率。</p>
+<h2><span id="堆内存分为哪几块">堆内存分为哪几块？</span></h2>
+<ol>
+<li>Young Generation Space 新生区（也称新生代）</li>
+<li>Tenure Generation Space养老区（也称旧生代）</li>
+<li>Permanent Space 永久存储区</li>
+</ol>
+<h2><span id="分代收集算法">分代收集算法</span></h2>
+<h3><span id="内存分配有哪些原则">内存分配有哪些原则？</span></h3>
+<ol>
+<li>对象优先分配在 Eden</li>
+<li>大对象直接进入老年代</li>
+<li>长期存活的对象将进入老年代</li>
+<li>动态对象年龄判定</li>
+<li>空间分配担保</li>
+</ol>
+<h3><span id="young-generation-space-采用复制算法">Young Generation Space （采用复制算法）</span></h3>
+<p>主要用来存储新创建的对象，内存较小，垃圾回收频繁。这个区又分为三个区域：一个 Eden Space 和两个 Survivor Space。</p>
+<ul>
+<li>当对象在堆创建时，将进入年轻代的Eden Space。</li>
+<li>垃圾回收器进行垃圾回收时，扫描Eden Space和A Suvivor Space，如果对象仍然存活，则复制到B Suvivor Space，如果B Suvivor Space已经满，则复制 Old Gen</li>
+<li>扫描A Suvivor Space时，如果对象已经经过了几次的扫描仍然存活，JVM认为其为一个Old对象，则将其移到Old Gen。</li>
+<li>扫描完毕后，JVM将Eden Space和A Suvivor Space清空，然后交换A和B的角色（即下次垃圾回收时会扫描Eden Space和B Suvivor Space。</li>
+</ul>
+<h3><span id="tenure-generation-space采用标记-整理算法">Tenure Generation Space（采用标记-整理算法）</span></h3>
+<p>主要用来存储长时间被引用的对象。它里面存放的是经过几次在 Young Generation Space 进行扫描判断过仍存活的对象，内存较大，垃圾回收频率较小。</p>
+<h3><span id="permanent-space">Permanent Space</span></h3>
+<p>存储不变的类定义、字节码和常量等。</p>
+<h1><span id="运行时栈帧结构">运行时栈帧结构</span></h1>
+<p>栈帧是用于支持虚拟机进行方法调用和方法执行的数据结构， 存储了方法的</p>
+<ul>
+<li>局部变量表</li>
+<li>操作数栈</li>
+<li>动态连接</li>
+<li>方法返回地址</li>
+</ul>
+<p>每一个方法从调用开始到执行完成的过程，就对应着一个栈帧在虚拟机栈里面从入栈到出栈的过程。</p>
+<p><img src="9.jpg" alt="img"></p>
+<h1><span id="java-方法调用">Java 方法调用</span></h1>
+<h3><span id="什么是方法调用">什么是方法调用？</span></h3>
+<p>方法调用唯一的任务是确定被调用方法的版本（调用哪个方法），暂时还不涉及方法内部的具体运行过程。</p>
+<h3><span id="java的方法调用有什么特殊之处">Java的方法调用，有什么特殊之处？</span></h3>
+<p>Class文件的编译过程不包含传统编译的连接步骤，一切方法调用在Class文件里面存储的都只是符号引用，而不是方法在实际运行时内存布局中的入口地址。这使得Java有强大的动态扩展能力，但使Java方法的调用过程变得相对复杂，需要在类加载期间甚至到运行时才能确定目标方法的直接引用。</p>
+<h3><span id="java虚拟机调用字节码指令有哪些">Java虚拟机调用字节码指令有哪些？</span></h3>
+<ul>
+<li>invokestatic：调用静态方法</li>
+<li>invokespecial：调用实例构造器方法、私有方法和父类方法</li>
+<li>invokevirtual：调用所有的虚方法</li>
+<li>invokeinterface：调用接口方法</li>
+</ul>
+<h1><span id="基于栈的指令集和基于寄存器的指令集">基于栈的指令集和基于寄存器的指令集</span></h1>
+<h3><span id="什么是基于栈的指令集">什么是基于栈的指令集？</span></h3>
+<p>Java编译器输出的指令流，里面的指令大部分都是零地址指令，它们依赖操作数栈进行工作。</p>
+<p>计算“1+1=2”，基于栈的指令集是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iconst_1</span><br><span class="line">iconst_1</span><br><span class="line">iadd</span><br><span class="line">istore_0</span><br></pre></td></tr></table></figure>
+<p>两条iconst_1指令连续地把两个常量1压入栈中，iadd指令把栈顶的两个值出栈相加，把结果放回栈顶，最后istore_0把栈顶的值放到局部变量表的第0个Slot中。</p>
+<h3><span id="什么是基于寄存器的指令集">什么是基于寄存器的指令集？</span></h3>
+<p>最典型的是x86的地址指令集，依赖寄存器工作。<br>
+计算“1+1=2”，基于寄存器的指令集是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov eax,  1</span><br><span class="line">add eax,  1</span><br></pre></td></tr></table></figure>
+<p>mov指令把EAX寄存器的值设为1，然后add指令再把这个值加1，结果就保存在EAX寄存器里。</p>
+<h3><span id="基于栈的指令集的优缺点">基于栈的指令集的优缺点？</span></h3>
+<p><strong>优点：</strong></p>
+<ul>
+<li>可移植性好：用户程序不会直接用到这些寄存器，由虚拟机自行决定把一些访问最频繁的数据（程序计数器、栈顶缓存）放到寄存器以获取更好的性能。</li>
+<li>代码相对紧凑：字节码中每个字节就对应一条指令</li>
+<li>编译器实现简单：不需要考虑空间分配问题，所需空间都在栈上操作</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>执行速度稍慢</li>
+<li>完成相同功能所需的指令熟练多</li>
+</ul>
+<p>频繁的访问栈，意味着频繁的访问内存，相对于处理器，内存才是执行速度的瓶颈。</p>
+<h1><span id="javac编译过程分为哪些步骤">Javac编译过程分为哪些步骤？</span></h1>
+<ol>
+<li>解析与填充符号表</li>
+<li>插入式注解处理器的注解处理</li>
+<li>分析与字节码生成</li>
+</ol>
+<h1><span id="什么是即时编译器">什么是即时编译器？</span></h1>
+<p>Java程序最初是通过解释器进行解释执行的，当虚拟机发现某个方法或代码块的运行特别频繁，就会把这些代码认定为“热点代码”（Hot Spot Code）。</p>
+<p>为了提高热点代码的执行效率，在运行时，虚拟机将会把这些代码编译成与本地平台相关的机器码，并进行各种层次的优化，完成这个任务的编译器成为即时编译器（Just In Time Compiler，JIT编译器）。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/26/设计模式Python版(创建型)/" data-toggle="tooltip" data-placement="top" title="">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">运行时数据区域包括哪些？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.0.1.</span> <span class="toc-nav-text">程序计数器（线程私有）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.0.2.</span> <span class="toc-nav-text">Java 虚拟机栈（线程私有）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.0.3.</span> <span class="toc-nav-text">本地方法栈（线程私有）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.0.4.</span> <span class="toc-nav-text">Java 堆（线程共享）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.0.5.</span> <span class="toc-nav-text">方法区（线程共享）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.0.6.</span> <span class="toc-nav-text">运行时常量池</span></a></li></ol></li></ol><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Java 中对象访问是如何进行的？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">如何判断对象是否“死去”？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">什么是引用计数法？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">引用计数法的缺点？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">什么是根搜索算法？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Java 的4种引用方式？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.0.1.</span> <span class="toc-nav-text">强引用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.0.2.</span> <span class="toc-nav-text">软引用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.0.3.</span> <span class="toc-nav-text">弱引用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.0.4.</span> <span class="toc-nav-text">虚引用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Java 内存</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">为什么要将堆内存分区？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">堆内存分为哪几块？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">分代收集算法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.3.1.</span> <span class="toc-nav-text">内存分配有哪些原则？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.3.2.</span> <span class="toc-nav-text">Young Generation Space （采用复制算法）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.3.3.</span> <span class="toc-nav-text">Tenure Generation Space（采用标记-整理算法）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.3.4.</span> <span class="toc-nav-text">Permanent Space</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">运行时栈帧结构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Java 方法调用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">7.0.1.</span> <span class="toc-nav-text">什么是方法调用？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">7.0.2.</span> <span class="toc-nav-text">Java的方法调用，有什么特殊之处？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">7.0.3.</span> <span class="toc-nav-text">Java虚拟机调用字节码指令有哪些？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">基于栈的指令集和基于寄存器的指令集</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">8.0.1.</span> <span class="toc-nav-text">什么是基于栈的指令集？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">8.0.2.</span> <span class="toc-nav-text">什么是基于寄存器的指令集？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">8.0.3.</span> <span class="toc-nav-text">基于栈的指令集的优缺点？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">Javac编译过程分为哪些步骤？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">什么是即时编译器？</span></a></li>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#jvm" title="jvm">jvm</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
