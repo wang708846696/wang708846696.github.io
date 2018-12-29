@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2018/12/27/http协议详解/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('undefined')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                        </div>
+                        <h1></h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2018-12-27
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3><span id="浏览器发送http请求的过程">浏览器发送HTTP请求的过程：</span></h3>
+<ol>
+<li>当用户在浏览器的地址栏中输入一个URL并按回车键之后，浏览器会向HTTP服务器发送HTTP请求。HTTP请求主要分为“Get”和“Post”两种方法。</li>
+<li>当我们在浏览器输入URL <a href="http://www.baidu.com" target="_blank" rel="noopener">http://www.baidu.com</a> 的时候，浏览器发送一个Request请求去获取 <a href="http://www.baidu.com" target="_blank" rel="noopener">http://www.baidu.com</a> 的html文件，服务器把Response文件对象发送回给浏览器。</li>
+<li>浏览器分析Response中的 HTML，发现其中引用了很多其他文件，比如Images文件，CSS文件，JS文件。 浏览器会自动再次发送Request去获取图片，CSS文件，或者JS文件。</li>
+<li>当所有的文件都下载成功后，网页会根据HTML语法结构，完整的显示出来了。</li>
+</ol>
+<p>URL（Uniform / Universal Resource Locator的缩写）：统一资源定位符，是用于完整地描述Internet上网页和其他资源的地址的一种标识方法。</p>
+<p>![img](file:///E:/BaiduNetdiskDownload/%E9%BB%91%E9%A9%ACpython/%E7%88%AC%E8%99%AB%E8%AF%BE%E4%BB%B6/file/images/01-httpstruct.jpg)</p>
+<p>基本格式：<code>scheme://host[:port#]/path/…/[?query-string][#anchor]</code></p>
+<ul>
+<li>scheme：协议(例如：http, https, ftp)</li>
+<li>host：服务器的IP地址或者域名</li>
+<li>port#：服务器的端口（如果是走协议默认端口，缺省端口80）</li>
+<li>path：访问资源的路径</li>
+<li>query-string：参数，发送给http服务器的数据</li>
+<li>anchor：锚（跳转到网页的指定锚点位置）</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li><a href="ftp://192.168.0.116:8080/index" target="_blank" rel="noopener">ftp://192.168.0.116:8080/index</a></li>
+<li><a href="http://www.baidu.com" target="_blank" rel="noopener">http://www.baidu.com</a></li>
+<li><a href="http://item.jd.com/11936238.html#product-detail" target="_blank" rel="noopener">http://item.jd.com/11936238.html#product-detail</a></li>
+</ul>
+<h1><span id="客户端http请求">客户端HTTP请求</span></h1>
+<p>URL只是标识资源的位置，而HTTP是用来提交和获取资源。客户端发送一个HTTP请求到服务器的请求消息，包括以下格式：</p>
+<p><code>请求行</code>、<code>请求头部</code>、<code>空行</code>、<code>请求数据</code></p>
+<p>四个部分组成，下图给出了请求报文的一般格式。</p>
+<p>![img](file:///E:/BaiduNetdiskDownload/%E9%BB%91%E9%A9%ACpython/%E7%88%AC%E8%99%AB%E8%AF%BE%E4%BB%B6/file/images/01_request.png)</p>
+<h5><span id="一个典型的http请求示例">一个典型的HTTP请求示例</span></h5>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">https://www.baidu.com/</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: www.baidu.com</span><br><span class="line"><span class="attribute">Connection</span>: keep-alive</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span>: 1</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Referer</span>: http://www.baidu.com/</span><br><span class="line"><span class="attribute">Accept-Encoding</span>: gzip, deflate, sdch, br</span><br><span class="line"><span class="attribute">Accept-Language</span>: zh-CN,zh;q=0.8,en;q=0.6</span><br><span class="line"><span class="attribute">Cookie</span>: BAIDUID=04E4001F34EA74AD4601512DD3C41A7B:FG=1; BIDUPSID=04E4001F34EA74AD4601512DD3C41A7B; PSTM=14</span><br></pre></td></tr></table></figure>
+<h2><span id="请求方法">请求方法</span></h2>
+<p><code>GET https://www.baidu.com/ HTTP/1.1</code></p>
+<p>根据HTTP标准，HTTP请求可以使用多种请求方法。</p>
+<p>HTTP 0.9：只有基本的文本 GET 功能。</p>
+<p>HTTP 1.0：完善的请求/响应模型，并将协议补充完整，定义了三种请求方法： GET, POST 和 HEAD方法。</p>
+<p>HTTP 1.1：在 1.0 基础上进行更新，新增了五种请求方法：OPTIONS, PUT, DELETE, TRACE 和 CONNECT 方法。</p>
+<p>HTTP 2.0（未普及）：请求/响应首部的定义基本没有改变，只是所有首部键必须全部小写，而且请求行要独立为 :method、:scheme、:host、:path这些键值对。</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>GET</strong></td>
+<td>请求指定的页面信息，并返回实体主体。</td>
+</tr>
+<tr>
+<td>2</td>
+<td>HEAD</td>
+<td>类似于get请求，只不过返回的响应中没有具体的内容，用于获取报头</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>POST</strong></td>
+<td>向指定资源提交数据进行处理请求（例如提交表单或者上传文件），数据被包含在请求体中。POST请求可能会导致新的资源的建立和/或已有资源的修改。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>PUT</td>
+<td>从客户端向服务器传送的数据取代指定的文档的内容。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>DELETE</td>
+<td>请求服务器删除指定的页面。</td>
+</tr>
+<tr>
+<td>6</td>
+<td>CONNECT</td>
+<td>HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。</td>
+</tr>
+<tr>
+<td>7</td>
+<td>OPTIONS</td>
+<td>允许客户端查看服务器的性能。</td>
+</tr>
+<tr>
+<td>8</td>
+<td>TRACE</td>
+<td>回显服务器收到的请求，主要用于测试或诊断。</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="http请求主要分为get和post两种方法">HTTP请求主要分为<code>Get</code>和<code>Post</code>两种方法</span></h3>
+<ul>
+<li>GET是从服务器上获取数据，POST是向服务器传送数据</li>
+<li>GET请求参数显示，都显示在浏览器网址上，HTTP服务器根据该请求所包含URL中的参数来产生响应内容，即“Get”请求的参数是URL的一部分。 例如： <code>http://www.baidu.com/s?wd=Chinese</code></li>
+<li>POST请求参数在请求体当中，消息长度没有限制而且以隐式的方式进行发送，通常用来向HTTP服务器提交量比较大的数据（比如请求中包含许多参数或者文件上传操作等），请求的参数包含在“Content-Type”消息头里，指明该消息体的媒体类型和编码，</li>
+</ul>
+<p><strong>注意：避免使用Get方式提交表单，因为有可能会导致安全问题。 比如说在登陆表单中用Get方式，用户输入的用户名和密码将在地址栏中暴露无遗。</strong></p>
+<h3><span id="常用的请求报头">常用的请求报头</span></h3>
+<h3><span id="1-host-主机和端口号">1. Host (主机和端口号)</span></h3>
+<p>Host：对应网址URL中的Web名称和端口号，用于指定被请求资源的Internet主机和端口号，通常属于URL的一部分。</p>
+<h3><span id="2-connection-链接类型">2. Connection (链接类型)</span></h3>
+<p>Connection：表示客户端与服务连接类型</p>
+<ol>
+<li>Client 发起一个包含 <code>Connection:keep-alive</code> 的请求，HTTP/1.1使用 <code>keep-alive</code> 为默认值。</li>
+<li>Server收到请求后：
+<ul>
+<li>如果 Server 支持 keep-alive，回复一个包含 Connection:keep-alive 的响应，不关闭连接；</li>
+<li>如果 Server 不支持 keep-alive，回复一个包含 Connection:close 的响应，关闭连接。</li>
+</ul>
+</li>
+<li>如果client收到包含 <code>Connection:keep-alive</code> 的响应，向同一个连接发送下一个请求，直到一方主动关闭连接。</li>
+</ol>
+<p><strong>keep-alive在很多情况下能够重用连接，减少资源消耗，缩短响应时间，比如当浏览器需要多个文件时(比如一个HTML文件和相关的图形文件)，不需要每次都去请求建立连接。</strong></p>
+<h3><span id="3-upgrade-insecure-requests-升级为https请求">3. Upgrade-Insecure-Requests (升级为HTTPS请求)</span></h3>
+<p>Upgrade-Insecure-Requests：升级不安全的请求，意思是会在加载 http 资源时自动替换成 https 请求，让浏览器不再显示https页面中的http请求警报。</p>
+<p><strong>HTTPS 是以安全为目标的 HTTP 通道，所以在 HTTPS 承载的页面上不允许出现 HTTP 请求，一旦出现就是提示或报错。</strong></p>
+<h3><span id="4-user-agent-浏览器名称">4. User-Agent (浏览器名称)</span></h3>
+<p>User-Agent：是客户浏览器的名称，以后会详细讲。</p>
+<h3><span id="5-accept-传输文件类型">5. Accept (传输文件类型)</span></h3>
+<p>Accept：指浏览器或其他客户端可以接受的MIME（Multipurpose Internet Mail Extensions（多用途互联网邮件扩展））文件类型，服务器可以根据它判断并返回适当的文件格式。</p>
+<h5><span id="举例">举例：</span></h5>
+<p><code>Accept: */*</code>：表示什么都可以接收。</p>
+<p><code>Accept：image/gif</code>：表明客户端希望接受GIF图像格式的资源；</p>
+<p><code>Accept：text/html</code>：表明客户端希望接受html文本。</p>
+<p><code>Accept: text/html, application/xhtml+xml;q=0.9, image/*;q=0.8</code>：表示浏览器支持的 MIME 类型分别是 html文本、xhtml和xml文档、所有的图像格式资源。</p>
+<p><strong>q是权重系数，范围 0 =&lt; q &lt;= 1，q 值越大，请求越倾向于获得其“;”之前的类型表示的内容。若没有指定q值，则默认为1，按从左到右排序顺序；若被赋值为0，则用于表示浏览器不接受此内容类型。</strong></p>
+<p><strong>Text：用于标准化地表示的文本信息，文本消息可以是多种字符集和或者多种格式的；Application：用于传输应用程序数据或者二进制数据。详细请点击</strong></p>
+<h3><span id="6-referer-页面跳转处">6. Referer (页面跳转处)</span></h3>
+<p>Referer：表明产生请求的网页来自于哪个URL，用户是从该 Referer页面访问到当前请求的页面。这个属性可以用来跟踪Web请求来自哪个页面，是从什么网站来的等。</p>
+<p>有时候遇到下载某网站图片，需要对应的referer，否则无法下载图片，那是因为人家做了防盗链，原理就是根据referer去判断是否是本网站的地址，如果不是，则拒绝，如果是，就可以下载；</p>
+<h3><span id="7-accept-encoding文件编解码格式">7. Accept-Encoding（文件编解码格式）</span></h3>
+<p>Accept-Encoding：指出浏览器可以接受的编码方式。编码方式不同于文件格式，它是为了压缩文件并加速文件传递速度。浏览器在接收到Web响应之后先解码，然后再检查文件格式，许多情形下这可以减少大量的下载时间。</p>
+<h5><span id="举例accept-encodinggzipq10-identity-q05-q0">举例：Accept-Encoding:gzip;q=1.0, identity; q=0.5, *;q=0</span></h5>
+<p>如果有多个Encoding同时匹配, 按照q值顺序排列，本例中按顺序支持 gzip, identity压缩编码，支持gzip的浏览器会返回经过gzip编码的HTML页面。 <strong>如果请求消息中没有设置这个域服务器假定客户端对各种内容编码都可以接受。</strong></p>
+<h3><span id="8-accept-language语言种类">8. Accept-Language（语言种类）</span></h3>
+<p>Accept-Langeuage：指出浏览器可以接受的语言种类，如en或en-us指英语，zh或者zh-cn指中文，当服务器能够提供一种以上的语言版本时要用到。</p>
+<h3><span id="9-accept-charset字符编码">9. Accept-Charset（字符编码）</span></h3>
+<p>Accept-Charset：指出浏览器可以接受的字符编码。</p>
+<h5><span id="举例accept-charsetiso-8859-1gb2312utf-8">举例：Accept-Charset:iso-8859-1,gb2312,utf-8</span></h5>
+<ul>
+<li>ISO8859-1：通常叫做Latin-1。Latin-1包括了书写所有西方欧洲语言不可缺少的附加字符，英文浏览器的默认值是ISO-8859-1.</li>
+<li>gb2312：标准简体中文字符集;</li>
+<li>utf-8：UNICODE 的一种变长字符编码，可以解决多种语言文本显示问题，从而实现应用国际化和本地化。</li>
+</ul>
+<p><strong>如果在请求消息中没有设置这个域，缺省是任何字符集都可以接受。</strong></p>
+<h3><span id="10-cookie-cookie">10. Cookie （Cookie）</span></h3>
+<p>Cookie：浏览器用这个属性向服务器发送Cookie。Cookie是在浏览器中寄存的小型数据体，它可以记载和服务器相关的用户信息，也可以用来实现会话功能，以后会详细讲。</p>
+<h3><span id="11-content-type-post数据类型">11. Content-Type (POST数据类型)</span></h3>
+<p>Content-Type：POST请求里用来表示的内容类型。</p>
+<h5><span id="举例content-type-textxml-charsetgb2312">举例：Content-Type = Text/XML; charset=gb2312：</span></h5>
+<p>指明该请求的消息体中包含的是纯文本的XML类型的数据，字符编码采用“gb2312”。</p>
+<h2><span id="服务端http响应">服务端HTTP响应</span></h2>
+<p>HTTP响应也由四个部分组成，分别是： <code>状态行</code>、<code>消息报头</code>、<code>空行</code>、<code>响应正文</code></p>
+<p>![img](file:///E:/BaiduNetdiskDownload/%E9%BB%91%E9%A9%ACpython/%E7%88%AC%E8%99%AB%E8%AF%BE%E4%BB%B6/file/images/01_response.jpg)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: Tengine</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Date: Wed, 30 Nov 2016 07:58:21 GMT</span><br><span class="line">Cache-Control: no-cache</span><br><span class="line">Content-Type: text/html;charset=UTF-8</span><br><span class="line">Keep-Alive: timeout=20</span><br><span class="line">Vary: Accept-Encoding</span><br><span class="line">Pragma: no-cache</span><br><span class="line">X-NWS-LOG-UUID: bd27210a-24e5-4740-8f6c-25dbafa9c395</span><br><span class="line">Content-Length: 180945</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; ....</span><br></pre></td></tr></table></figure>
+<h3><span id="常用的响应报头了解">常用的响应报头(了解)</span></h3>
+<p>理论上所有的响应头信息都应该是回应请求头的。但是服务端为了效率，安全，还有其他方面的考虑，会添加相对应的响应头信息，从上图可以看到：</p>
+<h3><span id="1-cache-controlmust-revalidate-no-cache-private">1. Cache-Control：must-revalidate, no-cache, private。</span></h3>
+<p>这个值告诉客户端，服务端不希望客户端缓存资源，在下次请求资源时，必须要从新请求服务器，不能从缓存副本中获取资源。</p>
+<ul>
+<li>Cache-Control是响应头中很重要的信息，当客户端请求头中包含Cache-Control:max-age=0请求，明确表示不会缓存服务器资源时,Cache-Control作为作为回应信息，通常会返回no-cache，意思就是说，“那就不缓存呗”。</li>
+<li>当客户端在请求头中没有包含Cache-Control时，服务端往往会定,不同的资源不同的缓存策略，比如说oschina在缓存图片资源的策略就是Cache-Control：max-age=86400,这个意思是，从当前时间开始，在86400秒的时间内，客户端可以直接从缓存副本中读取资源，而不需要向服务器请求。</li>
+</ul>
+<h3><span id="2-connectionkeep-alive">2. Connection：keep-alive</span></h3>
+<p>这个字段作为回应客户端的Connection：keep-alive，告诉客户端服务器的tcp连接也是一个长连接，客户端可以继续使用这个tcp连接发送http请求。</p>
+<h3><span id="3-content-encodinggzip">3. Content-Encoding:gzip</span></h3>
+<p>告诉客户端，服务端发送的资源是采用gzip编码的，客户端看到这个信息后，应该采用gzip对资源进行解码。</p>
+<h3><span id="4-content-typetexthtmlcharsetutf-8">4. Content-Type：text/html;charset=UTF-8</span></h3>
+<p>告诉客户端，资源文件的类型，还有字符编码，客户端通过utf-8对资源进行解码，然后对资源进行html解析。通常我们会看到有些网站是乱码的，往往就是服务器端没有返回正确的编码。</p>
+<h3><span id="5-datesun-21-sep-2016-061821-gmt">5. Date：Sun, 21 Sep 2016 06:18:21 GMT</span></h3>
+<p>这个是服务端发送资源时的服务器时间，GMT是格林尼治所在地的标准时间。http协议中发送的时间都是GMT的，这主要是解决在互联网上，不同时区在相互请求资源的时候，时间混乱问题。</p>
+<h3><span id="6-expiressun-1-jan-2000-010000-gmt">6. Expires:Sun, 1 Jan 2000 01:00:00 GMT</span></h3>
+<p>这个响应头也是跟缓存有关的，告诉客户端在这个时间前，可以直接访问缓存副本，很显然这个值会存在问题，因为客户端和服务器的时间不一定会都是相同的，如果时间不同就会导致问题。所以这个响应头是没有Cache-Control：max-age=*这个响应头准确的，因为max-age=date中的date是个相对时间，不仅更好理解，也更准确。</p>
+<h3><span id="7-pragmano-cache">7. Pragma:no-cache</span></h3>
+<p>这个含义与Cache-Control等同。</p>
+<h3><span id="8servertengine146">8.Server：Tengine/1.4.6</span></h3>
+<p>这个是服务器和相对应的版本，只是告诉客户端服务器的信息。</p>
+<h3><span id="9-transfer-encodingchunked">9. Transfer-Encoding：chunked</span></h3>
+<p>这个响应头告诉客户端，服务器发送的资源的方式是分块发送的。一般分块发送的资源都是服务器动态生成的，在发送时还不知道发送资源的大小，所以采用分块发送，每一块都是独立的，独立的块都能标示自己的长度，最后一块是0长度的，当客户端读到这个0长度的块时，就可以确定资源已经传输完了。</p>
+<h3><span id="10-vary-accept-encoding">10. Vary: Accept-Encoding</span></h3>
+<p>告诉缓存服务器，缓存压缩文件和非压缩文件两个版本，现在这个字段用处并不大，因为现在的浏览器都是支持压缩的。</p>
+<h2><span id="cookie-和-session">Cookie 和 Session：</span></h2>
+<p>服务器和客户端的交互仅限于请求/响应过程，结束之后便断开，在下一次请求时，服务器会认为新的客户端。</p>
+<p>为了维护他们之间的链接，让服务器知道这是前一个用户发送的请求，必须在一个地方保存客户端的信息。</p>
+<p><strong>Cookie</strong>：通过在 客户端 记录的信息确定用户的身份。</p>
+<p><strong>Session</strong>：通过在 服务器端 记录的信息确定用户的身份。</p>
+<h2><span id="响应状态码">响应状态码</span></h2>
+<p>响应状态代码有三位数字组成，第一个数字定义了响应的类别，且有五种可能取值。</p>
+<h4><span id="常见状态码">常见状态码：</span></h4>
+<ul>
+<li><code>100~199</code>：表示服务器成功接收部分请求，要求客户端继续提交其余请求才能完成整个处理过程。</li>
+<li><code>200~299</code>：表示服务器成功接收请求并已完成整个处理过程。常用200（OK 请求成功）。</li>
+<li><code>300~399</code>：为完成请求，客户需进一步细化请求。例如：请求的资源已经移动一个新地址、常用302（所请求的页面已经临时转移至新的url）、307和304（使用缓存资源）。</li>
+<li><code>400~499</code>：客户端的请求有错误，常用404（服务器无法找到被请求的页面）、403（服务器拒绝访问，权限不够）。</li>
+<li><code>500~599</code>：服务器端出现错误，常用500（请求未完成。服务器遇到不可预知的情况）。</li>
+</ul>
+<h1><span id="http响应状态码参考">HTTP响应状态码参考：</span></h1>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br></pre></td><td class="code"><pre><span class="line">1xx:信息</span><br><span class="line"></span><br><span class="line">100 Continue</span><br><span class="line">服务器仅接收到部分请求，但是一旦服务器并没有拒绝该请求，客户端应该继续发送其余的请求。</span><br><span class="line">101 Switching Protocols</span><br><span class="line">服务器转换协议：服务器将遵从客户的请求转换到另外一种协议。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2xx:成功</span><br><span class="line"></span><br><span class="line">200 OK</span><br><span class="line">请求成功（其后是对GET和POST请求的应答文档）</span><br><span class="line">201 Created</span><br><span class="line">请求被创建完成，同时新的资源被创建。</span><br><span class="line">202 Accepted</span><br><span class="line">供处理的请求已被接受，但是处理未完成。</span><br><span class="line">203 Non-authoritative Information</span><br><span class="line">文档已经正常地返回，但一些应答头可能不正确，因为使用的是文档的拷贝。</span><br><span class="line">204 No Content</span><br><span class="line">没有新文档。浏览器应该继续显示原来的文档。如果用户定期地刷新页面，而Servlet可以确定用户文档足够新，这个状态代码是很有用的。</span><br><span class="line">205 Reset Content</span><br><span class="line">没有新文档。但浏览器应该重置它所显示的内容。用来强制浏览器清除表单输入内容。</span><br><span class="line">206 Partial Content</span><br><span class="line">客户发送了一个带有Range头的GET请求，服务器完成了它。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">3xx:重定向</span><br><span class="line"></span><br><span class="line">300 Multiple Choices</span><br><span class="line">多重选择。链接列表。用户可以选择某链接到达目的地。最多允许五个地址。</span><br><span class="line">301 Moved Permanently</span><br><span class="line">所请求的页面已经转移至新的url。</span><br><span class="line">302 Moved Temporarily</span><br><span class="line">所请求的页面已经临时转移至新的url。</span><br><span class="line">303 See Other</span><br><span class="line">所请求的页面可在别的url下被找到。</span><br><span class="line">304 Not Modified</span><br><span class="line">未按预期修改文档。客户端有缓冲的文档并发出了一个条件性的请求（一般是提供If-Modified-Since头表示客户只想比指定日期更新的文档）。服务器告诉客户，原来缓冲的文档还可以继续使用。</span><br><span class="line">305 Use Proxy</span><br><span class="line">客户请求的文档应该通过Location头所指明的代理服务器提取。</span><br><span class="line">306 Unused</span><br><span class="line">此代码被用于前一版本。目前已不再使用，但是代码依然被保留。</span><br><span class="line">307 Temporary Redirect</span><br><span class="line">被请求的页面已经临时移至新的url。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">4xx:客户端错误</span><br><span class="line"></span><br><span class="line">400 Bad Request</span><br><span class="line">服务器未能理解请求。</span><br><span class="line">401 Unauthorized</span><br><span class="line">被请求的页面需要用户名和密码。</span><br><span class="line">401.1</span><br><span class="line">登录失败。</span><br><span class="line">401.2</span><br><span class="line">服务器配置导致登录失败。</span><br><span class="line">401.3</span><br><span class="line">由于 ACL 对资源的限制而未获得授权。</span><br><span class="line">401.4</span><br><span class="line">筛选器授权失败。</span><br><span class="line">401.5</span><br><span class="line">ISAPI/CGI 应用程序授权失败。</span><br><span class="line">401.7</span><br><span class="line">访问被 Web 服务器上的 URL 授权策略拒绝。这个错误代码为 IIS 6.0 所专用。</span><br><span class="line">402 Payment Required</span><br><span class="line">此代码尚无法使用。</span><br><span class="line">403 Forbidden</span><br><span class="line">对被请求页面的访问被禁止。</span><br><span class="line">403.1</span><br><span class="line">执行访问被禁止。</span><br><span class="line">403.2</span><br><span class="line">读访问被禁止。</span><br><span class="line">403.3</span><br><span class="line">写访问被禁止。</span><br><span class="line">403.4</span><br><span class="line">要求 SSL。</span><br><span class="line">403.5</span><br><span class="line">要求 SSL 128。</span><br><span class="line">403.6</span><br><span class="line">IP 地址被拒绝。</span><br><span class="line">403.7</span><br><span class="line">要求客户端证书。</span><br><span class="line">403.8</span><br><span class="line">站点访问被拒绝。</span><br><span class="line">403.9</span><br><span class="line">用户数过多。</span><br><span class="line">403.10</span><br><span class="line">配置无效。</span><br><span class="line">403.11</span><br><span class="line">密码更改。</span><br><span class="line">403.12</span><br><span class="line">拒绝访问映射表。</span><br><span class="line">403.13</span><br><span class="line">客户端证书被吊销。</span><br><span class="line">403.14</span><br><span class="line">拒绝目录列表。</span><br><span class="line">403.15</span><br><span class="line">超出客户端访问许可。</span><br><span class="line">403.16</span><br><span class="line">客户端证书不受信任或无效。</span><br><span class="line">403.17</span><br><span class="line">客户端证书已过期或尚未生效。</span><br><span class="line">403.18</span><br><span class="line">在当前的应用程序池中不能执行所请求的 URL。这个错误代码为 IIS 6.0 所专用。</span><br><span class="line">403.19</span><br><span class="line">不能为这个应用程序池中的客户端执行 CGI。这个错误代码为 IIS 6.0 所专用。</span><br><span class="line">403.20</span><br><span class="line">Passport 登录失败。这个错误代码为 IIS 6.0 所专用。</span><br><span class="line">404 Not Found</span><br><span class="line">服务器无法找到被请求的页面。</span><br><span class="line">404.0</span><br><span class="line">没有找到文件或目录。</span><br><span class="line">404.1</span><br><span class="line">无法在所请求的端口上访问 Web 站点。</span><br><span class="line">404.2</span><br><span class="line">Web 服务扩展锁定策略阻止本请求。</span><br><span class="line">404.3</span><br><span class="line">MIME 映射策略阻止本请求。</span><br><span class="line">405 Method Not Allowed</span><br><span class="line">请求中指定的方法不被允许。</span><br><span class="line">406 Not Acceptable</span><br><span class="line">服务器生成的响应无法被客户端所接受。</span><br><span class="line">407 Proxy Authentication Required</span><br><span class="line">用户必须首先使用代理服务器进行验证，这样请求才会被处理。</span><br><span class="line">408 Request Timeout</span><br><span class="line">请求超出了服务器的等待时间。</span><br><span class="line">409 Conflict</span><br><span class="line">由于冲突，请求无法被完成。</span><br><span class="line">410 Gone</span><br><span class="line">被请求的页面不可用。</span><br><span class="line">411 Length Required</span><br><span class="line">&quot;Content-Length&quot; 未被定义。如果无此内容，服务器不会接受请求。</span><br><span class="line">412 Precondition Failed</span><br><span class="line">请求中的前提条件被服务器评估为失败。</span><br><span class="line">413 Request Entity Too Large</span><br><span class="line">由于所请求的实体的太大，服务器不会接受请求。</span><br><span class="line">414 Request-url Too Long</span><br><span class="line">由于url太长，服务器不会接受请求。当post请求被转换为带有很长的查询信息的get请求时，就会发生这种情况。</span><br><span class="line">415 Unsupported Media Type</span><br><span class="line">由于媒介类型不被支持，服务器不会接受请求。</span><br><span class="line">416 Requested Range Not Satisfiable</span><br><span class="line">服务器不能满足客户在请求中指定的Range头。</span><br><span class="line">417 Expectation Failed</span><br><span class="line">执行失败。</span><br><span class="line">423</span><br><span class="line">锁定的错误。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">5xx:服务器错误</span><br><span class="line"></span><br><span class="line">500 Internal Server Error</span><br><span class="line">请求未完成。服务器遇到不可预知的情况。</span><br><span class="line">500.12</span><br><span class="line">应用程序正忙于在 Web 服务器上重新启动。</span><br><span class="line">500.13</span><br><span class="line">Web 服务器太忙。</span><br><span class="line">500.15</span><br><span class="line">不允许直接请求 Global.asa。</span><br><span class="line">500.16</span><br><span class="line">UNC 授权凭据不正确。这个错误代码为 IIS 6.0 所专用。</span><br><span class="line">500.18</span><br><span class="line">URL 授权存储不能打开。这个错误代码为 IIS 6.0 所专用。</span><br><span class="line">500.100</span><br><span class="line">内部 ASP 错误。</span><br><span class="line">501 Not Implemented</span><br><span class="line">请求未完成。服务器不支持所请求的功能。</span><br><span class="line">502 Bad Gateway</span><br><span class="line">请求未完成。服务器从上游服务器收到一个无效的响应。</span><br><span class="line">502.1</span><br><span class="line">CGI 应用程序超时。　·</span><br><span class="line">502.2</span><br><span class="line">CGI 应用程序出错。</span><br><span class="line">503 Service Unavailable</span><br><span class="line">请求未完成。服务器临时过载或当机。</span><br><span class="line">504 Gateway Timeout</span><br><span class="line">网关超时。</span><br><span class="line">505 HTTP Version Not Supported</span><br><span class="line">服务器不支持请求中指明的HTTP协议版本</span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/27/Java虚拟机理解简要总结/" data-toggle="tooltip" data-placement="top" title="Java虚拟机理解简要总结">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2018 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
