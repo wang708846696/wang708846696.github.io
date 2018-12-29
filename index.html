@@ -209,6 +209,35 @@
 
 <div class="post-preview">
 
+    <a href="/2018/12/29/Android中使用gradle编译ndk工程/">
+        <h2 class="post-title">
+            Android中使用gradle编译ndk工程
+        </h2>
+        <h3 class="post-subtitle">
+            Android中使用gradle编译ndk工程
+        </h3>
+        <div class="post-content-preview">
+            在工程的gradle文件中写入：
+12345678910111213141516task ndkBuild(type: Exec) &#123;    def ndkDir = android.ndkDirectory    if (ndkDir != null) &#123;        if (org.gradle.internal.os.OperatingSystem.current......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-29
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#构建" title="构建">构建</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/12/27/http协议详解/">
         <h2 class="post-title">
             Untitled
@@ -553,38 +582,6 @@ Python转义字符
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/21/Breakpad在Android上的使用/">
-        <h2 class="post-title">
-            Breakpad在Android上的使用
-        </h2>
-        <h3 class="post-subtitle">
-            Breakpad在Android上的使用
-        </h3>
-        <div class="post-content-preview">
-            首先记下来一个地址：https://github.com/google/breakpad
-当然之前说过可能存在编译不通过的问题，原因缺少头文件现在将头文件添加上去的代码看地址：
-https://github.com/wang708846696/nativecrash
-这一篇文章只记录Android平台如何应用breakpad进行使用nativecrash的收集。
-进入目录后查看README.......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-21
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#nativecrash" title="nativecrash">nativecrash</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -621,11 +618,11 @@ https://github.com/wang708846696/nativecrash
     <div class="tags">
         
             
-            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
+            <a href="/tags/#构建" title="构建" rel="3">构建</a>
             
         
             
-            <a href="/tags/#构建" title="构建" rel="2">构建</a>
+            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
             
         
             
@@ -634,6 +631,10 @@ https://github.com/wang708846696/nativecrash
         
             
             <a href="/tags/#Python" title="Python" rel="4">Python</a>
+            
+        
+            
+            <a href="/tags/#gradle" title="gradle" rel="3">gradle</a>
             
         
             
@@ -646,10 +647,6 @@ https://github.com/wang708846696/nativecrash
         
             
         
-            
-        
-            
-            <a href="/tags/#gradle" title="gradle" rel="3">gradle</a>
             
         
             
@@ -669,9 +666,9 @@ https://github.com/wang708846696/nativecrash
             
         
             
-            <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
-            
         
+            
+            <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
             
         
             
@@ -734,6 +731,10 @@ https://github.com/wang708846696/nativecrash
     <ul>
       
         <li>
+          <a href="/2018/12/29/Android中使用gradle编译ndk工程/">Android中使用gradle编译ndk工程</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/27/http协议详解/">(no title)</a>
         </li>
       
@@ -747,10 +748,6 @@ https://github.com/wang708846696/nativecrash
       
         <li>
           <a href="/2018/12/26/Python异常捕获/">Python异常捕获</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/26/Python面向对象/">Python面向对象</a>
         </li>
       
     </ul>
