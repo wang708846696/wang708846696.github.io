@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -206,6 +206,93 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/11/03/滴滴插件化1/">
+        <h2 class="post-title">
+            插件化框架源码解析1_初始化
+        </h2>
+        <h3 class="post-subtitle">
+            主要针对初始化的代码进行分析，具体看看Hook了那些比较重要的点
+        </h3>
+        <div class="post-content-preview">
+            初始化
+这章节主要针对初始化的代码进行分析，具体看看Hook了那些比较重要的点。
+123456789101112131415161718protected PluginManager(Context context) &#123;    if (context instanceof Application) &#123;        this.mApplication = (Applica......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-03
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/11/01/Activity启动10-类加载器/">
+        <h2 class="post-title">
+            应用创建后的类加载器
+        </h2>
+        <h3 class="post-subtitle">
+            应用创建后的类加载器主要说明
+        </h3>
+        <div class="post-content-preview">
+            可能大家会有疑问，尤其是我当时接触多dex的时候也会存在疑问，为什么会报类的def找不到异常。报这个异常的原因是什么？一个同事推荐说深入理解java虚拟机这本书很好，然后我就仔细看了一遍，发现其实类加载过程其实是一个很漫长的过程，为什么说是很漫长，因为牵扯到.java文件转化.class文件，然后在读入内存中形成对应的数据结构的过程，其中牵扯到校验，连接，编译器优化等等过程，我们今天不讨论这......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-01
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/11/01/Activity启动9-Content的区别/">
+        <h2 class="post-title">
+            Content的创建过程
+        </h2>
+        <h3 class="post-subtitle">
+            Content的创建过程主要说明
+        </h3>
+        <div class="post-content-preview">
+            这里是创建Activity时候的Content过程。
+12345678910ContextImpl appContext = createBaseContextForActivity(r);Activity activity = null;try &#123;    java.lang.ClassLoader cl = appContext.getClassLoader();    acti......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-01
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -405,77 +492,6 @@
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动_参数解析/">
-        <h2 class="post-title">
-            Activity启动_参数解析
-        </h2>
-        <h3 class="post-subtitle">
-            主要进行Activity启动时候必要参数的说明
-        </h3>
-        <div class="post-content-preview">
-            
-Am.java
-
-123public static void main(String[] args) &#123;    (new Am()).run(args);&#125;
-12345678910111213141516public void run(String[] args) &#123;    if (args.length &lt; 1) &#123;        onSho......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2017/03/18/hexo-theme-beantech/">
-        <h2 class="post-title">
-            [Hexo] Theme BeanTech
-        </h2>
-        <h3 class="post-subtitle">
-            This is hexo theme Demo.
-        </h3>
-        <div class="post-content-preview">
-            
-Ported Theme of Hux Blog, Thank Huxpro for designing such a flawless theme.
-This BeanTech theme created by YuHsuan modified from the original Porter Kaijun
-
-
-
-
-Usage
-
-I publish the whole project f......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2017-03-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hexo" title="Hexo">Hexo</a>
-            
-              <a href="/tags/#Blog" title="Blog">Blog</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -486,6 +502,10 @@ I publish the whole project f......
             <a href="/archives/4/">&larr; Newer Posts</a>
         </li>
     
+    
+        <li class="next">
+            <a href="/archives/6/">Older Posts &rarr;</a>
+        </li>
     
 </ul>
 
@@ -575,6 +595,10 @@ I publish the whole project f......
         
             
         
+            
+            <a href="/tags/#Camera" title="Camera" rel="3">Camera</a>
+            
+        
     </div>
 </section>
 
@@ -627,23 +651,23 @@ I publish the whole project f......
     <ul>
       
         <li>
+          <a href="/2019/01/14/让相机开始显示(3)/">让相机开始显示(系列3)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/01/14/对CameraManager的操作(系列2)/">对CameraManager的操作(系列2)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/01/14/CameraManager核心操作(系列1)/">CameraManager核心操作(系列1)</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/29/Android中使用gradle编译ndk工程/">Android中使用gradle编译ndk工程</a>
         </li>
       
         <li>
           <a href="/2018/12/27/http协议详解/">http协议详解</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/27/Java虚拟机理解简要总结/">Java虚拟机理解简要总结</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/26/设计模式Python版(创建型)/">Python设计模式创建型</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/26/Python异常捕获/">Python异常捕获</a>
         </li>
       
     </ul>
@@ -702,7 +726,7 @@ I publish the whole project f......
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; WangWei 2018 
+                    Copyright &copy; WangWei 2019 
                     
                 </p>
             </div>

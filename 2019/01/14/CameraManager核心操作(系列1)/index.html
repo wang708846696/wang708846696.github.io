@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          CameraManager核心操作(系列1) - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2019/01/14/CameraManager核心操作(系列1)/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Camera" title="Camera">Camera</a>
+                            
+                        </div>
+                        <h1>CameraManager核心操作(系列1)</h1>
+                        <h2 class="subheading">CameraManager核心操作(系列1)</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2019-01-14
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>描述一个相机操作的过程，我觉得应该从和相机打交道的代码入手，这样才能看清楚操作api的本质，至于什么时候操作api是后续接触的流程。所以先看CameraManager这个类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CameraManager</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"CameraManager"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> CameraManager sCameraManager = <span class="keyword">new</span> CameraManager();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Thread progress signals</span></span><br><span class="line">    <span class="keyword">private</span> ConditionVariable mSig = <span class="keyword">new</span> ConditionVariable();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Parameters mParameters;</span><br><span class="line">    <span class="keyword">private</span> IOException mReconnectException;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> RELEASE = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> RECONNECT = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UNLOCK = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LOCK = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SET_PREVIEW_TEXTURE_ASYNC = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> START_PREVIEW_ASYNC = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> STOP_PREVIEW = <span class="number">7</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SET_PREVIEW_CALLBACK_WITH_BUFFER = <span class="number">8</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ADD_CALLBACK_BUFFER = <span class="number">9</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> AUTO_FOCUS = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CANCEL_AUTO_FOCUS = <span class="number">11</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SET_AUTO_FOCUS_MOVE_CALLBACK = <span class="number">12</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SET_DISPLAY_ORIENTATION = <span class="number">13</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SET_ZOOM_CHANGE_LISTENER = <span class="number">14</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SET_FACE_DETECTION_LISTENER = <span class="number">15</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> START_FACE_DETECTION = <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> STOP_FACE_DETECTION = <span class="number">17</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SET_ERROR_CALLBACK = <span class="number">18</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SET_PARAMETERS = <span class="number">19</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> GET_PARAMETERS = <span class="number">20</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SET_PARAMETERS_ASYNC = <span class="number">21</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> WAIT_FOR_IDLE = <span class="number">22</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SET_PREVIEW_DISPLAY_ASYNC = <span class="number">23</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SET_PREVIEW_CALLBACK = <span class="number">24</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ENABLE_SHUTTER_SOUND = <span class="number">25</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Handler mCameraHandler;</span><br><span class="line">    <span class="keyword">private</span> CameraProxy mCameraProxy;</span><br><span class="line">    <span class="keyword">private</span> android.hardware.Camera mCamera;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//进行单例操作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> CameraManager <span class="title">instance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sCameraManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//生成一个HandlerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">CameraManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        HandlerThread ht = <span class="keyword">new</span> HandlerThread(<span class="string">"Camera Handler Thread"</span>);</span><br><span class="line">        ht.start();</span><br><span class="line">        mCameraHandler = <span class="keyword">new</span> CameraHandler(ht.getLooper());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//针对自己的Looper写一个handler相当于做一个事件驱动对camera进行操作</span></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">CameraHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">        CameraHandler(Looper looper) &#123;</span><br><span class="line">            <span class="keyword">super</span>(looper);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//开启人脸检测</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">startFaceDetection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mCamera.startFaceDetection();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//停止人脸检测</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">stopFaceDetection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mCamera.stopFaceDetection();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//人脸检测回调</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setFaceDetectionListener</span><span class="params">(FaceDetectionListener listener)</span> </span>&#123;</span><br><span class="line">            mCamera.setFaceDetectionListener(listener);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置实时预览</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setPreviewTexture</span><span class="params">(Object surfaceTexture)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                mCamera.setPreviewTexture((SurfaceTexture) surfaceTexture);</span><br><span class="line">            &#125; <span class="keyword">catch</span>(IOException e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//拍照时启用或者禁用快门身影</span></span><br><span class="line">        <span class="meta">@TargetApi</span>(ApiHelper.VERSION_CODES.JELLY_BEAN_MR1)</span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">enableShutterSound</span><span class="params">(<span class="keyword">boolean</span> enable)</span> </span>&#123;</span><br><span class="line">            mCamera.enableShutterSound(enable);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * This method does not deal with the build version check.  Everyone should</span></span><br><span class="line"><span class="comment">         * check first before sending message to this handler.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(<span class="keyword">final</span> Message msg)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">                    <span class="keyword">case</span> RELEASE:</span><br><span class="line">                        mCamera.release();</span><br><span class="line">                        mCamera = <span class="keyword">null</span>;</span><br><span class="line">                        mCameraProxy = <span class="keyword">null</span>;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> RECONNECT:</span><br><span class="line">                        mReconnectException = <span class="keyword">null</span>;</span><br><span class="line">                        <span class="keyword">try</span> &#123;</span><br><span class="line">                            <span class="comment">//重新连接相机</span></span><br><span class="line">                            <span class="comment">//在另一个进程使用照相机服务之后重新连接它。</span></span><br><span class="line">                            <span class="comment">//调用unlock()后，另一个进程可以使用相机;当这个过程完成后，</span></span><br><span class="line">                            <span class="comment">//您必须重新连接到相机，相机将重新获得锁，并允许您继续使用相机。</span></span><br><span class="line">                            mCamera.reconnect();</span><br><span class="line">                        &#125; <span class="keyword">catch</span> (IOException ex) &#123;</span><br><span class="line">                            mReconnectException = ex;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> UNLOCK:</span><br><span class="line">                        <span class="comment">//解锁相机，允许另一个进程访问它。</span></span><br><span class="line">                        <span class="comment">//通常，在调用release()之前，使用活动的camera对象将摄像机锁定到进程中。</span></span><br><span class="line">                        <span class="comment">//为了允许进程之间的快速切换，您可以调用此方法来临时释放相机，</span></span><br><span class="line">                        <span class="comment">//以供另一个进程使用;完成另一个过程后，可以调用reconnect()来回收相机。</span></span><br><span class="line">                        mCamera.unlock();</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> LOCK:</span><br><span class="line">                        <span class="comment">//重新锁定摄像机，以防止其他进程访问它。</span></span><br><span class="line">                        <span class="comment">//相机对象在默认情况下是锁定的，除非调用unlock()。</span></span><br><span class="line">                        <span class="comment">//通常使用reconnect()代替。</span></span><br><span class="line">                        mCamera.lock();</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> SET_PREVIEW_TEXTURE_ASYNC:</span><br><span class="line">                        setPreviewTexture(msg.obj);</span><br><span class="line">                        <span class="comment">//同样是调用设置预览，但是不需要同步</span></span><br><span class="line">                        <span class="keyword">return</span>;  <span class="comment">// no need to call mSig.open()</span></span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> SET_PREVIEW_DISPLAY_ASYNC:</span><br><span class="line">                        <span class="keyword">try</span> &#123;</span><br><span class="line">                            <span class="comment">//设置使用哪个SurfaceView来显示视频预览</span></span><br><span class="line">                            <span class="comment">//setPreviewTexture和该api作用一样，但是性能有差别一般TextureView会好</span></span><br><span class="line">                            mCamera.setPreviewDisplay((SurfaceHolder) msg.obj);</span><br><span class="line">                        &#125; <span class="keyword">catch</span>(IOException e) &#123;</span><br><span class="line">                            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">return</span>;  <span class="comment">// no need to call mSig.open()</span></span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> START_PREVIEW_ASYNC:</span><br><span class="line">                        <span class="comment">//开始实时预览</span></span><br><span class="line">                        mCamera.startPreview();</span><br><span class="line">                        <span class="keyword">return</span>;  <span class="comment">// no need to call mSig.open()</span></span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> STOP_PREVIEW:</span><br><span class="line">                        <span class="comment">//停止实时预览</span></span><br><span class="line">                        mCamera.stopPreview();</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> SET_PREVIEW_CALLBACK_WITH_BUFFER:</span><br><span class="line">                        <span class="comment">//除了在屏幕上显示外，还使用addCallbackBuffer(byte[])提供的缓冲区为每个预览帧安装要调用的回调。只要预览是活动的并且缓冲区可用，回调就会被重复调用。重写任何其他预览回调。</span></span><br><span class="line">                        mCamera.setPreviewCallbackWithBuffer(</span><br><span class="line">                            (PreviewCallback) msg.obj);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> ADD_CALLBACK_BUFFER:</span><br><span class="line">                        <span class="comment">//将预分配的缓冲区添加到预览回调缓冲区队列。</span></span><br><span class="line">                        <span class="comment">//应用程序可以向队列中添加一个或多个缓冲区。</span></span><br><span class="line">                        <span class="comment">//当一个预览帧到达并且仍然有至少一个可用的缓冲区时，</span></span><br><span class="line">                        <span class="comment">//该缓冲区将被使用并从队列中删除。然后用缓冲区调用预览回调。</span></span><br><span class="line">                        <span class="comment">//如果一个帧到达并且没有缓冲区，则丢弃该帧。</span></span><br><span class="line">                        <span class="comment">//应用程序在处理完缓冲区中的数据后应该添加回缓冲区。</span></span><br><span class="line">                        <span class="comment">//【特殊说明1】</span></span><br><span class="line">                        mCamera.addCallbackBuffer((<span class="keyword">byte</span>[]) msg.obj);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> AUTO_FOCUS:</span><br><span class="line">                        <span class="comment">//启动相机自动对焦，并注册一个回调函数，以便在相机对焦时运行。</span></span><br><span class="line">                        <span class="comment">//此方法仅在预览处于活动状态(在startPreview()和stopPreview()之间)之前有效。</span></span><br><span class="line">                        mCamera.autoFocus((AutoFocusCallback) msg.obj);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> CANCEL_AUTO_FOCUS:</span><br><span class="line">                        <span class="comment">//取消正在进行的任何自动对焦功能。</span></span><br><span class="line">					  <span class="comment">//无论自动对焦是否正在进行中，此函数都将把焦点位置返回到默认值。</span></span><br><span class="line">					  <span class="comment">//如果相机不支持自动对焦，这是禁止操作。</span></span><br><span class="line">                        mCamera.cancelAutoFocus();</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> SET_AUTO_FOCUS_MOVE_CALLBACK:</span><br><span class="line">                        <span class="comment">//设置去掉自动对焦回调</span></span><br><span class="line">                        setAutoFocusMoveCallback(mCamera, msg.obj);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> SET_DISPLAY_ORIENTATION:</span><br><span class="line">                        <span class="comment">//设置显示方向横屏还是竖屏</span></span><br><span class="line">                        mCamera.setDisplayOrientation(msg.arg1);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> SET_ZOOM_CHANGE_LISTENER:</span><br><span class="line">                        <span class="comment">//注册一个侦听器，当相机驱动程序在平滑缩放期间更新缩放值时通知该侦听器。</span></span><br><span class="line">                        mCamera.setZoomChangeListener(</span><br><span class="line">                            (OnZoomChangeListener) msg.obj);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> SET_FACE_DETECTION_LISTENER:</span><br><span class="line">                        <span class="comment">//注册一个侦听器，该侦听器将收到关于在预览框中检测到的人脸的通知。</span></span><br><span class="line">                        setFaceDetectionListener((FaceDetectionListener) msg.obj);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> START_FACE_DETECTION:</span><br><span class="line">                        <span class="comment">//启动人脸检测</span></span><br><span class="line">                        startFaceDetection();</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> STOP_FACE_DETECTION:</span><br><span class="line">                        <span class="comment">//停止人脸检测</span></span><br><span class="line">                        stopFaceDetection();</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> SET_ERROR_CALLBACK:</span><br><span class="line">                        <span class="comment">//设置错误毁掉</span></span><br><span class="line">                        mCamera.setErrorCallback((ErrorCallback) msg.obj);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> SET_PARAMETERS:</span><br><span class="line">                        <span class="comment">//更改相机设置</span></span><br><span class="line">                        mCamera.setParameters((Parameters) msg.obj);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> GET_PARAMETERS:</span><br><span class="line">                        <span class="comment">//获取当前相机的设置</span></span><br><span class="line">                        mParameters = mCamera.getParameters();</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> SET_PARAMETERS_ASYNC:</span><br><span class="line">                        <span class="comment">//异步设置相机设置，不会进行 mSig.open()锁的同步</span></span><br><span class="line">                        mCamera.setParameters((Parameters) msg.obj);</span><br><span class="line">                        <span class="keyword">return</span>;  <span class="comment">// no need to call mSig.open()</span></span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> SET_PREVIEW_CALLBACK:</span><br><span class="line">                        <span class="comment">//设置相机预览回调</span></span><br><span class="line">                        mCamera.setPreviewCallback((PreviewCallback) msg.obj);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> ENABLE_SHUTTER_SOUND:</span><br><span class="line">                        <span class="comment">//是否启用默认的快门声音</span></span><br><span class="line">                        enableShutterSound((msg.arg1 == <span class="number">1</span>) ? <span class="keyword">true</span> : <span class="keyword">false</span>);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> WAIT_FOR_IDLE:</span><br><span class="line">                        <span class="comment">// do nothing</span></span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">default</span>:</span><br><span class="line">                        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Invalid CameraProxy message="</span> + msg.what);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (RuntimeException e) &#123;</span><br><span class="line">                <span class="keyword">if</span> (msg.what != RELEASE &amp;&amp; mCamera != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        mCamera.release();</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">                        Log.e(TAG, <span class="string">"Fail to release the camera."</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                    mCamera = <span class="keyword">null</span>;</span><br><span class="line">                    mCameraProxy = <span class="keyword">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//每次操作完一个必须唤醒锁进行下一步</span></span><br><span class="line">            mSig.open();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置相机自动对焦移动回调</span></span><br><span class="line">    <span class="meta">@TargetApi</span>(ApiHelper.VERSION_CODES.JELLY_BEAN)</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setAutoFocusMoveCallback</span><span class="params">(android.hardware.Camera camera,</span></span></span><br><span class="line"><span class="function"><span class="params">            Object cb)</span> </span>&#123;</span><br><span class="line">        camera.setAutoFocusMoveCallback((AutoFocusMoveCallback) cb);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Open camera synchronously. This method is invoked in the context of a</span></span><br><span class="line">    <span class="comment">// background thread.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CameraProxy <span class="title">cameraOpen</span><span class="params">(<span class="keyword">int</span> cameraId)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 不要在mCameraHandler线程中打开相机，否则事件会跑到对应looper中，调用方法可能会修改UI</span></span><br><span class="line">        <span class="comment">//出现如下异常</span></span><br><span class="line">        <span class="comment">// CalledFromWrongThreadException: Only the original thread that created</span></span><br><span class="line">        <span class="comment">// a view hierarchy can touch its views.</span></span><br><span class="line">        mCamera = android.hardware.Camera.open(cameraId);</span><br><span class="line">        <span class="keyword">if</span> (mCamera != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mCameraProxy = <span class="keyword">new</span> CameraProxy();</span><br><span class="line">            <span class="keyword">return</span> mCameraProxy;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CameraProxy</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">CameraProxy</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> android.hardware.<span class="function">Camera <span class="title">getCamera</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> mCamera;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">release</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.sendEmptyMessage(RELEASE);</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reconnect</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.sendEmptyMessage(RECONNECT);</span><br><span class="line">            mSig.block();</span><br><span class="line">            <span class="keyword">if</span> (mReconnectException != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">throw</span> mReconnectException;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.sendEmptyMessage(UNLOCK);</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.sendEmptyMessage(LOCK);</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@TargetApi</span>(ApiHelper.VERSION_CODES.HONEYCOMB)</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPreviewTextureAsync</span><span class="params">(<span class="keyword">final</span> SurfaceTexture surfaceTexture)</span> </span>&#123;</span><br><span class="line">            mCameraHandler.obtainMessage(SET_PREVIEW_TEXTURE_ASYNC, surfaceTexture).sendToTarget();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPreviewDisplayAsync</span><span class="params">(<span class="keyword">final</span> SurfaceHolder surfaceHolder)</span> </span>&#123;</span><br><span class="line">            mCameraHandler.obtainMessage(SET_PREVIEW_DISPLAY_ASYNC, surfaceHolder).sendToTarget();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startPreviewAsync</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mCameraHandler.sendEmptyMessage(START_PREVIEW_ASYNC);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stopPreview</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.sendEmptyMessage(STOP_PREVIEW);</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPreviewCallback</span><span class="params">(<span class="keyword">final</span> PreviewCallback cb)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.obtainMessage(SET_PREVIEW_CALLBACK, cb).sendToTarget();</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPreviewCallbackWithBuffer</span><span class="params">(<span class="keyword">final</span> PreviewCallback cb)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.obtainMessage(SET_PREVIEW_CALLBACK_WITH_BUFFER, cb).sendToTarget();</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCallbackBuffer</span><span class="params">(<span class="keyword">byte</span>[] callbackBuffer)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.obtainMessage(ADD_CALLBACK_BUFFER, callbackBuffer).sendToTarget();</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">autoFocus</span><span class="params">(AutoFocusCallback cb)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.obtainMessage(AUTO_FOCUS, cb).sendToTarget();</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cancelAutoFocus</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.sendEmptyMessage(CANCEL_AUTO_FOCUS);</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@TargetApi</span>(ApiHelper.VERSION_CODES.JELLY_BEAN)</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAutoFocusMoveCallback</span><span class="params">(AutoFocusMoveCallback cb)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.obtainMessage(SET_AUTO_FOCUS_MOVE_CALLBACK, cb).sendToTarget();</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line">	   <span class="comment">//--------------------------------代理对应方法--------------------------------------</span></span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        <span class="comment">//拍照</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">takePicture</span><span class="params">(<span class="keyword">final</span> ShutterCallback shutter, <span class="keyword">final</span> PictureCallback raw,</span></span></span><br><span class="line"><span class="function"><span class="params">                                <span class="keyword">final</span> PictureCallback postview, <span class="keyword">final</span> PictureCallback jpeg)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            <span class="comment">// Too many parameters, so use post for simplicity</span></span><br><span class="line">            mCameraHandler.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    mCamera.takePicture(shutter, raw, postview, jpeg);</span><br><span class="line">                    mSig.open();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">takePicture2</span><span class="params">(<span class="keyword">final</span> ShutterCallback shutter, <span class="keyword">final</span> PictureCallback raw,</span></span></span><br><span class="line"><span class="function"><span class="params">                                 <span class="keyword">final</span> PictureCallback postview, <span class="keyword">final</span> PictureCallback jpeg,</span></span></span><br><span class="line"><span class="function"><span class="params">                                 <span class="keyword">final</span> <span class="keyword">int</span> cameraState, <span class="keyword">final</span> <span class="keyword">int</span> focusState)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            <span class="comment">// Too many parameters, so use post for simplicity</span></span><br><span class="line">            mCameraHandler.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        mCamera.takePicture(shutter, raw, postview, jpeg);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (RuntimeException e) &#123;</span><br><span class="line">                        Log.w(TAG, <span class="string">"take picture failed; cameraState:"</span> + cameraState</span><br><span class="line">                            + <span class="string">", focusState:"</span> + focusState);</span><br><span class="line">                        <span class="keyword">throw</span> e;</span><br><span class="line">                    &#125;</span><br><span class="line">                    mSig.open();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDisplayOrientation</span><span class="params">(<span class="keyword">int</span> degrees)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.obtainMessage(SET_DISPLAY_ORIENTATION, degrees, <span class="number">0</span>)</span><br><span class="line">                    .sendToTarget();</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setZoomChangeListener</span><span class="params">(OnZoomChangeListener listener)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.obtainMessage(SET_ZOOM_CHANGE_LISTENER, listener).sendToTarget();</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFaceDetectionListener</span><span class="params">(FaceDetectionListener listener)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.obtainMessage(SET_FACE_DETECTION_LISTENER, listener).sendToTarget();</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startFaceDetection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.sendEmptyMessage(START_FACE_DETECTION);</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stopFaceDetection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.sendEmptyMessage(STOP_FACE_DETECTION);</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setErrorCallback</span><span class="params">(ErrorCallback cb)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.obtainMessage(SET_ERROR_CALLBACK, cb).sendToTarget();</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParameters</span><span class="params">(Parameters params)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.obtainMessage(SET_PARAMETERS, params).sendToTarget();</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParametersAsync</span><span class="params">(Parameters params)</span> </span>&#123;</span><br><span class="line">            mCameraHandler.removeMessages(SET_PARAMETERS_ASYNC);</span><br><span class="line">            mCameraHandler.obtainMessage(SET_PARAMETERS_ASYNC, params).sendToTarget();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Parameters <span class="title">getParameters</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.sendEmptyMessage(GET_PARAMETERS);</span><br><span class="line">            mSig.block();</span><br><span class="line">            Parameters parameters = mParameters;</span><br><span class="line">            mParameters = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">return</span> parameters;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enableShutterSound</span><span class="params">(<span class="keyword">boolean</span> enable)</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.obtainMessage(</span><br><span class="line">                    ENABLE_SHUTTER_SOUND, (enable ? <span class="number">1</span> : <span class="number">0</span>), <span class="number">0</span>).sendToTarget();</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">waitForIdle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            mSig.close();</span><br><span class="line">            mCameraHandler.sendEmptyMessage(WAIT_FOR_IDLE);</span><br><span class="line">            mSig.block();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>特殊说明1</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">boolean</span> isScreenShot = <span class="keyword">false</span>;</span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">prepareCamera</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">float</span> perPixel = ImageFormat.getBitsPerPixel(mParameters.getPreviewFormat()) / <span class="number">8f</span>;</span><br><span class="line">    <span class="keyword">int</span> previewBufferSize = (<span class="keyword">int</span>) (mParameters.getPreviewSize().width * mParameters.getPreviewSize().height * perPixel);</span><br><span class="line">    mCameraDevice.addCallbackBuffer(<span class="keyword">new</span> <span class="keyword">byte</span>[previewBufferSize]);</span><br><span class="line">    mCameraDevice.addCallbackBuffer(<span class="keyword">new</span> <span class="keyword">byte</span>[previewBufferSize]);</span><br><span class="line">    mCameraDevice.setPreviewCallbackWithBuffer(<span class="keyword">new</span> Camera.PreviewCallback() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreviewFrame</span><span class="params">(<span class="keyword">byte</span>[] data, Camera camera)</span> </span>&#123;</span><br><span class="line">            <span class="comment">//当第一帧显示出来的时候可以做一些事情</span></span><br><span class="line">            <span class="keyword">if</span> (isScreenShot) &#123;</span><br><span class="line">                isScreenShot = <span class="keyword">false</span>;</span><br><span class="line">                screenShot(data);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//根据google官方文档给的说明，用户写入数据则需要将缓存重新添加到缓冲区</span></span><br><span class="line">            camera.addCallbackBuffer(data);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2019/01/14/对CameraManager的操作(系列2)/" data-toggle="tooltip" data-placement="top" title="对CameraManager的操作(系列2)">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/12/29/Android中使用gradle编译ndk工程/" data-toggle="tooltip" data-placement="top" title="Android中使用gradle编译ndk工程">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="nav">none</ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Camera" title="Camera">Camera</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2019 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

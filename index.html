@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -206,6 +206,93 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2019/01/14/让相机开始显示(3)/">
+        <h2 class="post-title">
+            让相机开始显示(系列3)
+        </h2>
+        <h3 class="post-subtitle">
+            让相机开始显示(系列3)
+        </h3>
+        <div class="post-content-preview">
+            从这个线程创建开始启动相机
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475private class CameraStartUpThread extends ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Camera" title="Camera">Camera</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/14/对CameraManager的操作(系列2)/">
+        <h2 class="post-title">
+            对CameraManager的操作(系列2)
+        </h2>
+        <h3 class="post-subtitle">
+            对CameraManager的操作(系列2)
+        </h3>
+        <div class="post-content-preview">
+            根据上一节的操作当打开相机之后同时返回一个操作相机的代理
+123456789public CameraProxy cameraOpen(int cameraId) &#123;    mCamera = android.hardware.Camera.open(cameraId);    if (mCamera != null) &#123;        mCameraProxy = ne......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Camera" title="Camera">Camera</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/14/CameraManager核心操作(系列1)/">
+        <h2 class="post-title">
+            CameraManager核心操作(系列1)
+        </h2>
+        <h3 class="post-subtitle">
+            CameraManager核心操作(系列1)
+        </h3>
+        <div class="post-content-preview">
+            描述一个相机操作的过程，我觉得应该从和相机打交道的代码入手，这样才能看清楚操作api的本质，至于什么时候操作api是后续接触的流程。所以先看CameraManager这个类。
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Camera" title="Camera">Camera</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -489,101 +576,6 @@ Python转义字符
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/25/Python装饰器/">
-        <h2 class="post-title">
-            Python装饰器
-        </h2>
-        <h3 class="post-subtitle">
-            Python装饰器
-        </h3>
-        <div class="post-content-preview">
-            闭包
-要想明白python中装饰器，则需要先知道python中的闭包规则
-1234567891011121314def test1():    print("--- in test1 func----")# 调用函数test1()# 引用函数ret = test1print(id(ret))print(id(test1))#通过引用调用函数ret()
-1234--- in test1 fun......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-25
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Python" title="Python">Python</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/25/gradle安卓应用插件源码/">
-        <h2 class="post-title">
-            Android DSL源码阅读
-        </h2>
-        <h3 class="post-subtitle">
-            gradle在Android中的应用
-        </h3>
-        <div class="post-content-preview">
-            gradle中的写法：
-1apply plugin: 'com.android.application'
-这样就引用到了com.android.tools.build:gradle:3.1.2@jar中的文件com.android.application.properties，对应执行的就是文件中的类：implementation-class=com.android.build.gradle......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-25
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#gradle" title="gradle">gradle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/24/gradle文档/">
-        <h2 class="post-title">
-            Gradle如何学习
-        </h2>
-        <h3 class="post-subtitle">
-            Gradle如何学习
-        </h3>
-        <div class="post-content-preview">
-            首先知道如何查看Gradle源码
-新建一个工程：
-
-在build.gradle中写入：
-1234dependencies &#123;    compile gradleApi()    compile 'com.android.tools.build:gradle:3.2.1'&#125;
-在项目根目录的settings.gradle下将该工程引入：include 'library'即可
-......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-24
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#gradle" title="gradle">gradle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -683,6 +675,10 @@ Python转义字符
         
             
         
+            
+            <a href="/tags/#Camera" title="Camera" rel="3">Camera</a>
+            
+        
     </div>
 </section>
 
@@ -735,23 +731,23 @@ Python转义字符
     <ul>
       
         <li>
+          <a href="/2019/01/14/让相机开始显示(3)/">让相机开始显示(系列3)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/01/14/对CameraManager的操作(系列2)/">对CameraManager的操作(系列2)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/01/14/CameraManager核心操作(系列1)/">CameraManager核心操作(系列1)</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/29/Android中使用gradle编译ndk工程/">Android中使用gradle编译ndk工程</a>
         </li>
       
         <li>
           <a href="/2018/12/27/http协议详解/">http协议详解</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/27/Java虚拟机理解简要总结/">Java虚拟机理解简要总结</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/26/设计模式Python版(创建型)/">Python设计模式创建型</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/26/Python异常捕获/">Python异常捕获</a>
         </li>
       
     </ul>
@@ -810,7 +806,7 @@ Python转义字符
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; WangWei 2018 
+                    Copyright &copy; WangWei 2019 
                     
                 </p>
             </div>

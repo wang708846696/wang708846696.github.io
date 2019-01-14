@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -206,6 +206,101 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/12/25/Python装饰器/">
+        <h2 class="post-title">
+            Python装饰器
+        </h2>
+        <h3 class="post-subtitle">
+            Python装饰器
+        </h3>
+        <div class="post-content-preview">
+            闭包
+要想明白python中装饰器，则需要先知道python中的闭包规则
+1234567891011121314def test1():    print("--- in test1 func----")# 调用函数test1()# 引用函数ret = test1print(id(ret))print(id(test1))#通过引用调用函数ret()
+1234--- in test1 fun......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-25
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Python" title="Python">Python</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/25/gradle安卓应用插件源码/">
+        <h2 class="post-title">
+            Android DSL源码阅读
+        </h2>
+        <h3 class="post-subtitle">
+            gradle在Android中的应用
+        </h3>
+        <div class="post-content-preview">
+            gradle中的写法：
+1apply plugin: 'com.android.application'
+这样就引用到了com.android.tools.build:gradle:3.1.2@jar中的文件com.android.application.properties，对应执行的就是文件中的类：implementation-class=com.android.build.gradle......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-25
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#gradle" title="gradle">gradle</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/24/gradle文档/">
+        <h2 class="post-title">
+            Gradle如何学习
+        </h2>
+        <h3 class="post-subtitle">
+            Gradle如何学习
+        </h3>
+        <div class="post-content-preview">
+            首先知道如何查看Gradle源码
+新建一个工程：
+
+在build.gradle中写入：
+1234dependencies &#123;    compile gradleApi()    compile 'com.android.tools.build:gradle:3.2.1'&#125;
+在项目根目录的settings.gradle下将该工程引入：include 'library'即可
+......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-24
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#gradle" title="gradle">gradle</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -476,106 +571,6 @@ iconst_4......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/16/位运算符常见用法/">
-        <h2 class="post-title">
-            位运算
-        </h2>
-        <h3 class="post-subtitle">
-            位运算
-        </h3>
-        <div class="post-content-preview">
-            
-测试第 k 位: s &amp; (1 &lt;&lt; k)
-
-123//举个例子//	1&lt;&lt;0=1	1&lt;&lt;1=2   1&lt;&lt;2=4  1&lt;&lt;3=8//	0001	0010	0100	1000
-
-设置第 k 位: s |= (1 &lt;&lt; k)
-
-12//将第多少位设置成1，比如将0000的第三位设置成1，结果是1000//所以0 ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-16
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#位运算" title="位运算">位运算</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/14/Transform理解/">
-        <h2 class="post-title">
-            Transform介绍
-        </h2>
-        <h3 class="post-subtitle">
-            Transform介绍
-        </h3>
-        <div class="post-content-preview">
-            
-来源于https://juejin.im/entry/5c0cc7c15188257d5e39647d
-
-Transform历史
-gradle2.0之前Transform单独需要引入
-transform的历史版本
-gradle2.0之后代码就放入了gradle-api中
-Transform依赖方式
-
-api&lt;=2.0 compile 'com.android.tools.build:......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Transform" title="Transform">Transform</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/14/handler内存泄露/">
-        <h2 class="post-title">
-            常用Handler导致内存泄露
-        </h2>
-        <h3 class="post-subtitle">
-            Handler导致的内存泄露
-        </h3>
-        <div class="post-content-preview">
-            1234567891011121314151617181920212223242526272829303132333435363738394041public class MainActivity extends Activity &#123;    private MyHandler mMyHandler;    @Override    protected void onCreate(B......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#内存泄露" title="内存泄露">内存泄露</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -679,6 +674,10 @@ api&lt;=2.0 compile 'com.android.tools.build:......
         
             
         
+            
+            <a href="/tags/#Camera" title="Camera" rel="3">Camera</a>
+            
+        
     </div>
 </section>
 
@@ -731,23 +730,23 @@ api&lt;=2.0 compile 'com.android.tools.build:......
     <ul>
       
         <li>
+          <a href="/2019/01/14/让相机开始显示(3)/">让相机开始显示(系列3)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/01/14/对CameraManager的操作(系列2)/">对CameraManager的操作(系列2)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/01/14/CameraManager核心操作(系列1)/">CameraManager核心操作(系列1)</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/29/Android中使用gradle编译ndk工程/">Android中使用gradle编译ndk工程</a>
         </li>
       
         <li>
           <a href="/2018/12/27/http协议详解/">http协议详解</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/27/Java虚拟机理解简要总结/">Java虚拟机理解简要总结</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/26/设计模式Python版(创建型)/">Python设计模式创建型</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/26/Python异常捕获/">Python异常捕获</a>
         </li>
       
     </ul>
@@ -806,7 +805,7 @@ api&lt;=2.0 compile 'com.android.tools.build:......
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; WangWei 2018 
+                    Copyright &copy; WangWei 2019 
                     
                 </p>
             </div>

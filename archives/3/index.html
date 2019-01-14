@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -206,6 +206,106 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/12/16/位运算符常见用法/">
+        <h2 class="post-title">
+            位运算
+        </h2>
+        <h3 class="post-subtitle">
+            位运算
+        </h3>
+        <div class="post-content-preview">
+            
+测试第 k 位: s &amp; (1 &lt;&lt; k)
+
+123//举个例子//	1&lt;&lt;0=1	1&lt;&lt;1=2   1&lt;&lt;2=4  1&lt;&lt;3=8//	0001	0010	0100	1000
+
+设置第 k 位: s |= (1 &lt;&lt; k)
+
+12//将第多少位设置成1，比如将0000的第三位设置成1，结果是1000//所以0 ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-16
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#位运算" title="位运算">位运算</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/14/Transform理解/">
+        <h2 class="post-title">
+            Transform介绍
+        </h2>
+        <h3 class="post-subtitle">
+            Transform介绍
+        </h3>
+        <div class="post-content-preview">
+            
+来源于https://juejin.im/entry/5c0cc7c15188257d5e39647d
+
+Transform历史
+gradle2.0之前Transform单独需要引入
+transform的历史版本
+gradle2.0之后代码就放入了gradle-api中
+Transform依赖方式
+
+api&lt;=2.0 compile 'com.android.tools.build:......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Transform" title="Transform">Transform</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/14/handler内存泄露/">
+        <h2 class="post-title">
+            常用Handler导致内存泄露
+        </h2>
+        <h3 class="post-subtitle">
+            Handler导致的内存泄露
+        </h3>
+        <div class="post-content-preview">
+            1234567891011121314151617181920212223242526272829303132333435363738394041public class MainActivity extends Activity &#123;    private MyHandler mMyHandler;    @Override    protected void onCreate(B......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#内存泄露" title="内存泄露">内存泄露</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -442,102 +542,6 @@ Future接口
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/13/gradle基本使用/">
-        <h2 class="post-title">
-            groovy语法&gradle与groovy和java的关系简要说明
-        </h2>
-        <h3 class="post-subtitle">
-            本节主要针对groovy语法&gradle与groovy和java的关系简要说明
-        </h3>
-        <div class="post-content-preview">
-            简介
-gradle官方文档
-android dsl官方文档
-gradle学习链接来自官方
-gradle是什么？
-We said earlier that the core of Gradle is a language for dependency based programming. In Gradle terms this means that you can define tasks ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-13
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#gradle" title="gradle">gradle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/10/热修复的一种实现/">
-        <h2 class="post-title">
-            Android热修复的一种实现
-        </h2>
-        <h3 class="post-subtitle">
-            本章节将介绍一种常用的热修复的实现
-        </h3>
-        <div class="post-content-preview">
-            回顾
-
-在 Android 中，App 安装到手机后，apk 里面的 class.dex 中的 class 均是通过 PathClassLoader 来加载的。
-DexClassLoader 可以用来加载外置sd卡等包含 class.dex 的 .jar 和 .apk 文件
-DexClassLoader 和 PathClassLoader 的基类 BaseDexClassLoader 查找 ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-10
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#热修复" title="热修复">热修复</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/10/Android中的类加载器(含源码)/">
-        <h2 class="post-title">
-            Android中的类加载器(含源码)
-        </h2>
-        <h3 class="post-subtitle">
-            本节主要针对Android8.0中的类加载器源码进行分析，只涉及到java层，native层暂时不涉及
-        </h3>
-        <div class="post-content-preview">
-            Android中有哪些类加载器
-通过前面的文章介绍了java中的类加载器，这章我们介绍Android中的类加载器。
-由于Android有自己特有文件格式，所以加载器和java也不太一样。java加载的是.class文件，但是Android加载的是.dex文件。所以从文件格式上有本质上的不一样。
-Android中的java.lang.ClassLoader这个类也不同于Java中的java.l......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-10
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#类加载" title="类加载">类加载</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -641,6 +645,10 @@ Android中的java.lang.ClassLoader这个类也不同于Java中的java.l......
         
             
         
+            
+            <a href="/tags/#Camera" title="Camera" rel="3">Camera</a>
+            
+        
     </div>
 </section>
 
@@ -693,23 +701,23 @@ Android中的java.lang.ClassLoader这个类也不同于Java中的java.l......
     <ul>
       
         <li>
+          <a href="/2019/01/14/让相机开始显示(3)/">让相机开始显示(系列3)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/01/14/对CameraManager的操作(系列2)/">对CameraManager的操作(系列2)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/01/14/CameraManager核心操作(系列1)/">CameraManager核心操作(系列1)</a>
+        </li>
+      
+        <li>
           <a href="/2018/12/29/Android中使用gradle编译ndk工程/">Android中使用gradle编译ndk工程</a>
         </li>
       
         <li>
           <a href="/2018/12/27/http协议详解/">http协议详解</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/27/Java虚拟机理解简要总结/">Java虚拟机理解简要总结</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/26/设计模式Python版(创建型)/">Python设计模式创建型</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/26/Python异常捕获/">Python异常捕获</a>
         </li>
       
     </ul>
@@ -768,7 +776,7 @@ Android中的java.lang.ClassLoader这个类也不同于Java中的java.l......
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; WangWei 2018 
+                    Copyright &copy; WangWei 2019 
                     
                 </p>
             </div>
