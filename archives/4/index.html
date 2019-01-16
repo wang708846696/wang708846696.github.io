@@ -132,13 +132,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -147,6 +140,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,39 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/11/13/FutureTask学习/">
+        <h2 class="post-title">
+            FutureTask原理
+        </h2>
+        <h3 class="post-subtitle">
+            本节主要针对FutureTask原理以及简单的使用做一个介绍
+        </h3>
+        <div class="post-content-preview">
+            本节介绍FutureTask这种方式使用线程。其实不能算是创建线程。只能属于一种包装。
+FutureTask组成部分
+Callable接口
+123public interface Callable&lt;V&gt; &#123;    V call() throws Exception;&#125;
+Future接口
+1234567public interface Future&lt;V&g......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-13
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#线程" title="线程">线程</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -495,35 +528,6 @@ Part 6
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/04/滴滴插件化2_装载插件/">
-        <h2 class="post-title">
-            滴滴插件化2_装载插件
-        </h2>
-        <h3 class="post-subtitle">
-            主要针对装载插件的代码进行分析，具体看看装载插件的时候需要初始化那些内容以及替换那些核心的类
-        </h3>
-        <div class="post-content-preview">
-            装载插件（apk）
-123456789101112131415public void loadPlugin(File apk) throws Exception &#123;    ...    //创建LoadedPlugin    LoadedPlugin plugin = createLoadedPlugin(apk);//【1.2】    if (null == plugin) &#......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-04
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -586,13 +590,13 @@ Part 6
             
         
             
-        
-            
-        
-            
-        
-            
             <a href="/tags/#jvm" title="jvm" rel="3">jvm</a>
+            
+        
+            
+        
+            
+        
             
         
             
@@ -618,7 +622,7 @@ Part 6
             
         
             
-        
+            <a href="/tags/#Camera" title="Camera" rel="4">Camera</a>
             
         
             
@@ -628,7 +632,7 @@ Part 6
             
         
             
-            <a href="/tags/#Camera" title="Camera" rel="3">Camera</a>
+        
             
         
     </div>
@@ -683,6 +687,10 @@ Part 6
     <ul>
       
         <li>
+          <a href="/2019/01/15/再探FocusOverlayManager/">再探FocusOverlayManager</a>
+        </li>
+      
+        <li>
           <a href="/2019/01/14/让相机开始显示(3)/">让相机开始显示(系列3)</a>
         </li>
       
@@ -696,10 +704,6 @@ Part 6
       
         <li>
           <a href="/2018/12/29/Android中使用gradle编译ndk工程/">Android中使用gradle编译ndk工程</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/27/http协议详解/">http协议详解</a>
         </li>
       
     </ul>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          再探FocusOverlayManager - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2019/01/15/再探FocusOverlayManager/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Camera" title="Camera">Camera</a>
+                            
+                        </div>
+                        <h1>再探FocusOverlayManager</h1>
+                        <h2 class="subheading">再探FocusOverlayManager</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2019-01-15
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>该类主要负责焦点相关，通过一系列的状态值，还有通过聚焦的坐标进行转化等，和聚焦的view，还有设备聚焦功能进行对接。具体对接设备是通过一个listener进行的具体实现是外界。view的实现是传递进来的。</p>
+<p><strong>成员变量初探</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FocusOverlayManager</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"CAM_FocusManager"</span>;</span><br><span class="line">	<span class="comment">//重置焦点延时时间</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> RESET_TOUCH_FOCUS = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> RESET_TOUCH_FOCUS_DELAY = <span class="number">3000</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//状态用于标记相机目前的状态</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mState = STATE_IDLE;</span><br><span class="line">    <span class="comment">//焦点不活跃状态</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> STATE_IDLE = <span class="number">0</span>; <span class="comment">// Focus is not active.</span></span><br><span class="line">    <span class="comment">//正在聚焦中</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> STATE_FOCUSING = <span class="number">1</span>; <span class="comment">// Focus is in progress.</span></span><br><span class="line">    <span class="comment">//对焦正在进行中，对焦完成后相机应拍照。</span></span><br><span class="line">    <span class="comment">// Focus is in progress and the camera should take a picture after focus finishes.</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> STATE_FOCUSING_SNAP_ON_FINISH = <span class="number">2</span>;</span><br><span class="line">    <span class="comment">//聚焦成功</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> STATE_SUCCESS = <span class="number">3</span>; <span class="comment">// Focus finishes and succeeds.</span></span><br><span class="line">    <span class="comment">//聚焦失败</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> STATE_FAIL = <span class="number">4</span>; <span class="comment">// Focus finishes and fails.</span></span><br><span class="line">	<span class="comment">//绘制聚焦圆圈</span></span><br><span class="line">    <span class="keyword">private</span> PieRenderer mPieRenderer;</span><br><span class="line">	<span class="comment">//是否支持聚焦区域</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mFocusAreaSupported;</span><br><span class="line">    <span class="comment">//获取支持的最大计量区域数。</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mMeteringAreaSupported;</span><br><span class="line">    <span class="comment">//自动曝光锁定支持</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mLockAeAwbNeeded;</span><br><span class="line">    <span class="comment">//白平衡是否锁定</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mAeAwbLock;</span><br><span class="line">    <span class="comment">//矩阵计算使用</span></span><br><span class="line">    <span class="keyword">private</span> Matrix mMatrix;</span><br><span class="line">    <span class="comment">//是否初始化使用</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mInitialized;</span><br><span class="line">    <span class="comment">//surfaceview</span></span><br><span class="line">    <span class="keyword">private</span> PreviewSurfaceView mSurfaceView;</span><br><span class="line">    <span class="comment">//焦点宽</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> focusWidth;</span><br><span class="line">    <span class="comment">//焦点高</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> focusHeight;</span><br><span class="line">	<span class="comment">//预览宽</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mPreviewWidth; <span class="comment">// The width of the preview frame layout.</span></span><br><span class="line">    <span class="comment">//预览高</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mPreviewHeight; <span class="comment">// The height of the preview frame layout.</span></span><br><span class="line">    <span class="comment">//屏幕方向</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mDisplayOrientation;</span><br><span class="line">    <span class="comment">//驱动程序格式的焦点区域</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; mFocusArea; <span class="comment">// focus area in driver format</span></span><br><span class="line">    <span class="comment">//驱动程序格式的计量区域</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; mMeteringArea; <span class="comment">// metering area in driver format</span></span><br><span class="line">    <span class="comment">//焦点模型</span></span><br><span class="line">    <span class="keyword">private</span> String mFocusMode;</span><br><span class="line">    <span class="comment">//默认焦点模型</span></span><br><span class="line">    <span class="keyword">private</span> String[] mDefaultFocusModes;</span><br><span class="line">    <span class="comment">//覆盖焦点模型</span></span><br><span class="line">    <span class="keyword">private</span> String mOverrideFocusMode;</span><br><span class="line">    <span class="comment">//相机参数</span></span><br><span class="line">    <span class="keyword">private</span> Parameters mParameters;</span><br><span class="line">    <span class="comment">//主线程handler</span></span><br><span class="line">    <span class="keyword">private</span> Handler mHandler;</span><br><span class="line">    <span class="comment">//操作相机监听</span></span><br><span class="line">    <span class="keyword">private</span> Listener mListener;</span><br></pre></td></tr></table></figure>
+<p><strong>构造方法初探</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">FocusOverlayManager</span><span class="params">(String[] defaultFocusModes, </span></span></span><br><span class="line"><span class="function"><span class="params">                           Parameters parameters, Listener listener, </span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">boolean</span> mirror, Looper looper, </span></span></span><br><span class="line"><span class="function"><span class="params">                           PreviewSurfaceView surfaceView)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//77dp</span></span><br><span class="line">    focusWidth = OfficeApp.getInstance().getResources().</span><br><span class="line">        getDimensionPixelOffset(R.dimen.doc_scan_camera_focus_size);</span><br><span class="line">    focusHeight = focusWidth;</span><br><span class="line">    <span class="comment">//实时预览显示</span></span><br><span class="line">    <span class="keyword">this</span>.mSurfaceView = surfaceView;</span><br><span class="line">    <span class="comment">//主线程handler操作</span></span><br><span class="line">    mHandler = <span class="keyword">new</span> MainHandler(looper);</span><br><span class="line">    <span class="comment">//操作图形矩阵</span></span><br><span class="line">    mMatrix = <span class="keyword">new</span> Matrix();</span><br><span class="line">    <span class="comment">//默认焦点模式</span></span><br><span class="line">    mDefaultFocusModes = defaultFocusModes;</span><br><span class="line">    <span class="comment">//从相机参数中获取焦点相关的支持</span></span><br><span class="line">    setParameters(parameters);</span><br><span class="line">    <span class="comment">//外界接口通过它实现真正和摄像头打交道的工作</span></span><br><span class="line">    mListener = listener;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//构造中调用</span></span><br><span class="line"><span class="comment">//通过参数得到是否支持聚焦区域，是否支持的最大计量区域数，自动曝光锁定支持，白平衡是否锁定</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParameters</span><span class="params">(Parameters parameters)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (parameters == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">    mParameters = parameters;</span><br><span class="line">    mFocusAreaSupported = CameraUtils.isFocusAreaSupported(parameters);</span><br><span class="line">    mMeteringAreaSupported = CameraUtils.isMeteringAreaSupported(parameters);</span><br><span class="line">    mLockAeAwbNeeded = (CameraUtils.isAutoExposureLockSupported(mParameters) ||</span><br><span class="line">                        CameraUtils.isAutoWhiteBalanceLockSupported(mParameters));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>主线程handler做的事情</strong></p>
+<p>主线程主要进行取消焦点的操作，具体如何操作后面给出</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MainHandler</span><span class="params">(Looper looper)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(looper);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">            <span class="keyword">case</span> RESET_TOUCH_FOCUS: &#123;</span><br><span class="line">                <span class="comment">//【取消焦点操作】</span></span><br><span class="line">                cancelAutoFocus();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>设置预览区域矩阵</strong></p>
+<p>这里做的事情主要是将预览大小和方向映射到成员变量矩阵中，方便后期使用该矩阵得到正确的焦点坐标。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPreviewSize</span><span class="params">(<span class="keyword">int</span> previewWidth, <span class="keyword">int</span> previewHeight)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mPreviewWidth != previewWidth || mPreviewHeight != previewHeight) &#123;</span><br><span class="line">        mPreviewWidth = previewWidth;</span><br><span class="line">        mPreviewHeight = previewHeight;</span><br><span class="line">        setMatrix();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setMatrix</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mPreviewWidth != <span class="number">0</span> &amp;&amp; mPreviewHeight != <span class="number">0</span>) &#123;</span><br><span class="line">        Matrix matrix = <span class="keyword">new</span> Matrix();</span><br><span class="line">        <span class="comment">//将预览宽高和方向映射到matrix矩阵上</span></span><br><span class="line">        CameraUtils.prepareMatrix(matrix, mDisplayOrientation,</span><br><span class="line">                                  mPreviewWidth, mPreviewHeight);</span><br><span class="line">        <span class="comment">//将驱动识别的矩阵映射到开发时候焦点的矩阵</span></span><br><span class="line">        matrix.invert(mMatrix);</span><br><span class="line">        <span class="comment">//设置是否已经初始化过了</span></span><br><span class="line">        mInitialized = (mPieRenderer != <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>对白平衡的支持</strong></p>
+<p>通过是否支持白平衡更新参数设置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">lockAeAwbIfNeeded</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mLockAeAwbNeeded &amp;&amp; !mAeAwbLock) &#123;</span><br><span class="line">        mAeAwbLock = <span class="keyword">true</span>;</span><br><span class="line">        mListener.setFocusParameters();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">unlockAeAwbIfNeeded</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mLockAeAwbNeeded &amp;&amp; mAeAwbLock &amp;&amp; (mState != STATE_FOCUSING_SNAP_ON_FINISH)) &#123;</span><br><span class="line">        mAeAwbLock = <span class="keyword">false</span>;</span><br><span class="line">        mListener.setFocusParameters();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>拍照</strong></p>
+<ul>
+<li>当不可用自动焦点获取或者状态是成功或者失败的时候此时可以进行拍照</li>
+<li>当状态是正在聚焦此时设置(聚焦拍照完成)状态此状态会在聚焦结束之后回调中使用拍照功能</li>
+<li>当状态是休眠状态时候可以进行拍照</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSnap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// If the user has half-pressed the shutter and focus is completed, we</span></span><br><span class="line">    <span class="comment">// can take the photo right away. If the focus mode is infinity, we can</span></span><br><span class="line">    <span class="comment">// also take the photo.</span></span><br><span class="line">    <span class="comment">//【是否需要自动取焦】</span></span><br><span class="line">    <span class="keyword">if</span> (!needAutoFocusCall() || (mState == STATE_SUCCESS || mState == STATE_FAIL)) &#123;</span><br><span class="line">        <span class="comment">//【拍照核心】</span></span><br><span class="line">        capture();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mState == STATE_FOCUSING) &#123;</span><br><span class="line">        <span class="comment">// Half pressing the shutter (i.e. the focus button event) will</span></span><br><span class="line">        <span class="comment">// already have requested AF for us, so just request capture on</span></span><br><span class="line">        <span class="comment">// focus here.</span></span><br><span class="line">        mState = STATE_FOCUSING_SNAP_ON_FINISH;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mState == STATE_IDLE) &#123;</span><br><span class="line">        <span class="comment">// We didn't do focus. This can happen if the user press focus key</span></span><br><span class="line">        <span class="comment">// while the snapshot is still in progress. The user probably wants</span></span><br><span class="line">        <span class="comment">// the next snapshot as soon as possible, so we just do a snapshot</span></span><br><span class="line">        <span class="comment">// without focusing again.</span></span><br><span class="line">        capture();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>自动聚焦完成执行</strong></p>
+<ul>
+<li>当状态是STATE_FOCUSING_SNAP_ON_FINISH的时候说明是拍照正在进行但是没有获取到焦点完成，此时自动获取焦点已经完成，所以可以将有如下操作
+<ul>
+<li>状态设置成结束STATE_SUCCESS/STATE_FAIL</li>
+<li>更新UI</li>
+<li>进行拍照</li>
+</ul>
+</li>
+<li>当状态是正在聚焦状态说明正常，因为此时聚焦完成还没有设置，此时该有的状态是：
+<ul>
+<li>回调返回值进行设置状态</li>
+<li>更新UI</li>
+<li>当聚焦区域存在时候发送一个三秒的延时进行取消聚焦</li>
+</ul>
+</li>
+<li>休眠状态则不做任何事情</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAutoFocus</span><span class="params">(<span class="keyword">boolean</span> focused, <span class="keyword">boolean</span> shutterButtonPressed)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mState == STATE_FOCUSING_SNAP_ON_FINISH) &#123;</span><br><span class="line">        <span class="comment">// Take the picture no matter focus succeeds or fails. No need</span></span><br><span class="line">        <span class="comment">// to play the AF sound if we're about to play the shutter</span></span><br><span class="line">        <span class="comment">// sound.</span></span><br><span class="line">        <span class="keyword">if</span> (focused) &#123;</span><br><span class="line">            mState = STATE_SUCCESS;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            mState = STATE_FAIL;</span><br><span class="line">        &#125;</span><br><span class="line">        updateFocusUI();</span><br><span class="line">        capture();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mState == STATE_FOCUSING) &#123;</span><br><span class="line">        <span class="comment">// This happens when (1) user is half-pressing the focus key or</span></span><br><span class="line">        <span class="comment">// (2) touch focus is triggered. Play the focus tone. Do not</span></span><br><span class="line">        <span class="comment">// take the picture now.</span></span><br><span class="line">        <span class="keyword">if</span> (focused) &#123;</span><br><span class="line">            mState = STATE_SUCCESS;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            mState = STATE_FAIL;</span><br><span class="line">        &#125;</span><br><span class="line">        updateFocusUI();</span><br><span class="line">        <span class="comment">// If this is triggered by touch focus, cancel focus after a</span></span><br><span class="line">        <span class="comment">// while.</span></span><br><span class="line">        <span class="keyword">if</span> (mFocusArea != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mHandler.sendEmptyMessageDelayed(RESET_TOUCH_FOCUS, RESET_TOUCH_FOCUS_DELAY);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (shutterButtonPressed) &#123;</span><br><span class="line">            <span class="comment">//如果按钮按下看是否支持白平衡，支持则设置</span></span><br><span class="line">            <span class="comment">// Lock AE &amp; AWB so users can half-press shutter and recompose.</span></span><br><span class="line">            lockAeAwbIfNeeded();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mState == STATE_IDLE) &#123;</span><br><span class="line">        <span class="comment">// User has released the focus key before focus completes.</span></span><br><span class="line">        <span class="comment">// Do nothing.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>设置绘制焦点圆圈的View</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFocusRenderer</span><span class="params">(PieRenderer renderer)</span> </span>&#123;</span><br><span class="line">    mPieRenderer = renderer;</span><br><span class="line">    mInitialized = (mMatrix != <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>【根据传递进来聚焦的宽，聚焦的高和触摸点位置还有预览的宽高进行计算】</strong></p>
+<p>经过这个计算就能获取到一个包含点击焦点时候的一个小矩形存储在mFocusArea中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@TargetApi</span>(ApiHelper.VERSION_CODES.ICE_CREAM_SANDWICH)</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initializeFocusAreas</span><span class="params">(<span class="keyword">int</span> focusWidth, <span class="keyword">int</span> focusHeight,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  <span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> previewWidth, <span class="keyword">int</span> previewHeight)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mFocusArea == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mFocusArea = <span class="keyword">new</span> ArrayList&lt;Object&gt;();</span><br><span class="line">        mFocusArea.add(<span class="keyword">new</span> Area(<span class="keyword">new</span> Rect(), <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Convert the coordinates to driver format.</span></span><br><span class="line">    calculateTapArea(focusWidth, focusHeight, <span class="number">1f</span>, x, y, previewWidth, previewHeight,</span><br><span class="line">                     ((Area) mFocusArea.get(<span class="number">0</span>)).rect);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">calculateTapArea</span><span class="params">(<span class="keyword">int</span> focusWidth, <span class="keyword">int</span> focusHeight, <span class="keyword">float</span> areaMultiple,</span></span></span><br><span class="line"><span class="function"><span class="params">                              <span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> previewWidth, <span class="keyword">int</span> previewHeight, Rect rect)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> areaWidth = (<span class="keyword">int</span>) (focusWidth * areaMultiple);</span><br><span class="line">    <span class="keyword">int</span> areaHeight = (<span class="keyword">int</span>) (focusHeight * areaMultiple);</span><br><span class="line">    <span class="keyword">int</span> left = CameraUtils.clamp(x - areaWidth / <span class="number">2</span>, <span class="number">0</span>, previewWidth - areaWidth);</span><br><span class="line">    <span class="keyword">int</span> top = CameraUtils.clamp(y - areaHeight / <span class="number">2</span>, <span class="number">0</span>, previewHeight - areaHeight);</span><br><span class="line"></span><br><span class="line">    RectF rectF = <span class="keyword">new</span> RectF(left, top, left + areaWidth, top + areaHeight);</span><br><span class="line">    <span class="comment">//计算焦点矩形相对在可预览界面的矩形位置</span></span><br><span class="line">    mMatrix.mapRect(rectF);</span><br><span class="line">    CameraUtils.rectFToRect(rectF, rect);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>【获取一个比焦点圆圈稍大的矩形】</strong></p>
+<p>曝光面积</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@TargetApi</span>(ApiHelper.VERSION_CODES.ICE_CREAM_SANDWICH)</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initializeMeteringAreas</span><span class="params">(<span class="keyword">int</span> focusWidth, <span class="keyword">int</span> focusHeight,</span></span></span><br><span class="line"><span class="function"><span class="params">                                     <span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> previewWidth, <span class="keyword">int</span> previewHeight)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mMeteringArea == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mMeteringArea = <span class="keyword">new</span> ArrayList&lt;Object&gt;();</span><br><span class="line">        mMeteringArea.add(<span class="keyword">new</span> Area(<span class="keyword">new</span> Rect(), <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Convert the coordinates to driver format.</span></span><br><span class="line">    <span class="comment">// AE area is bigger because exposure is sensitive and</span></span><br><span class="line">    <span class="comment">// easy to over- or underexposure if area is too small.</span></span><br><span class="line">    calculateTapArea(focusWidth, focusHeight, <span class="number">1.5f</span>, x, y, previewWidth, previewHeight,</span><br><span class="line">                     ((Area) mMeteringArea.get(<span class="number">0</span>)).rect);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>进行聚焦</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSingleTapUp</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//没有初始化好或者状态是拍照还在聚焦中则不进行聚焦操作</span></span><br><span class="line">    <span class="keyword">if</span> (!mInitialized || mState == STATE_FOCUSING_SNAP_ON_FINISH) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Let users be able to cancel previous touch focus.</span></span><br><span class="line">    <span class="comment">//当上一次还有聚焦点并且状态是聚焦中或者聚焦完成则对聚焦进行重置</span></span><br><span class="line">    <span class="keyword">if</span> ((mFocusArea != <span class="keyword">null</span>) &amp;&amp; (mState == STATE_FOCUSING ||</span><br><span class="line">                                 mState == STATE_SUCCESS || mState == STATE_FAIL)) &#123;</span><br><span class="line">        <span class="comment">//【取消聚焦】</span></span><br><span class="line">        cancelAutoFocus();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Initialize variables.</span></span><br><span class="line">    <span class="comment">//得到圆圈的宽高</span></span><br><span class="line">    <span class="keyword">int</span> focusWidth = mPieRenderer.getSize();</span><br><span class="line">    <span class="keyword">int</span> focusHeight = mPieRenderer.getSize();</span><br><span class="line">    <span class="keyword">if</span> (focusWidth == <span class="number">0</span> || mPieRenderer.getWidth() == <span class="number">0</span></span><br><span class="line">        || mPieRenderer.getHeight() == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">//得到预览视图的宽高</span></span><br><span class="line">    <span class="keyword">int</span> previewWidth = mPreviewWidth;</span><br><span class="line">    <span class="keyword">int</span> previewHeight = mPreviewHeight;</span><br><span class="line">    <span class="comment">// Initialize mFocusArea.</span></span><br><span class="line">    <span class="comment">//当相机参数支持聚焦的时候进行聚焦位置的计算存储到mFocusArea中</span></span><br><span class="line">    <span class="keyword">if</span> (mFocusAreaSupported) &#123;</span><br><span class="line">        initializeFocusAreas(</span><br><span class="line">            focusWidth, focusHeight, x, y, previewWidth, previewHeight);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Initialize mMeteringArea.</span></span><br><span class="line">    <span class="comment">//当支持曝光计算时则进行曝光面积矩形的计算</span></span><br><span class="line">    <span class="keyword">if</span> (mMeteringAreaSupported) &#123;</span><br><span class="line">        initializeMeteringAreas(</span><br><span class="line">            focusWidth, focusHeight, x, y, previewWidth, previewHeight);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Use margin to set the focus indicator to the touched area.</span></span><br><span class="line">    <span class="comment">//给绘制者设置焦点位置</span></span><br><span class="line">    mPieRenderer.setFocus(x, y);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Set the focus area and metering area.</span></span><br><span class="line">    <span class="comment">//设置聚焦参数，此时设置了曝光矩形单元和聚焦矩形单元</span></span><br><span class="line">    mListener.setFocusParameters();</span><br><span class="line">    <span class="comment">//是否支持自动聚焦</span></span><br><span class="line">    <span class="keyword">if</span> (mFocusAreaSupported) &#123;</span><br><span class="line">        <span class="comment">//【1.0自动聚焦】</span></span><br><span class="line">        autoFocus();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  <span class="comment">// Just show the indicator in all other cases.</span></span><br><span class="line">        <span class="comment">//当不支持自动聚焦的时候只是显示UI让用户感受下聚焦哈哈</span></span><br><span class="line">        updateFocusUI();</span><br><span class="line">        <span class="comment">// Reset the metering area in 3 seconds.</span></span><br><span class="line">        <span class="comment">//移除重置聚焦的消息</span></span><br><span class="line">        mHandler.removeMessages(RESET_TOUCH_FOCUS);</span><br><span class="line">        <span class="comment">//三秒后重置聚焦</span></span><br><span class="line">        mHandler.sendEmptyMessageDelayed(RESET_TOUCH_FOCUS, RESET_TOUCH_FOCUS_DELAY);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>停止预览</strong></p>
+<ul>
+<li>状态改成休眠</li>
+<li>重置触摸焦点</li>
+<li>更新UI</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPreviewStopped</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// If auto focus was in progress, it would have been stopped.</span></span><br><span class="line">    mState = STATE_IDLE;</span><br><span class="line">    resetTouchFocus();</span><br><span class="line">    updateFocusUI();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>【1.0自动聚焦】</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">autoFocus</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Log.v(TAG, <span class="string">"Start autofocus."</span>);</span><br><span class="line">    <span class="comment">//通过真正设备层进行聚焦操作，此操作会回调onAutoFocus()方法</span></span><br><span class="line">    mListener.autoFocus();</span><br><span class="line">    mState = STATE_FOCUSING;</span><br><span class="line">    <span class="comment">//更新UI</span></span><br><span class="line">    updateFocusUI();</span><br><span class="line">    <span class="comment">//移除重置触摸焦点消息</span></span><br><span class="line">    mHandler.removeMessages(RESET_TOUCH_FOCUS);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>【取消自动聚焦】</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">cancelAutoFocus</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Log.v(TAG, <span class="string">"Cancel autofocus."</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Reset the tap area before calling mListener.cancelAutofocus.</span></span><br><span class="line">    <span class="comment">// Otherwise, focus mode stays at auto and the tap area passed to the</span></span><br><span class="line">    <span class="comment">// driver is not reset.</span></span><br><span class="line">    <span class="comment">//重置触摸焦点</span></span><br><span class="line">    resetTouchFocus();</span><br><span class="line">    <span class="comment">//实际取消焦点操作</span></span><br><span class="line">    mListener.cancelAutoFocus();</span><br><span class="line">    <span class="comment">//状态更新成无焦点</span></span><br><span class="line">    mState = STATE_IDLE;</span><br><span class="line">    <span class="comment">//更新UI</span></span><br><span class="line">    updateFocusUI();</span><br><span class="line">    <span class="comment">//移除重置焦点消息</span></span><br><span class="line">    mHandler.removeMessages(RESET_TOUCH_FOCUS);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>重置</strong></p>
+<ul>
+<li>重置焦点</li>
+<li>更新状态是休眠</li>
+<li>移除重置焦点的消息</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reset</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    resetTouchFocus();</span><br><span class="line">    mState = STATE_IDLE;</span><br><span class="line">    mHandler.removeMessages(RESET_TOUCH_FOCUS);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">resetTouchFocus</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mFocusArea = <span class="keyword">null</span>;</span><br><span class="line">    mMeteringArea = <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>【拍照】</strong></p>
+<ul>
+<li>通过实际相机拍照</li>
+<li>拍照成功则更新状态为休眠</li>
+<li>移除焦点重置消息</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">capture</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mListener.capture()) &#123;</span><br><span class="line">        mState = STATE_IDLE;</span><br><span class="line">        mHandler.removeMessages(RESET_TOUCH_FOCUS);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>得到焦点模式</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getFocusMode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//有焦点模式则返回</span></span><br><span class="line">    <span class="keyword">if</span> (mOverrideFocusMode != <span class="keyword">null</span>) <span class="keyword">return</span> mOverrideFocusMode;</span><br><span class="line">    <span class="comment">//列举支持的焦点模式的列表</span></span><br><span class="line">    List&lt;String&gt; supportedFocusModes = mParameters.getSupportedFocusModes();</span><br><span class="line">	<span class="comment">//支持聚焦并且聚焦区域不为null，模式设置成自动聚焦</span></span><br><span class="line">    <span class="keyword">if</span> (mFocusAreaSupported &amp;&amp; mFocusArea != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Always use autofocus in tap-to-focus.</span></span><br><span class="line">        mFocusMode = Parameters.FOCUS_MODE_AUTO;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">//遍历默认聚焦模式，看那个支持就是那个</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mDefaultFocusModes.length; i++) &#123;</span><br><span class="line">            String mode = mDefaultFocusModes[i];</span><br><span class="line">            <span class="keyword">if</span> (CameraUtils.isSupported(mode, supportedFocusModes)) &#123;</span><br><span class="line">                mFocusMode = mode;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果不支持当前所选模式</span></span><br><span class="line">    <span class="keyword">if</span> (!CameraUtils.isSupported(mFocusMode, supportedFocusModes)) &#123;</span><br><span class="line">        <span class="comment">// For some reasons, the driver does not support the current</span></span><br><span class="line">        <span class="comment">// focus mode. Fall back to auto.</span></span><br><span class="line">        <span class="comment">//是否支持自动聚焦模式</span></span><br><span class="line">        <span class="keyword">if</span> (CameraUtils.isSupported(Parameters.FOCUS_MODE_AUTO,</span><br><span class="line">                                    mParameters.getSupportedFocusModes())) &#123;</span><br><span class="line">            mFocusMode = Parameters.FOCUS_MODE_AUTO;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//不支持则用系统原来的模式</span></span><br><span class="line">            mFocusMode = mParameters.getFocusMode();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> mFocusMode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>获取焦点和曝光区域</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">getFocusAreas</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mFocusArea;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> List <span class="title">getMeteringAreas</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mMeteringArea;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>更新UI</strong></p>
+<p>根据不同的状态进行区别更新UI操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateFocusUI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mState == STATE_IDLE) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mFocusArea == <span class="keyword">null</span>) &#123;</span><br><span class="line">            mPieRenderer.clear();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// Users touch on the preview and the indicator represents the</span></span><br><span class="line">            <span class="comment">// metering area. Either focus area is not supported or</span></span><br><span class="line">            <span class="comment">// autoFocus call is not required.</span></span><br><span class="line">            mPieRenderer.showStart();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mState == STATE_FOCUSING || mState == STATE_FOCUSING_SNAP_ON_FINISH) &#123;</span><br><span class="line">        mPieRenderer.showStart();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (CameraUtils.FOCUS_MODE_CONTINUOUS_PICTURE.equals(mFocusMode)) &#123;</span><br><span class="line">            <span class="comment">// <span class="doctag">TODO:</span> check HAL behavior and decide if this can be removed.</span></span><br><span class="line">            mPieRenderer.showSuccess(<span class="keyword">false</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mState == STATE_SUCCESS) &#123;</span><br><span class="line">            mPieRenderer.showSuccess(<span class="keyword">false</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mState == STATE_FAIL) &#123;</span><br><span class="line">            mPieRenderer.showFail(<span class="keyword">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>对外暴露的一些接口</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//得到当前聚焦状态</span></span><br><span class="line"><span class="comment">/* package */</span> <span class="function"><span class="keyword">int</span> <span class="title">getFocusState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mState;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//聚焦是否完成</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isFocusCompleted</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mState == STATE_SUCCESS || mState == STATE_FAIL;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//是否是聚焦过程中拍照完成</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isFocusingSnapOnFinish</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mState == STATE_FOCUSING_SNAP_ON_FINISH;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//移除touch_focus消息</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeMessages</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mHandler.removeMessages(RESET_TOUCH_FOCUS);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//设置覆盖的焦点模式</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">overrideFocusMode</span><span class="params">(String focusMode)</span> </span>&#123;</span><br><span class="line">    mOverrideFocusMode = focusMode;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//设置波光</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAeAwbLock</span><span class="params">(<span class="keyword">boolean</span> lock)</span> </span>&#123;</span><br><span class="line">    mAeAwbLock = lock;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//得到曝光</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">getAeAwbLock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mAeAwbLock;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>需要自动聚焦调用</strong></p>
+<p>进行判断是否需要聚焦</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">needAutoFocusCall</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//得到聚焦模式</span></span><br><span class="line">    String focusMode = getFocusMode();</span><br><span class="line">    <span class="keyword">return</span> !(focusMode.equals(Parameters.FOCUS_MODE_INFINITY)</span><br><span class="line">             || focusMode.equals(Parameters.FOCUS_MODE_FIXED)</span><br><span class="line">             || focusMode.equals(Parameters.FOCUS_MODE_EDOF));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/01/14/让相机开始显示(3)/" data-toggle="tooltip" data-placement="top" title="让相机开始显示(系列3)">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="nav">none</ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Camera" title="Camera">Camera</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2019 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
