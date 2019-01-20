@@ -132,13 +132,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -147,6 +140,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,84 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/12/26/Python异常捕获/">
+        <h2 class="post-title">
+            Python异常捕获
+        </h2>
+        <h3 class="post-subtitle">
+            Python异常捕获
+        </h3>
+        <div class="post-content-preview">
+            
+基础语法
+
+1234try:    尝试执行的代码except:    出现错误的处理
+比如：
+12345try:    # 提示用户输入一个数字    num = int(input("请输入数字："))except:    print("请输入正确的数字")
+
+错误类型捕获
+
+1234567891011try:    # 尝试执行的代码    passexcept 错误类型1:    ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-26
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Python" title="Python">Python</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/26/Python面向对象/">
+        <h2 class="post-title">
+            Python面向对象
+        </h2>
+        <h3 class="post-subtitle">
+            Python面向对象基础
+        </h3>
+        <div class="post-content-preview">
+            目标
+
+dir 内置函数
+定义简单的类（只包含方法）
+方法中的 self 参数
+初始化方法
+内置方法和属性
+
+01. dir 内置函数
+
+在 Python 中 对象几乎是无所不在的， 变量、数据、函数 都是对象
+使用内置函数 dir 传入 标识符 / 数据，可以查看对象内的 所有属性及方法
+
+123456789101112class Cat:    """这是一个猫类"""    def e......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-26
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Python" title="Python">Python</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -496,119 +574,6 @@ breakpad下载地址
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/18/jvm垃圾回收机制/">
-        <h2 class="post-title">
-            jvm垃圾回收机制
-        </h2>
-        <h3 class="post-subtitle">
-            jvm垃圾回收机制
-        </h3>
-        <div class="post-content-preview">
-            1. 标记——清除算法（Mark-Sweep）
-
-过程
-
-标记正所有需要回收的对象
-标记完成后清除被标记的对象。
-
-理解
-图书管里有好多人在看书，图书管理员想要收集起没有被看的书的时候，他决定让所有正在看书的人站起来，然后询问每个人：那一本书是不看的。询问完所有的人之后，同学们做下继续看书。这时候，图书管理员开始寻找所有做过标记的书，把它们收集起来。
-缺点
-
-每次进行垃圾回收时，会暂停当前用......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#jvm" title="jvm">jvm</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/18/jvm指令/">
-        <h2 class="post-title">
-            jvm指令
-        </h2>
-        <h3 class="post-subtitle">
-            jvm指令
-        </h3>
-        <div class="post-content-preview">
-            来源点这里
-
-
-
-常量入栈指令
-
-
-
-
-
-
-操作码（助记符）
-操作数
-描述（栈指操作数栈）
-
-
-aconst_null
-
-null值入栈。
-
-
-iconst_m1
-
--1(int)值入栈。
-
-
-iconst_0
-
-0(int)值入栈。
-
-
-iconst_1
-
-1(int)值入栈。
-
-
-iconst_2
-
-2(int)值入栈。
-
-
-iconst_3
-
-3(int)值入栈。
-
-
-iconst_4......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#jvm" title="jvm">jvm</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -665,6 +630,8 @@ iconst_4......
             
         
             
+        
+            
             <a href="/tags/#gradle" title="gradle" rel="3">gradle</a>
             
         
@@ -678,8 +645,6 @@ iconst_4......
         
             
             <a href="/tags/#jvm" title="jvm" rel="3">jvm</a>
-            
-        
             
         
             
@@ -768,6 +733,14 @@ iconst_4......
     <ul>
       
         <li>
+          <a href="/2019/01/20/BasePlugin(一)/">(no title)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/01/16/多线程多方法完整执行/">(no title)</a>
+        </li>
+      
+        <li>
           <a href="/2019/01/15/再探FocusOverlayManager/">再探FocusOverlayManager</a>
         </li>
       
@@ -777,14 +750,6 @@ iconst_4......
       
         <li>
           <a href="/2019/01/14/对CameraManager的操作(系列2)/">对CameraManager的操作(系列2)</a>
-        </li>
-      
-        <li>
-          <a href="/2019/01/14/CameraManager核心操作(系列1)/">CameraManager核心操作(系列1)</a>
-        </li>
-      
-        <li>
-          <a href="/2018/12/29/Android中使用gradle编译ndk工程/">Android中使用gradle编译ndk工程</a>
         </li>
       
     </ul>
