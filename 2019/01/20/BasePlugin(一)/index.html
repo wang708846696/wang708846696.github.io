@@ -14,7 +14,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          Beantech | 王菜鸟
+          BasePlugin(一) - Beantech | 王菜鸟
         
     </title>
 
@@ -69,7 +69,7 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('undefined')
+            background-image: url('Demo.png')
             /*post*/
         
     }
@@ -86,9 +86,11 @@
                     <div class="post-heading">
                         <div class="tags">
                             
+                              <a class="tag" href="/tags/#构建" title="构建">构建</a>
+                            
                         </div>
-                        <h1></h1>
-                        <h2 class="subheading"></h2>
+                        <h1>BasePlugin(一)</h1>
+                        <h2 class="subheading">BasePlugin(一)</h2>
                         <span class="meta">
                             Posted by WangWei on
                             2019-01-20
@@ -138,6 +140,13 @@
 
                         
                         <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -146,13 +155,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -208,19 +210,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <hr>
-<p>title: &quot;BasePlugin(一)&quot;<br>
-catalog: true<br>
-subtitle: &quot;BasePlugin(一)&quot;<br>
-header-img: &quot;Demo.png&quot;<br>
-tags:</p>
-<ul>
-<li>构建<br>
-catagories:</li>
-<li>构建</li>
-</ul>
-<hr>
-<p>分步骤研究configureProject方法，这个方法是执行dsl的第一步，初始化了很多东西。今天大概讲讲到底初始化了那些东西</p>
+                <p>分步骤研究configureProject方法，这个方法是执行dsl的第一步，初始化了很多东西。今天大概讲讲到底初始化了那些东西</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">configureProject</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//得到Gralde对象</span></span><br><span class="line">    <span class="keyword">final</span> Gradle gradle = project.getGradle();</span><br><span class="line">    <span class="comment">//反射封装类</span></span><br><span class="line">    ObjectFactory objectFactory = project.getObjects();</span><br><span class="line">	<span class="comment">//用于存储其他模型信息</span></span><br><span class="line">    extraModelInfo = <span class="keyword">new</span> ExtraModelInfo(project.getPath(), projectOptions, project.getLogger());</span><br><span class="line">	<span class="comment">//根据local.properties里面的一些描述进行保存一些基础信息封装一些操作</span></span><br><span class="line">    sdkHandler = <span class="keyword">new</span> SdkHandler(project, getLogger());</span><br><span class="line">    <span class="comment">//是否离线，离线则看是否下载sdk</span></span><br><span class="line">    <span class="keyword">if</span> (!gradle.getStartParameter().isOffline()</span><br><span class="line">        &amp;&amp; projectOptions.get(BooleanOption.ENABLE_SDK_DOWNLOAD)) &#123;</span><br><span class="line">        SdkLibData sdkLibData = SdkLibData.download(getDownloader(), getSettingsController());</span><br><span class="line">        sdkHandler.setSdkLibData(sdkLibData);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//主要的构建器类，用于构建一些类似于产品风格DefaultProductFlavor，构建类型DefaultBuildType等操作</span></span><br><span class="line">    <span class="comment">//【重点一】</span></span><br><span class="line">    AndroidBuilder androidBuilder =</span><br><span class="line">        <span class="keyword">new</span> AndroidBuilder(</span><br><span class="line">        project == project.getRootProject() ? project.getName() : project.getPath(),</span><br><span class="line">        creator,</span><br><span class="line">        <span class="keyword">new</span> GradleProcessExecutor(project),</span><br><span class="line">        <span class="keyword">new</span> GradleJavaProcessExecutor(project),</span><br><span class="line">        extraModelInfo.getSyncIssueHandler(),</span><br><span class="line">        extraModelInfo.getMessageReceiver(),</span><br><span class="line">        getLogger(),</span><br><span class="line">        isVerbose());</span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><a href="http://google.github.io/android-gradle-dsl/3.0/com.android.build.gradle.internal.dsl.ProductFlavor.html" target="_blank" rel="noopener"><strong>重点一</strong></a></p>
 <p>AndroidBuilder一个构建器。内部进行构建DefaultProductFlavor，DefaultBuildType等</p>
@@ -266,7 +256,7 @@ catagories:</li>
                     
                     
                         <li class="next">
-                            <a href="/2019/01/16/多线程多方法完整执行/" data-toggle="tooltip" data-placement="top" title="">Next Post &rarr;</a>
+                            <a href="/2019/01/16/多线程多方法完整执行/" data-toggle="tooltip" data-placement="top" title="多线程多方法完整执行">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -287,6 +277,17 @@ catagories:</li>
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="nav">none</ol>
+        
+        </div>
+      </aside>
+    
+
                 
             <!-- Sidebar Container -->
             <div class="
@@ -301,6 +302,8 @@ catagories:</li>
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
+                          <a class="tag" href="/tags/#构建" title="构建">构建</a>
+                        
                     </div>
                 </section>
                 
