@@ -209,6 +209,75 @@
 
 <div class="post-preview">
 
+    <a href="/2018/11/07/滴滴插件化6_插件化期中总结/">
+        <h2 class="post-title">
+            滴滴插件化6_插件化期中总结
+        </h2>
+        <h3 class="post-subtitle">
+            总结前面讲的核心知识点
+        </h3>
+        <div class="post-content-preview">
+            我们回顾之前的章节，我们主要干的事情。
+初始化
+我们要在应用程序启动最初的时候做好一些准备操作。所以我们将我们的初始化放入Application.attachBaseContext()主要的初始化操作有：
+
+hook核心服务包括
+
+ActivityThread
+
+Instrumentation mInstrumentation监听性能等
+H h主要负责Application这边对应AMS信号......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-07
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/11/05/滴滴插件化5_使用插件/">
+        <h2 class="post-title">
+            滴滴插件化5_使用插件
+        </h2>
+        <h3 class="post-subtitle">
+            主要针对启动一个Activity看如何使用插件
+        </h3>
+        <div class="post-content-preview">
+            通过前几节的说明，了解到了在LoadedPlugin类的构造方法中将准备工作做好，包括资源管理器，类加载器，四大组件信息等等。生成了一个比较庞大的类，这个类是能够找到APK里面资源，类等信息的主要入口。下面我们就从startActivity这个方法进行突破
+
+12&gt; VAInstrumentation.handleMessage()&gt;
+
+首先了解一下framework中进行启动A......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-05
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2018/11/05/滴滴插件化4_资源加载/">
         <h2 class="post-title">
             滴滴插件化4_资源加载
@@ -440,62 +509,6 @@ Part 6
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动6-startSpecificActivityLocked方法/">
-        <h2 class="post-title">
-            Activity启动6-startSpecificActivityLocked方法
-        </h2>
-        <h3 class="post-subtitle">
-            startSpecificActivityLocked()方法的主要说明
-        </h3>
-        <div class="post-content-preview">
-            123456789101112131415161718192021222324252627282930  void startSpecificActivityLocked(ActivityRecord r,          boolean andResume, boolean checkConfig) &#123;      //得到启动的Activity所在进程的记录      Proc......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动5-resumeFocusedStackTopActivityLocked方法/">
-        <h2 class="post-title">
-            Activity启动5-resumeFocusedStackTopActivityLocked方法
-        </h2>
-        <h3 class="post-subtitle">
-            resumeFocusedStackTopActivityLocked()方法的主要说明
-        </h3>
-        <div class="post-content-preview">
-            123456789101112131415161718192021  boolean resumeFocusedStackTopActivityLocked(          ActivityStack targetStack, ActivityRecord target, ActivityOptions targetOptions) &#123;      if (!readyToRes......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -540,7 +553,7 @@ Part 6
             
         
             
-            <a href="/tags/#构建" title="构建" rel="4">构建</a>
+            <a href="/tags/#构建" title="构建" rel="5">构建</a>
             
         
             
@@ -591,6 +604,8 @@ Part 6
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
+            
+        
             
         
             
@@ -655,6 +670,14 @@ Part 6
     <ul>
       
         <li>
+          <a href="/2019/01/21/jni回调/">jni回调</a>
+        </li>
+      
+        <li>
+          <a href="/2019/01/21/BasePlugin(二)/">BasePlugin(二)</a>
+        </li>
+      
+        <li>
           <a href="/2019/01/20/BasePlugin(一)/">BasePlugin(一)</a>
         </li>
       
@@ -664,14 +687,6 @@ Part 6
       
         <li>
           <a href="/2019/01/15/再探FocusOverlayManager/">再探FocusOverlayManager</a>
-        </li>
-      
-        <li>
-          <a href="/2019/01/14/让相机开始显示(3)/">让相机开始显示(系列3)</a>
-        </li>
-      
-        <li>
-          <a href="/2019/01/14/对CameraManager的操作(系列2)/">对CameraManager的操作(系列2)</a>
         </li>
       
     </ul>

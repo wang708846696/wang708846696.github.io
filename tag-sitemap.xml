@@ -149,15 +149,22 @@
     </url>
 
     <url>
-        <loc>http://yoursite-url/tags/%E6%9E%84%E5%BB%BA/</loc>
-        <lastmod>2019-01-20T10:09:28.814Z</lastmod>
+        <loc>http://yoursite-url/tags/Camera/</loc>
+        <lastmod>2019-01-20T10:11:49.565Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>http://yoursite-url/tags/Camera/</loc>
-        <lastmod>2019-01-20T10:11:49.565Z</lastmod>
+        <loc>http://yoursite-url/tags/%E6%9E%84%E5%BB%BA/</loc>
+        <lastmod>2019-01-21T07:35:56.606Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://yoursite-url/tags/ndk/</loc>
+        <lastmod>2019-01-21T08:12:50.535Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

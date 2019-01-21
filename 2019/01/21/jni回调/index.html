@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="Android,framework,安卓系统,王伟,王菜鸟,wangcainiao,Java,Python,python,互联网,android,安卓,移动端,编程">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          jni回调 - Beantech | 王菜鸟
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2019/01/21/jni回调/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('Demo.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#ndk" title="ndk">ndk</a>
+                            
+                        </div>
+                        <h1>jni回调</h1>
+                        <h2 class="subheading">jni回调</h2>
+                        <span class="meta">
+                            Posted by WangWei on
+                            2019-01-21
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wangcainiao</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>一个demo，jni回调，其实也没啥分析的。就随便谢谢玩</p>
+<p>updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> hour = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> minute = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> second = <span class="number">0</span>;</span><br><span class="line">    TextView tickView;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        tickView = (TextView) findViewById(R.id.tickView);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResume</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onResume();</span><br><span class="line">        hour = minute = second = <span class="number">0</span>;</span><br><span class="line">        ((TextView)findViewById(R.id.hellojniMsg)).setText(stringFromJNI());</span><br><span class="line">        startTicks();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPause</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onPause();</span><br><span class="line">        StopTicks();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * A function calling from JNI to update current timer</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Keep</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">updateTimer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ++second;</span><br><span class="line">        <span class="keyword">if</span>(second &gt;= <span class="number">60</span>) &#123;</span><br><span class="line">            ++minute;</span><br><span class="line">            second -= <span class="number">60</span>;</span><br><span class="line">            <span class="keyword">if</span>(minute &gt;= <span class="number">60</span>) &#123;</span><br><span class="line">                ++hour;</span><br><span class="line">                minute -= <span class="number">60</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        runOnUiThread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                String ticks = <span class="string">""</span> + MainActivity.<span class="keyword">this</span>.hour + <span class="string">":"</span> +</span><br><span class="line">                        MainActivity.<span class="keyword">this</span>.minute + <span class="string">":"</span> +</span><br><span class="line">                        MainActivity.<span class="keyword">this</span>.second;</span><br><span class="line">                MainActivity.<span class="keyword">this</span>.tickView.setText(ticks);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.loadLibrary(<span class="string">"hello-jnicallback"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">native</span>  String <span class="title">stringFromJNI</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">startTicks</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">StopTicks</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">JNIEXPORT jint JNICALL <span class="title">JNI_OnLoad</span><span class="params">(JavaVM* vm, <span class="keyword">void</span>* reserved)</span> </span>&#123;</span><br><span class="line">    JNIEnv* env;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;g_ctx, <span class="number">0</span>, <span class="keyword">sizeof</span>(g_ctx));</span><br><span class="line"></span><br><span class="line">    g_ctx.javaVM = vm;<span class="comment">//先保存全局JavaVM</span></span><br><span class="line">    <span class="keyword">if</span> ((*vm)-&gt;GetEnv(vm, (<span class="keyword">void</span>**)&amp;env, JNI_VERSION_1_6) != JNI_OK) &#123;</span><br><span class="line">        <span class="keyword">return</span> JNI_ERR; <span class="comment">// JNI version not supported.</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    jclass  clz = (*env)-&gt;FindClass(env,</span><br><span class="line">                                    <span class="string">"com/example/hellojnicallback/JniHandler"</span>);</span><br><span class="line">    g_ctx.jniHelperClz = (*env)-&gt;NewGlobalRef(env, clz);</span><br><span class="line"></span><br><span class="line">    jmethodID  jniHelperCtor = (*env)-&gt;GetMethodID(env, g_ctx.jniHelperClz,</span><br><span class="line">                                                   <span class="string">"&lt;init&gt;"</span>, <span class="string">"()V"</span>);</span><br><span class="line">    jobject    handler = (*env)-&gt;NewObject(env, g_ctx.jniHelperClz,</span><br><span class="line">                                           jniHelperCtor);</span><br><span class="line">    g_ctx.jniHelperObj = (*env)-&gt;NewGlobalRef(env, handler);</span><br><span class="line">    <span class="comment">//得到运行时信息</span></span><br><span class="line">    queryRuntimeInfo(env, g_ctx.jniHelperObj);</span><br><span class="line"></span><br><span class="line">    g_ctx.done = <span class="number">0</span>;</span><br><span class="line">    g_ctx.mainActivityObj = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span>  JNI_VERSION_1_6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">queryRuntimeInfo</span><span class="params">(JNIEnv *env, jobject instance)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Find out which OS we are running on. It does not matter for this app</span></span><br><span class="line">    <span class="comment">// just to demo how to call static functions.</span></span><br><span class="line">    <span class="comment">// Our java JniHelper class id and instance are initialized when this</span></span><br><span class="line">    <span class="comment">// shared lib got loaded, we just directly use them</span></span><br><span class="line">    <span class="comment">//    static function does not need instance, so we just need to feed</span></span><br><span class="line">    <span class="comment">//    class and method id to JNI</span></span><br><span class="line">    jmethodID versionFunc = (*env)-&gt;GetStaticMethodID(</span><br><span class="line">            env, g_ctx.jniHelperClz,</span><br><span class="line">            <span class="string">"getBuildVersion"</span>, <span class="string">"()Ljava/lang/String;"</span>);</span><br><span class="line">    <span class="keyword">if</span> (!versionFunc) &#123;</span><br><span class="line">        LOGE(<span class="string">"Failed to retrieve getBuildVersion() methodID @ line %d"</span>,</span><br><span class="line">             __LINE__);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    jstring buildVersion = (*env)-&gt;CallStaticObjectMethod(env,</span><br><span class="line">                                                          g_ctx.jniHelperClz, versionFunc);</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *version = (*env)-&gt;GetStringUTFChars(env, buildVersion, NULL);</span><br><span class="line">    <span class="keyword">if</span> (!version) &#123;</span><br><span class="line">        LOGE(<span class="string">"Unable to get version string @ line %d"</span>, __LINE__);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    LOGI(<span class="string">"Android Version - %s"</span>, version);</span><br><span class="line">    (*env)-&gt;ReleaseStringUTFChars(env, buildVersion, version);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// we are called from JNI_OnLoad, so got to release LocalRef to avoid leaking</span></span><br><span class="line">    (*env)-&gt;DeleteLocalRef(env, buildVersion);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Query available memory size from a non-static public function</span></span><br><span class="line">    <span class="comment">// we need use an instance of JniHelper class to call JNI</span></span><br><span class="line">    jmethodID memFunc = (*env)-&gt;GetMethodID(env, g_ctx.jniHelperClz,</span><br><span class="line">                                            <span class="string">"getRuntimeMemorySize"</span>, <span class="string">"()J"</span>);</span><br><span class="line">    <span class="keyword">if</span> (!memFunc) &#123;</span><br><span class="line">        LOGE(<span class="string">"Failed to retrieve getRuntimeMemorySize() methodID @ line %d"</span>,</span><br><span class="line">             __LINE__);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//调用java的Runtime.getRuntime().freeMemory()方法</span></span><br><span class="line">    jlong result = (*env)-&gt;CallLongMethod(env, instance, memFunc);</span><br><span class="line">    LOGI(<span class="string">"Runtime free memory size: %"</span> PRId64, result);</span><br><span class="line">    (<span class="keyword">void</span>)result;  <span class="comment">// silence the compiler warning</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Interface to Java side to start ticks, caller is from onResume()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">JNIEXPORT <span class="keyword">void</span> JNICALL</span><br><span class="line">Java_com_example_hellojnicallback_MainActivity_startTicks(JNIEnv *env, jobject instance) &#123;</span><br><span class="line">    <span class="keyword">pthread_t</span>       threadInfo_;</span><br><span class="line">    <span class="keyword">pthread_attr_t</span>  threadAttr_;</span><br><span class="line">	<span class="comment">//对线程属性初始化</span></span><br><span class="line">    pthread_attr_init(&amp;threadAttr_);</span><br><span class="line">    <span class="comment">//线程分离状态</span></span><br><span class="line">    pthread_attr_setdetachstate(&amp;threadAttr_, PTHREAD_CREATE_DETACHED);</span><br><span class="line">	<span class="comment">//互斥锁</span></span><br><span class="line">    pthread_mutex_init(&amp;g_ctx.lock, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    jclass clz = (*env)-&gt;GetObjectClass(env, instance);</span><br><span class="line">    <span class="comment">//将clzz存储全局</span></span><br><span class="line">    g_ctx.mainActivityClz = (*env)-&gt;NewGlobalRef(env, clz);</span><br><span class="line">    <span class="comment">//将obj存储全局</span></span><br><span class="line">    g_ctx.mainActivityObj = (*env)-&gt;NewGlobalRef(env, instance);</span><br><span class="line">	<span class="comment">//创建一个线程，执行的任务在UpdateTicks方法中</span></span><br><span class="line">    <span class="keyword">int</span> result  = pthread_create( &amp;threadInfo_, &amp;threadAttr_, UpdateTicks, &amp;g_ctx);</span><br><span class="line">    assert(result == <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    pthread_attr_destroy(&amp;threadAttr_);</span><br><span class="line"></span><br><span class="line">    (<span class="keyword">void</span>)result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Main working thread function. From a pthread,</span></span><br><span class="line"><span class="comment"> *     calling back to MainActivity::updateTimer() to display ticks on UI</span></span><br><span class="line"><span class="comment"> *     calling back to JniHelper::updateStatus(String msg) for msg</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span>*  <span class="title">UpdateTicks</span><span class="params">(<span class="keyword">void</span>* context)</span> </span>&#123;</span><br><span class="line">    TickContext *pctx = (TickContext*) context;</span><br><span class="line">    JavaVM *javaVM = pctx-&gt;javaVM;</span><br><span class="line">    JNIEnv *env;</span><br><span class="line">    jint res = (*javaVM)-&gt;GetEnv(javaVM, (<span class="keyword">void</span>**)&amp;env, JNI_VERSION_1_6);</span><br><span class="line">    <span class="keyword">if</span> (res != JNI_OK) &#123;</span><br><span class="line">        <span class="comment">//绑定当前线程</span></span><br><span class="line">        res = (*javaVM)-&gt;AttachCurrentThread(javaVM, &amp;env, <span class="literal">NULL</span>);</span><br><span class="line">        <span class="keyword">if</span> (JNI_OK != res) &#123;</span><br><span class="line">            LOGE(<span class="string">"Failed to AttachCurrentThread, ErrorCode = %d"</span>, res);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//得到updateStatus方法</span></span><br><span class="line">    jmethodID statusId = (*env)-&gt;GetMethodID(env, pctx-&gt;jniHelperClz,</span><br><span class="line">                                             <span class="string">"updateStatus"</span>,</span><br><span class="line">                                             <span class="string">"(Ljava/lang/String;)V"</span>);</span><br><span class="line">    <span class="comment">//打印java层的log</span></span><br><span class="line">    sendJavaMsg(env, pctx-&gt;jniHelperObj, statusId,</span><br><span class="line">                <span class="string">"TickerThread status: initializing..."</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// get mainActivity updateTimer function</span></span><br><span class="line">    <span class="comment">//得到updateTimer</span></span><br><span class="line">    jmethodID timerId = (*env)-&gt;GetMethodID(env, pctx-&gt;mainActivityClz,</span><br><span class="line">                                            <span class="string">"updateTimer"</span>, <span class="string">"()V"</span>);</span><br><span class="line">	<span class="comment">//定义四个时间结构体的对象</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">beginTime</span>, <span class="title">curTime</span>, <span class="title">usedTime</span>, <span class="title">leftTime</span>;</span></span><br><span class="line">    <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">kOneSecond</span> = &#123;</span></span><br><span class="line">            (<span class="keyword">__kernel_time_t</span>)<span class="number">1</span>,</span><br><span class="line">            (<span class="keyword">__kernel_suseconds_t</span>) <span class="number">0</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    sendJavaMsg(env, pctx-&gt;jniHelperObj, statusId,</span><br><span class="line">                <span class="string">"TickerThread status: start ticking ..."</span>);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">//得到当前时间</span></span><br><span class="line">        gettimeofday(&amp;beginTime, <span class="literal">NULL</span>);</span><br><span class="line">        <span class="comment">//加锁</span></span><br><span class="line">        pthread_mutex_lock(&amp;pctx-&gt;lock);</span><br><span class="line">        <span class="keyword">int</span> done = pctx-&gt;done;</span><br><span class="line">        <span class="keyword">if</span> (pctx-&gt;done) &#123;</span><br><span class="line">            pctx-&gt;done = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//解锁</span></span><br><span class="line">        pthread_mutex_unlock(&amp;pctx-&gt;lock);</span><br><span class="line">        <span class="keyword">if</span> (done) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//得到MainActivity的OBJ</span></span><br><span class="line">        (*env)-&gt;CallVoidMethod(env, pctx-&gt;mainActivityObj, timerId);</span><br><span class="line">		<span class="comment">//得到当前时间</span></span><br><span class="line">        gettimeofday(&amp;curTime, <span class="literal">NULL</span>);</span><br><span class="line">        <span class="comment">//用于时间休眠</span></span><br><span class="line">        timersub(&amp;curTime, &amp;beginTime, &amp;usedTime);</span><br><span class="line">        timersub(&amp;kOneSecond, &amp;usedTime, &amp;leftTime);</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">timespec</span> <span class="title">sleepTime</span>;</span></span><br><span class="line">        sleepTime.tv_sec = leftTime.tv_sec;</span><br><span class="line">        sleepTime.tv_nsec = leftTime.tv_usec * <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (sleepTime.tv_sec &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">            nanosleep(&amp;sleepTime, <span class="literal">NULL</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            sendJavaMsg(env, pctx-&gt;jniHelperObj, statusId,</span><br><span class="line">                        <span class="string">"TickerThread error: processing too long!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sendJavaMsg(env, pctx-&gt;jniHelperObj, statusId,</span><br><span class="line">                <span class="string">"TickerThread status: ticking stopped"</span>);</span><br><span class="line">    (*javaVM)-&gt;DetachCurrentThread(javaVM);</span><br><span class="line">    <span class="keyword">return</span> context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/01/21/BasePlugin(二)/" data-toggle="tooltip" data-placement="top" title="BasePlugin(二)">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="nav">none</ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#ndk" title="ndk">ndk</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.csdn.net/wangwei708846696" target="_blank">王菜鸟的CSDN博客</a></li>
+                    
+                        <li><a href="https://www.jianshu.com/u/6162cec1158d" target="_blank">王菜鸟的简书</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/我叫王菜鸟">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; WangWei 2019 
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

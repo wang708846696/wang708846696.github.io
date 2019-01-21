@@ -209,6 +209,66 @@
 
 <div class="post-preview">
 
+    <a href="/2019/01/21/jni回调/">
+        <h2 class="post-title">
+            jni回调
+        </h2>
+        <h3 class="post-subtitle">
+            jni回调
+        </h3>
+        <div class="post-content-preview">
+            一个demo，jni回调，其实也没啥分析的。就随便谢谢玩
+updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657public class MainActivity ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-21
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#ndk" title="ndk">ndk</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/21/BasePlugin(二)/">
+        <h2 class="post-title">
+            BasePlugin(二)
+        </h2>
+        <h3 class="post-subtitle">
+            BasePlugin(二)
+        </h3>
+        <div class="post-content-preview">
+            今天分析第二章configureExtension主要配置拓展的属性。
+第一部分
+12345678910111213private void configureExtension() &#123;    //进行反射操作类    ObjectFactory objectFactory = project.getObjects();    //生产了一个容器，该容器负责管理BuildType ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-21
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#构建" title="构建">构建</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2019/01/20/BasePlugin(一)/">
         <h2 class="post-title">
             BasePlugin(一)
@@ -446,83 +506,6 @@
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/27/Java虚拟机理解简要总结/">
-        <h2 class="post-title">
-            Java虚拟机理解简要总结
-        </h2>
-        <h3 class="post-subtitle">
-            Java虚拟机理解简要总结
-        </h3>
-        <div class="post-content-preview">
-            运行时数据区域包括哪些？
-
-程序计数器
-Java 虚拟机栈
-本地方法栈
-Java 堆
-方法区
-运行时常量池
-直接内存
-
-程序计数器（线程私有）
-程序计数器（Program Counter Register）是一块较小的内存空间，可以看作是当前线程所执行字节码的行号指示器。分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器完成。
-由于 Java 虚拟机的多线程是通过线程轮流切换......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-27
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#jvm" title="jvm">jvm</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/26/设计模式Python版(创建型)/">
-        <h2 class="post-title">
-            Python设计模式创建型
-        </h2>
-        <h3 class="post-subtitle">
-            Python设计模式创建型
-        </h3>
-        <div class="post-content-preview">
-            创建型
-
-Factory Method（工厂方法）
-Abstract Factory（抽象工厂）
-Builder（建造者）
-Prototype（原型）
-Singleton（单例）
-
-Factory Method（工厂方法）
-1234567891011121314151617181920212223242526272829303132333435#!/usr/bin/python# codin......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#python" title="python">python</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -563,7 +546,7 @@ Factory Method（工厂方法）
             
         
             
-            <a href="/tags/#构建" title="构建" rel="4">构建</a>
+            <a href="/tags/#构建" title="构建" rel="5">构建</a>
             
         
             
@@ -614,6 +597,8 @@ Factory Method（工厂方法）
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
+            
+        
             
         
             
@@ -678,6 +663,14 @@ Factory Method（工厂方法）
     <ul>
       
         <li>
+          <a href="/2019/01/21/jni回调/">jni回调</a>
+        </li>
+      
+        <li>
+          <a href="/2019/01/21/BasePlugin(二)/">BasePlugin(二)</a>
+        </li>
+      
+        <li>
           <a href="/2019/01/20/BasePlugin(一)/">BasePlugin(一)</a>
         </li>
       
@@ -687,14 +680,6 @@ Factory Method（工厂方法）
       
         <li>
           <a href="/2019/01/15/再探FocusOverlayManager/">再探FocusOverlayManager</a>
-        </li>
-      
-        <li>
-          <a href="/2019/01/14/让相机开始显示(3)/">让相机开始显示(系列3)</a>
-        </li>
-      
-        <li>
-          <a href="/2019/01/14/对CameraManager的操作(系列2)/">对CameraManager的操作(系列2)</a>
         </li>
       
     </ul>
