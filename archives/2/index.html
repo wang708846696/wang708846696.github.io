@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -206,6 +206,154 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2019/01/15/再探FocusOverlayManager/">
+        <h2 class="post-title">
+            再探FocusOverlayManager
+        </h2>
+        <h3 class="post-subtitle">
+            再探FocusOverlayManager
+        </h3>
+        <div class="post-content-preview">
+            该类主要负责焦点相关，通过一系列的状态值，还有通过聚焦的坐标进行转化等，和聚焦的view，还有设备聚焦功能进行对接。具体对接设备是通过一个listener进行的具体实现是外界。view的实现是传递进来的。
+成员变量初探
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-15
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Camera" title="Camera">Camera</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/14/让相机开始显示(3)/">
+        <h2 class="post-title">
+            让相机开始显示(系列3)
+        </h2>
+        <h3 class="post-subtitle">
+            让相机开始显示(系列3)
+        </h3>
+        <div class="post-content-preview">
+            这个部分大概阐述了一个相机显示的过程，和如何操作焦点的概述，下一节会详细说明焦点如何获取
+和如何准确的操作焦点，主要的核心有是否支持，曝光面积，聚焦面积等等
+从这个线程创建开始启动相机
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Camera" title="Camera">Camera</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/14/对CameraManager的操作(系列2)/">
+        <h2 class="post-title">
+            对CameraManager的操作(系列2)
+        </h2>
+        <h3 class="post-subtitle">
+            对CameraManager的操作(系列2)
+        </h3>
+        <div class="post-content-preview">
+            根据上一节的操作当打开相机之后同时返回一个操作相机的代理
+123456789public CameraProxy cameraOpen(int cameraId) &#123;    mCamera = android.hardware.Camera.open(cameraId);    if (mCamera != null) &#123;        mCameraProxy = ne......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Camera" title="Camera">Camera</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/14/CameraManager核心操作(系列1)/">
+        <h2 class="post-title">
+            CameraManager核心操作(系列1)
+        </h2>
+        <h3 class="post-subtitle">
+            CameraManager核心操作(系列1)
+        </h3>
+        <div class="post-content-preview">
+            描述一个相机操作的过程，我觉得应该从和相机打交道的代码入手，这样才能看清楚操作api的本质，至于什么时候操作api是后续接触的流程。所以先看CameraManager这个类。
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Camera" title="Camera">Camera</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/29/Android中使用gradle编译ndk工程/">
+        <h2 class="post-title">
+            Android中使用gradle编译ndk工程
+        </h2>
+        <h3 class="post-subtitle">
+            Android中使用gradle编译ndk工程
+        </h3>
+        <div class="post-content-preview">
+            在工程的gradle文件中写入：
+12345678910111213141516task ndkBuild(type: Exec) &#123;    def ndkDir = android.ndkDirectory    if (ndkDir != null) &#123;        if (org.gradle.internal.os.OperatingSystem.current......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-29
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#构建" title="构建">构建</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -393,200 +541,6 @@ dir 内置函数
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/26/python字符串/">
-        <h2 class="post-title">
-            Python字符串
-        </h2>
-        <h3 class="post-subtitle">
-            Python字符串
-        </h3>
-        <div class="post-content-preview">
-            Python中字符串
-12var1 = 'Hello World!'var2 = "Python Runoob"
-Python转义字符
-在需要在字符中使用特殊字符时，python用反斜杠()转义字符。如下表：
-
-
-
-转义字符
-描述
-
-
-
-
-(在行尾时)
-续行符
-
-
-\
-反斜杠符号
-
-
-’
-单引号
-
-
-&quot;
-双引号
-
-
-\a
-响铃
-
-
-\b
-退格(Backspace)
-
-
-\e
-转义
-......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Python" title="Python">Python</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/25/Python装饰器/">
-        <h2 class="post-title">
-            Python装饰器
-        </h2>
-        <h3 class="post-subtitle">
-            Python装饰器
-        </h3>
-        <div class="post-content-preview">
-            闭包
-要想明白python中装饰器，则需要先知道python中的闭包规则
-1234567891011121314def test1():    print("--- in test1 func----")# 调用函数test1()# 引用函数ret = test1print(id(ret))print(id(test1))#通过引用调用函数ret()
-1234--- in test1 fun......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-25
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Python" title="Python">Python</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/25/gradle安卓应用插件源码/">
-        <h2 class="post-title">
-            Android DSL源码阅读
-        </h2>
-        <h3 class="post-subtitle">
-            gradle在Android中的应用
-        </h3>
-        <div class="post-content-preview">
-            gradle中的写法：
-1apply plugin: 'com.android.application'
-这样就引用到了com.android.tools.build:gradle:3.1.2@jar中的文件com.android.application.properties，对应执行的就是文件中的类：implementation-class=com.android.build.gradle......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-25
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#gradle" title="gradle">gradle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/24/gradle文档/">
-        <h2 class="post-title">
-            Gradle如何学习
-        </h2>
-        <h3 class="post-subtitle">
-            Gradle如何学习
-        </h3>
-        <div class="post-content-preview">
-            首先知道如何查看Gradle源码
-新建一个工程：
-
-在build.gradle中写入：
-1234dependencies &#123;    compile gradleApi()    compile 'com.android.tools.build:gradle:3.2.1'&#125;
-在项目根目录的settings.gradle下将该工程引入：include 'library'即可
-......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-24
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#gradle" title="gradle">gradle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/21/Breakpad在Android上的使用/">
-        <h2 class="post-title">
-            Breakpad在Android上的使用
-        </h2>
-        <h3 class="post-subtitle">
-            Breakpad在Android上的使用
-        </h3>
-        <div class="post-content-preview">
-            首先记下来一个地址：https://github.com/google/breakpad
-当然之前说过可能存在编译不通过的问题，原因缺少头文件现在将头文件添加上去的代码看地址：
-https://github.com/wang708846696/nativecrash
-这一篇文章只记录Android平台如何应用breakpad进行使用nativecrash的收集。
-进入目录后查看README.......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-21
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#nativecrash" title="nativecrash">nativecrash</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -627,11 +581,11 @@ https://github.com/wang708846696/nativecrash
     <div class="tags">
         
             
-            <a href="/tags/#构建" title="构建" rel="5">构建</a>
+            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
             
         
             
-            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
+            <a href="/tags/#构建" title="构建" rel="5">构建</a>
             
         
             
@@ -661,11 +615,11 @@ https://github.com/wang708846696/nativecrash
             
         
             
-            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
+            <a href="/tags/#设计模式" title="设计模式" rel="4">设计模式</a>
             
         
             
-            <a href="/tags/#Android APP" title="Android APP" rel="8">Android APP</a>
+            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
             
         
             
@@ -673,15 +627,15 @@ https://github.com/wang708846696/nativecrash
             
         
             
-            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
+            <a href="/tags/#Android APP" title="Android APP" rel="8">Android APP</a>
+            
+        
             
         
             
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
-            
-        
             
         
             
@@ -748,23 +702,23 @@ https://github.com/wang708846696/nativecrash
     <ul>
       
         <li>
-          <a href="/2019/01/27/富文本编辑是怎么回事/">富文本编辑是怎么回事</a>
+          <a href="/2019/03/07/应用内悬浮可移动控件/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/21/jni回调/">jni回调</a>
+          <a href="/2019/02/20/freelines记录/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/21/BasePlugin(二)/">BasePlugin(二)</a>
+          <a href="/2019/01/29/行为模式/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/20/BasePlugin(一)/">BasePlugin(一)</a>
+          <a href="/2019/01/29/结构型模式/">结构型模式</a>
         </li>
       
         <li>
-          <a href="/2019/01/16/多线程多方法完整执行/">多线程多方法完整执行</a>
+          <a href="/2019/01/28/创建型模式/">创建型模式</a>
         </li>
       
     </ul>

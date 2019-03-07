@@ -51,13 +51,6 @@
     </url>
 
     <url>
-        <loc>http://yoursite-url/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
-        <lastmod>2018-12-04T10:03:31.914Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://yoursite-url/tags/%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2/</loc>
         <lastmod>2018-12-14T09:39:08.879Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -165,6 +158,13 @@
     <url>
         <loc>http://yoursite-url/tags/Android-APP/</loc>
         <lastmod>2019-01-27T10:23:17.261Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://yoursite-url/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
+        <lastmod>2019-01-29T06:39:53.707Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

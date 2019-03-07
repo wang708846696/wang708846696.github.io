@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -206,6 +206,166 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/12/18/字符串拼接/">
+        <h2 class="post-title">
+            字符串拼接
+        </h2>
+        <h3 class="post-subtitle">
+            字符串拼接
+        </h3>
+        <div class="post-content-preview">
+            今天主要分析字符串拼接
+1234567891011public class Test4 &#123;    public static void main(String[] args) &#123;        String s1 = "ab";        String s2 = "a" + "b";        String s3 = "a";        String s4 =......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#面试题" title="面试题">面试题</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/16/位运算符常见用法/">
+        <h2 class="post-title">
+            位运算
+        </h2>
+        <h3 class="post-subtitle">
+            位运算
+        </h3>
+        <div class="post-content-preview">
+            
+测试第 k 位: s &amp; (1 &lt;&lt; k)
+
+123//举个例子//	1&lt;&lt;0=1	1&lt;&lt;1=2   1&lt;&lt;2=4  1&lt;&lt;3=8//	0001	0010	0100	1000
+
+设置第 k 位: s |= (1 &lt;&lt; k)
+
+12//将第多少位设置成1，比如将0000的第三位设置成1，结果是1000//所以0 ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-16
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#位运算" title="位运算">位运算</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/14/Transform理解/">
+        <h2 class="post-title">
+            Transform介绍
+        </h2>
+        <h3 class="post-subtitle">
+            Transform介绍
+        </h3>
+        <div class="post-content-preview">
+            
+来源于https://juejin.im/entry/5c0cc7c15188257d5e39647d
+
+Transform历史
+gradle2.0之前Transform单独需要引入
+transform的历史版本
+gradle2.0之后代码就放入了gradle-api中
+Transform依赖方式
+
+api&lt;=2.0 compile 'com.android.tools.build:......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Transform" title="Transform">Transform</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/14/handler内存泄露/">
+        <h2 class="post-title">
+            常用Handler导致内存泄露
+        </h2>
+        <h3 class="post-subtitle">
+            Handler导致的内存泄露
+        </h3>
+        <div class="post-content-preview">
+            1234567891011121314151617181920212223242526272829303132333435363738394041public class MainActivity extends Activity &#123;    private MyHandler mMyHandler;    @Override    protected void onCreate(B......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#内存泄露" title="内存泄露">内存泄露</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/04/动态代理模式/">
+        <h2 class="post-title">
+            动态代理模式
+        </h2>
+        <h3 class="post-subtitle">
+            动态代理模式讲解从反编译角度看
+        </h3>
+        <div class="post-content-preview">
+            静态代理大家都明白，就是相当于包装了一次，在包装这一次的时候可以加一些业务逻辑。同样静态代理的特点是一个接口对应一个代理类，当然委托类可以多个。
+静态代理
+123456/**  * 定义Demo接口  */  public interface Demo &#123;        public void save();  &#125;
+123456789/**  * DemoImpl实现De......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-04
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#设计模式" title="设计模式">设计模式</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -378,166 +538,6 @@ frameworks\base\tools\aap
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/13/FutureTask学习/">
-        <h2 class="post-title">
-            FutureTask原理
-        </h2>
-        <h3 class="post-subtitle">
-            本节主要针对FutureTask原理以及简单的使用做一个介绍
-        </h3>
-        <div class="post-content-preview">
-            本节介绍FutureTask这种方式使用线程。其实不能算是创建线程。只能属于一种包装。
-FutureTask组成部分
-Callable接口
-123public interface Callable&lt;V&gt; &#123;    V call() throws Exception;&#125;
-Future接口
-1234567public interface Future&lt;V&g......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-13
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#线程" title="线程">线程</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/13/gradle基本使用/">
-        <h2 class="post-title">
-            groovy语法&gradle与groovy和java的关系简要说明
-        </h2>
-        <h3 class="post-subtitle">
-            本节主要针对groovy语法&gradle与groovy和java的关系简要说明
-        </h3>
-        <div class="post-content-preview">
-            简介
-gradle官方文档
-android dsl官方文档
-gradle学习链接来自官方
-gradle是什么？
-We said earlier that the core of Gradle is a language for dependency based programming. In Gradle terms this means that you can define tasks ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-13
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#gradle" title="gradle">gradle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/10/热修复的一种实现/">
-        <h2 class="post-title">
-            Android热修复的一种实现
-        </h2>
-        <h3 class="post-subtitle">
-            本章节将介绍一种常用的热修复的实现
-        </h3>
-        <div class="post-content-preview">
-            回顾
-
-在 Android 中，App 安装到手机后，apk 里面的 class.dex 中的 class 均是通过 PathClassLoader 来加载的。
-DexClassLoader 可以用来加载外置sd卡等包含 class.dex 的 .jar 和 .apk 文件
-DexClassLoader 和 PathClassLoader 的基类 BaseDexClassLoader 查找 ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-10
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#热修复" title="热修复">热修复</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/10/Android中的类加载器(含源码)/">
-        <h2 class="post-title">
-            Android中的类加载器(含源码)
-        </h2>
-        <h3 class="post-subtitle">
-            本节主要针对Android8.0中的类加载器源码进行分析，只涉及到java层，native层暂时不涉及
-        </h3>
-        <div class="post-content-preview">
-            Android中有哪些类加载器
-通过前面的文章介绍了java中的类加载器，这章我们介绍Android中的类加载器。
-由于Android有自己特有文件格式，所以加载器和java也不太一样。java加载的是.class文件，但是Android加载的是.dex文件。所以从文件格式上有本质上的不一样。
-Android中的java.lang.ClassLoader这个类也不同于Java中的java.l......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-10
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#类加载" title="类加载">类加载</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/08/Java中类的加载机制（简介无源码）/">
-        <h2 class="post-title">
-            Java中类的加载机制（简介无源码）
-        </h2>
-        <h3 class="post-subtitle">
-            根据自问自答的方式简述了Java中类的加载机制，后续会有源码版
-        </h3>
-        <div class="post-content-preview">
-            简介
-说道类加载器可能大家第一反应就是啊这个东西我没有接触过很难，而且一般情况下对于app开发应用也用不到类加载器，但是对于框架开发者来说类加载器就是家常便饭一样，那类加载器到底是什么东西，真的难道我们都不敢接触了吗？下面就听菜鸟给你慢慢解答！我会通过小标题的方式一步步让大家理解最终的答案因为小标题是理解最终答案的基础
-什么是类加载？
-jvm(java虚拟机)将xx.class文件读取到内存......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#类加载" title="类加载">类加载</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -578,11 +578,11 @@ jvm(java虚拟机)将xx.class文件读取到内存......
     <div class="tags">
         
             
-            <a href="/tags/#构建" title="构建" rel="5">构建</a>
+            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
             
         
             
-            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
+            <a href="/tags/#构建" title="构建" rel="5">构建</a>
             
         
             
@@ -612,11 +612,11 @@ jvm(java虚拟机)将xx.class文件读取到内存......
             
         
             
-            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
+            <a href="/tags/#设计模式" title="设计模式" rel="4">设计模式</a>
             
         
             
-            <a href="/tags/#Android APP" title="Android APP" rel="8">Android APP</a>
+            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
             
         
             
@@ -624,15 +624,15 @@ jvm(java虚拟机)将xx.class文件读取到内存......
             
         
             
-            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
+            <a href="/tags/#Android APP" title="Android APP" rel="8">Android APP</a>
+            
+        
             
         
             
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
-            
-        
             
         
             
@@ -699,23 +699,23 @@ jvm(java虚拟机)将xx.class文件读取到内存......
     <ul>
       
         <li>
-          <a href="/2019/01/27/富文本编辑是怎么回事/">富文本编辑是怎么回事</a>
+          <a href="/2019/03/07/应用内悬浮可移动控件/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/21/jni回调/">jni回调</a>
+          <a href="/2019/02/20/freelines记录/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/21/BasePlugin(二)/">BasePlugin(二)</a>
+          <a href="/2019/01/29/行为模式/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/20/BasePlugin(一)/">BasePlugin(一)</a>
+          <a href="/2019/01/29/结构型模式/">结构型模式</a>
         </li>
       
         <li>
-          <a href="/2019/01/16/多线程多方法完整执行/">多线程多方法完整执行</a>
+          <a href="/2019/01/28/创建型模式/">创建型模式</a>
         </li>
       
     </ul>

@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -206,6 +206,166 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/11/13/FutureTask学习/">
+        <h2 class="post-title">
+            FutureTask原理
+        </h2>
+        <h3 class="post-subtitle">
+            本节主要针对FutureTask原理以及简单的使用做一个介绍
+        </h3>
+        <div class="post-content-preview">
+            本节介绍FutureTask这种方式使用线程。其实不能算是创建线程。只能属于一种包装。
+FutureTask组成部分
+Callable接口
+123public interface Callable&lt;V&gt; &#123;    V call() throws Exception;&#125;
+Future接口
+1234567public interface Future&lt;V&g......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-13
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#线程" title="线程">线程</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/11/13/gradle基本使用/">
+        <h2 class="post-title">
+            groovy语法&gradle与groovy和java的关系简要说明
+        </h2>
+        <h3 class="post-subtitle">
+            本节主要针对groovy语法&gradle与groovy和java的关系简要说明
+        </h3>
+        <div class="post-content-preview">
+            简介
+gradle官方文档
+android dsl官方文档
+gradle学习链接来自官方
+gradle是什么？
+We said earlier that the core of Gradle is a language for dependency based programming. In Gradle terms this means that you can define tasks ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-13
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#gradle" title="gradle">gradle</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/11/10/热修复的一种实现/">
+        <h2 class="post-title">
+            Android热修复的一种实现
+        </h2>
+        <h3 class="post-subtitle">
+            本章节将介绍一种常用的热修复的实现
+        </h3>
+        <div class="post-content-preview">
+            回顾
+
+在 Android 中，App 安装到手机后，apk 里面的 class.dex 中的 class 均是通过 PathClassLoader 来加载的。
+DexClassLoader 可以用来加载外置sd卡等包含 class.dex 的 .jar 和 .apk 文件
+DexClassLoader 和 PathClassLoader 的基类 BaseDexClassLoader 查找 ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-10
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#热修复" title="热修复">热修复</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/11/10/Android中的类加载器(含源码)/">
+        <h2 class="post-title">
+            Android中的类加载器(含源码)
+        </h2>
+        <h3 class="post-subtitle">
+            本节主要针对Android8.0中的类加载器源码进行分析，只涉及到java层，native层暂时不涉及
+        </h3>
+        <div class="post-content-preview">
+            Android中有哪些类加载器
+通过前面的文章介绍了java中的类加载器，这章我们介绍Android中的类加载器。
+由于Android有自己特有文件格式，所以加载器和java也不太一样。java加载的是.class文件，但是Android加载的是.dex文件。所以从文件格式上有本质上的不一样。
+Android中的java.lang.ClassLoader这个类也不同于Java中的java.l......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-10
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#类加载" title="类加载">类加载</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/11/08/Java中类的加载机制（简介无源码）/">
+        <h2 class="post-title">
+            Java中类的加载机制（简介无源码）
+        </h2>
+        <h3 class="post-subtitle">
+            根据自问自答的方式简述了Java中类的加载机制，后续会有源码版
+        </h3>
+        <div class="post-content-preview">
+            简介
+说道类加载器可能大家第一反应就是啊这个东西我没有接触过很难，而且一般情况下对于app开发应用也用不到类加载器，但是对于框架开发者来说类加载器就是家常便饭一样，那类加载器到底是什么东西，真的难道我们都不敢接触了吗？下面就听菜鸟给你慢慢解答！我会通过小标题的方式一步步让大家理解最终的答案因为小标题是理解最终答案的基础
+什么是类加载？
+jvm(java虚拟机)将xx.class文件读取到内存......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-11-08
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#类加载" title="类加载">类加载</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -368,150 +528,6 @@ Part 6
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/04/滴滴插件化2_装载插件/">
-        <h2 class="post-title">
-            滴滴插件化2_装载插件
-        </h2>
-        <h3 class="post-subtitle">
-            主要针对装载插件的代码进行分析，具体看看装载插件的时候需要初始化那些内容以及替换那些核心的类
-        </h3>
-        <div class="post-content-preview">
-            装载插件（apk）
-123456789101112131415public void loadPlugin(File apk) throws Exception &#123;    ...    //创建LoadedPlugin    LoadedPlugin plugin = createLoadedPlugin(apk);//【1.2】    if (null == plugin) &#......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-04
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/03/滴滴插件化1/">
-        <h2 class="post-title">
-            插件化框架源码解析1_初始化
-        </h2>
-        <h3 class="post-subtitle">
-            主要针对初始化的代码进行分析，具体看看Hook了那些比较重要的点
-        </h3>
-        <div class="post-content-preview">
-            初始化
-这章节主要针对初始化的代码进行分析，具体看看Hook了那些比较重要的点。
-123456789101112131415161718protected PluginManager(Context context) &#123;    if (context instanceof Application) &#123;        this.mApplication = (Applica......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-03
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android APP" title="Android APP">Android APP</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动10-类加载器/">
-        <h2 class="post-title">
-            应用创建后的类加载器
-        </h2>
-        <h3 class="post-subtitle">
-            应用创建后的类加载器主要说明
-        </h3>
-        <div class="post-content-preview">
-            可能大家会有疑问，尤其是我当时接触多dex的时候也会存在疑问，为什么会报类的def找不到异常。报这个异常的原因是什么？一个同事推荐说深入理解java虚拟机这本书很好，然后我就仔细看了一遍，发现其实类加载过程其实是一个很漫长的过程，为什么说是很漫长，因为牵扯到.java文件转化.class文件，然后在读入内存中形成对应的数据结构的过程，其中牵扯到校验，连接，编译器优化等等过程，我们今天不讨论这......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动9-Content的区别/">
-        <h2 class="post-title">
-            Content的创建过程
-        </h2>
-        <h3 class="post-subtitle">
-            Content的创建过程主要说明
-        </h3>
-        <div class="post-content-preview">
-            这里是创建Activity时候的Content过程。
-12345678910ContextImpl appContext = createBaseContextForActivity(r);Activity activity = null;try &#123;    java.lang.ClassLoader cl = appContext.getClassLoader();    acti......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/01/Activity启动7-scheduleLaunchActivity方法/">
-        <h2 class="post-title">
-            Activity启动7-scheduleLaunchActivity方法
-        </h2>
-        <h3 class="post-subtitle">
-            scheduleLaunchActivity()方法的主要说明
-        </h3>
-        <div class="post-content-preview">
-            1234567app.thread.scheduleLaunchActivity(new Intent(r.intent), r.appToken,                                  System.identityHashCode(r), r.info,                                  mergedConfiguration.......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Android Framework" title="Android Framework">Android Framework</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -552,11 +568,11 @@ Part 6
     <div class="tags">
         
             
-            <a href="/tags/#构建" title="构建" rel="5">构建</a>
+            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
             
         
             
-            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
+            <a href="/tags/#构建" title="构建" rel="5">构建</a>
             
         
             
@@ -586,11 +602,11 @@ Part 6
             
         
             
-            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
+            <a href="/tags/#设计模式" title="设计模式" rel="4">设计模式</a>
             
         
             
-            <a href="/tags/#Android APP" title="Android APP" rel="8">Android APP</a>
+            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
             
         
             
@@ -598,15 +614,15 @@ Part 6
             
         
             
-            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
+            <a href="/tags/#Android APP" title="Android APP" rel="8">Android APP</a>
+            
+        
             
         
             
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
-            
-        
             
         
             
@@ -673,23 +689,23 @@ Part 6
     <ul>
       
         <li>
-          <a href="/2019/01/27/富文本编辑是怎么回事/">富文本编辑是怎么回事</a>
+          <a href="/2019/03/07/应用内悬浮可移动控件/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/21/jni回调/">jni回调</a>
+          <a href="/2019/02/20/freelines记录/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/21/BasePlugin(二)/">BasePlugin(二)</a>
+          <a href="/2019/01/29/行为模式/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/20/BasePlugin(一)/">BasePlugin(一)</a>
+          <a href="/2019/01/29/结构型模式/">结构型模式</a>
         </li>
       
         <li>
-          <a href="/2019/01/16/多线程多方法完整执行/">多线程多方法完整执行</a>
+          <a href="/2019/01/28/创建型模式/">创建型模式</a>
         </li>
       
     </ul>

@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -206,6 +206,164 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2019/03/07/应用内悬浮可移动控件/">
+        <h2 class="post-title">
+            Untitled
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            应用内悬浮可移动按钮，当第一个Activity出来之后我们进行悬浮控件的渲染，这个时候就需要知道Activity的生命周期，有人说知道MainActivity就好了，但是有锅，原因是此时虽然知道是第一个activity，但是在MainActivity中写代码会跟着MainActivity的生命周期走。所以得另寻僻径。
+
+注册生命周期回调
+
+1234567public class App ex......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-03-07
+        </p>
+        <div class="tags">
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/02/20/freelines记录/">
+        <h2 class="post-title">
+            Untitled
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            配置&amp;引用freeline
+第一步：安装python2.7环境
+https://www.python.org/downloads/release/python-2712/
+
+配置python环境，如果之前配置过3.x那么可能就需要重新在环境变量里面进行更改（下面是我的配置）
+1xxxxxxx;F:\pythonload\;F:\pythonload\Scripts\;
+第二步：新建一......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-02-20
+        </p>
+        <div class="tags">
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/29/行为模式/">
+        <h2 class="post-title">
+            Untitled
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            ...
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-29
+        </p>
+        <div class="tags">
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/29/结构型模式/">
+        <h2 class="post-title">
+            结构型模式
+        </h2>
+        <h3 class="post-subtitle">
+            结构型模式
+        </h3>
+        <div class="post-content-preview">
+            结构模式：通常用来处理实体之间的关系，使得这些实体能够更好地协同工作。
+其中属于结构模式的是：装饰模式、适配器模式、代理模式、外观模式、桥接模式、组合模式、享元模式。
+这几种模式并不生产对象，都是通过代理对象从而达到目的。
+代理模式
+定义： 为其他对象提供一种代理以控制对这个对象的访问。
+静态代理
+12345678910111213141516171819202122232425262728......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-29
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#设计模式" title="设计模式">设计模式</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/28/创建型模式/">
+        <h2 class="post-title">
+            创建型模式
+        </h2>
+        <h3 class="post-subtitle">
+            创建型模式
+        </h3>
+        <div class="post-content-preview">
+            
+单例：保证内存中只有一个
+builder：将复杂对象进行分离，可以进行组合式构造
+工厂：生产单一的产品（牙膏），但是不同类型（高露洁，黑人，佳洁士，中华…）的产品
+抽象工厂：多维度，将同一种产品进行归类是工厂模式的抽象
+
+单例模式
+比较优质的写法1：
+123456789public class Single &#123;      private static class SingleHo......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-28
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#设计模式" title="设计模式">设计模式</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -357,154 +515,6 @@ updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2019/01/15/再探FocusOverlayManager/">
-        <h2 class="post-title">
-            再探FocusOverlayManager
-        </h2>
-        <h3 class="post-subtitle">
-            再探FocusOverlayManager
-        </h3>
-        <div class="post-content-preview">
-            该类主要负责焦点相关，通过一系列的状态值，还有通过聚焦的坐标进行转化等，和聚焦的view，还有设备聚焦功能进行对接。具体对接设备是通过一个listener进行的具体实现是外界。view的实现是传递进来的。
-成员变量初探
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2019-01-15
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Camera" title="Camera">Camera</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/01/14/让相机开始显示(3)/">
-        <h2 class="post-title">
-            让相机开始显示(系列3)
-        </h2>
-        <h3 class="post-subtitle">
-            让相机开始显示(系列3)
-        </h3>
-        <div class="post-content-preview">
-            这个部分大概阐述了一个相机显示的过程，和如何操作焦点的概述，下一节会详细说明焦点如何获取
-和如何准确的操作焦点，主要的核心有是否支持，曝光面积，聚焦面积等等
-从这个线程创建开始启动相机
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2019-01-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Camera" title="Camera">Camera</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/01/14/对CameraManager的操作(系列2)/">
-        <h2 class="post-title">
-            对CameraManager的操作(系列2)
-        </h2>
-        <h3 class="post-subtitle">
-            对CameraManager的操作(系列2)
-        </h3>
-        <div class="post-content-preview">
-            根据上一节的操作当打开相机之后同时返回一个操作相机的代理
-123456789public CameraProxy cameraOpen(int cameraId) &#123;    mCamera = android.hardware.Camera.open(cameraId);    if (mCamera != null) &#123;        mCameraProxy = ne......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2019-01-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Camera" title="Camera">Camera</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/01/14/CameraManager核心操作(系列1)/">
-        <h2 class="post-title">
-            CameraManager核心操作(系列1)
-        </h2>
-        <h3 class="post-subtitle">
-            CameraManager核心操作(系列1)
-        </h3>
-        <div class="post-content-preview">
-            描述一个相机操作的过程，我觉得应该从和相机打交道的代码入手，这样才能看清楚操作api的本质，至于什么时候操作api是后续接触的流程。所以先看CameraManager这个类。
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2019-01-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Camera" title="Camera">Camera</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/29/Android中使用gradle编译ndk工程/">
-        <h2 class="post-title">
-            Android中使用gradle编译ndk工程
-        </h2>
-        <h3 class="post-subtitle">
-            Android中使用gradle编译ndk工程
-        </h3>
-        <div class="post-content-preview">
-            在工程的gradle文件中写入：
-12345678910111213141516task ndkBuild(type: Exec) &#123;    def ndkDir = android.ndkDirectory    if (ndkDir != null) &#123;        if (org.gradle.internal.os.OperatingSystem.current......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-29
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#构建" title="构建">构建</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -541,11 +551,11 @@ updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间
     <div class="tags">
         
             
-            <a href="/tags/#构建" title="构建" rel="5">构建</a>
+            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
             
         
             
-            <a href="/tags/#Android Framework" title="Android Framework" rel="10">Android Framework</a>
+            <a href="/tags/#构建" title="构建" rel="5">构建</a>
             
         
             
@@ -575,11 +585,11 @@ updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间
             
         
             
-            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
+            <a href="/tags/#设计模式" title="设计模式" rel="4">设计模式</a>
             
         
             
-            <a href="/tags/#Android APP" title="Android APP" rel="8">Android APP</a>
+            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
             
         
             
@@ -587,15 +597,15 @@ updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间
             
         
             
-            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
+            <a href="/tags/#Android APP" title="Android APP" rel="8">Android APP</a>
+            
+        
             
         
             
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
-            
-        
             
         
             
@@ -662,23 +672,23 @@ updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间
     <ul>
       
         <li>
-          <a href="/2019/01/27/富文本编辑是怎么回事/">富文本编辑是怎么回事</a>
+          <a href="/2019/03/07/应用内悬浮可移动控件/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/21/jni回调/">jni回调</a>
+          <a href="/2019/02/20/freelines记录/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/21/BasePlugin(二)/">BasePlugin(二)</a>
+          <a href="/2019/01/29/行为模式/">(no title)</a>
         </li>
       
         <li>
-          <a href="/2019/01/20/BasePlugin(一)/">BasePlugin(一)</a>
+          <a href="/2019/01/29/结构型模式/">结构型模式</a>
         </li>
       
         <li>
-          <a href="/2019/01/16/多线程多方法完整执行/">多线程多方法完整执行</a>
+          <a href="/2019/01/28/创建型模式/">创建型模式</a>
         </li>
       
     </ul>
