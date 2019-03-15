@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,73 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2019/03/13/Es6_基础语法_day1/">
+        <h2 class="post-title">
+            Untitled
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            基础语法
+定义变量
+let命令
+
+块内有效
+
+1234567&#123;  let a = 10;  var b = 1;&#125;a // ReferenceError: a is not defined.b // 1
+
+循环中使用
+
+12345for (let i = 0; i &lt; 10; i++) &#123;  // ...&#125;console.log(i);
+
+函数内......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-03-13
+        </p>
+        <div class="tags">
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/03/07/记录一个RecyclerView/">
+        <h2 class="post-title">
+            记录一个RecyclerView
+        </h2>
+        <h3 class="post-subtitle">
+            记录一个RecyclerView
+        </h3>
+        <div class="post-content-preview">
+            今天其实没有啥可写的，纯属记录性质，那就记录一个RecyclerView的使用。
+12345678910111213141516&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"    android:ba......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-03-07
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#view" title="view">view</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -459,66 +526,6 @@ updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2019/01/20/BasePlugin(一)/">
-        <h2 class="post-title">
-            BasePlugin(一)
-        </h2>
-        <h3 class="post-subtitle">
-            BasePlugin(一)
-        </h3>
-        <div class="post-content-preview">
-            分步骤研究configureProject方法，这个方法是执行dsl的第一步，初始化了很多东西。今天大概讲讲到底初始化了那些东西
-123456789101112131415161718192021222324252627282930private void configureProject() &#123;    //得到Gralde对象    final Gradle gradle = p......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2019-01-20
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#构建" title="构建">构建</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/01/16/多线程多方法完整执行/">
-        <h2 class="post-title">
-            多线程多方法完整执行
-        </h2>
-        <h3 class="post-subtitle">
-            多线程多方法完整执行
-        </h3>
-        <div class="post-content-preview">
-            android api中有这样一个不起眼的类：ConditionVariable
-具体记录在：https://developer.android.com/reference/android/os/ConditionVariable
-这个类简单包装了锁带条件的使用。
-这与内置的java.lang不同。对象wait()和notify()，因为该类本身包含等待的条件。这意味着open()、clos......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2019-01-16
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Camera" title="Camera">Camera</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -585,17 +592,13 @@ updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间
             
         
             
+        
+            
             <a href="/tags/#jvm" title="jvm" rel="3">jvm</a>
             
         
             
-        
-            
             <a href="/tags/#设计模式" title="设计模式" rel="4">设计模式</a>
-            
-        
-            
-            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
             
         
             
@@ -607,11 +610,17 @@ updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间
             
         
             
+            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
+            
+        
+            
         
             
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
+            
+        
             
         
             
@@ -680,6 +689,14 @@ updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间
     <ul>
       
         <li>
+          <a href="/2019/03/13/Es6_基础语法_day1/">(no title)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/03/07/记录一个RecyclerView/">记录一个RecyclerView</a>
+        </li>
+      
+        <li>
           <a href="/2019/03/07/应用内悬浮可移动控件/">制作一个悬浮框</a>
         </li>
       
@@ -689,14 +706,6 @@ updateTimer此方法在jni中调用，并且一秒调用一次用于更新时间
       
         <li>
           <a href="/2019/01/29/行为模式/">(no title)</a>
-        </li>
-      
-        <li>
-          <a href="/2019/01/29/结构型模式/">结构型模式</a>
-        </li>
-      
-        <li>
-          <a href="/2019/01/28/创建型模式/">创建型模式</a>
         </li>
       
     </ul>

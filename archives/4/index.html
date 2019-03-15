@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,119 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/12/18/jvm垃圾回收机制/">
+        <h2 class="post-title">
+            jvm垃圾回收机制
+        </h2>
+        <h3 class="post-subtitle">
+            jvm垃圾回收机制
+        </h3>
+        <div class="post-content-preview">
+            1. 标记——清除算法（Mark-Sweep）
+
+过程
+
+标记正所有需要回收的对象
+标记完成后清除被标记的对象。
+
+理解
+图书管里有好多人在看书，图书管理员想要收集起没有被看的书的时候，他决定让所有正在看书的人站起来，然后询问每个人：那一本书是不看的。询问完所有的人之后，同学们做下继续看书。这时候，图书管理员开始寻找所有做过标记的书，把它们收集起来。
+缺点
+
+每次进行垃圾回收时，会暂停当前用......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#jvm" title="jvm">jvm</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/12/18/jvm指令/">
+        <h2 class="post-title">
+            jvm指令
+        </h2>
+        <h3 class="post-subtitle">
+            jvm指令
+        </h3>
+        <div class="post-content-preview">
+            来源点这里
+
+
+
+常量入栈指令
+
+
+
+
+
+
+操作码（助记符）
+操作数
+描述（栈指操作数栈）
+
+
+aconst_null
+
+null值入栈。
+
+
+iconst_m1
+
+-1(int)值入栈。
+
+
+iconst_0
+
+0(int)值入栈。
+
+
+iconst_1
+
+1(int)值入栈。
+
+
+iconst_2
+
+2(int)值入栈。
+
+
+iconst_3
+
+3(int)值入栈。
+
+
+iconst_4......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2018-12-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#jvm" title="jvm">jvm</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -475,69 +588,6 @@ frameworks\base\tools\aap
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/11/15/事件分发机制/">
-        <h2 class="post-title">
-            Android事件传输机制
-        </h2>
-        <h3 class="post-subtitle">
-            本章节将介绍Android中事件传输机制
-        </h3>
-        <div class="post-content-preview">
-            Activity.dispatchTouchEvent()来源
-首先我们在Activity的dispatchTouchEvent方法中打印堆栈。大概了解下事件的源头。但是我们并不会涉及太深的代码逻辑。
-123456789101112131415161718192021222324252627282930313233java.lang.Exception: Stack trace    at ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-15
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#事件传输" title="事件传输">事件传输</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/11/14/单例模式/">
-        <h2 class="post-title">
-            单例模式的核心点
-        </h2>
-        <h3 class="post-subtitle">
-            本节主要针对常见的几种单例模式作为介绍
-        </h3>
-        <div class="post-content-preview">
-            常见的几种单例模式比较
-
-饿汉式(静态常量)[可用]
-
-很简单利用java虚拟机特性
-1234567public class Singleton &#123;    private final static Singleton INSTANCE = new Singleton();    private Singleton()&#123;&#125;    public static Sin......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-11-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#设计模式" title="设计模式">设计模式</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -608,17 +658,13 @@ frameworks\base\tools\aap
             
         
             
+        
+            
             <a href="/tags/#jvm" title="jvm" rel="3">jvm</a>
             
         
             
-        
-            
             <a href="/tags/#设计模式" title="设计模式" rel="4">设计模式</a>
-            
-        
-            
-            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
             
         
             
@@ -630,11 +676,17 @@ frameworks\base\tools\aap
             
         
             
+            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
+            
+        
+            
         
             
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
+            
+        
             
         
             
@@ -703,6 +755,14 @@ frameworks\base\tools\aap
     <ul>
       
         <li>
+          <a href="/2019/03/13/Es6_基础语法_day1/">(no title)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/03/07/记录一个RecyclerView/">记录一个RecyclerView</a>
+        </li>
+      
+        <li>
           <a href="/2019/03/07/应用内悬浮可移动控件/">制作一个悬浮框</a>
         </li>
       
@@ -712,14 +772,6 @@ frameworks\base\tools\aap
       
         <li>
           <a href="/2019/01/29/行为模式/">(no title)</a>
-        </li>
-      
-        <li>
-          <a href="/2019/01/29/结构型模式/">结构型模式</a>
-        </li>
-      
-        <li>
-          <a href="/2019/01/28/创建型模式/">创建型模式</a>
         </li>
       
     </ul>

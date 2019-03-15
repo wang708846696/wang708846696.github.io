@@ -132,14 +132,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -206,6 +206,66 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2019/01/20/BasePlugin(一)/">
+        <h2 class="post-title">
+            BasePlugin(一)
+        </h2>
+        <h3 class="post-subtitle">
+            BasePlugin(一)
+        </h3>
+        <div class="post-content-preview">
+            分步骤研究configureProject方法，这个方法是执行dsl的第一步，初始化了很多东西。今天大概讲讲到底初始化了那些东西
+123456789101112131415161718192021222324252627282930private void configureProject() &#123;    //得到Gralde对象    final Gradle gradle = p......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#构建" title="构建">构建</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/01/16/多线程多方法完整执行/">
+        <h2 class="post-title">
+            多线程多方法完整执行
+        </h2>
+        <h3 class="post-subtitle">
+            多线程多方法完整执行
+        </h3>
+        <div class="post-content-preview">
+            android api中有这样一个不起眼的类：ConditionVariable
+具体记录在：https://developer.android.com/reference/android/os/ConditionVariable
+这个类简单包装了锁带条件的使用。
+这与内置的java.lang不同。对象wait()和notify()，因为该类本身包含等待的条件。这意味着open()、clos......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by WangWei on
+            2019-01-16
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Camera" title="Camera">Camera</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -463,84 +523,6 @@ Factory Method（工厂方法）
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2018/12/26/Python异常捕获/">
-        <h2 class="post-title">
-            Python异常捕获
-        </h2>
-        <h3 class="post-subtitle">
-            Python异常捕获
-        </h3>
-        <div class="post-content-preview">
-            
-基础语法
-
-1234try:    尝试执行的代码except:    出现错误的处理
-比如：
-12345try:    # 提示用户输入一个数字    num = int(input("请输入数字："))except:    print("请输入正确的数字")
-
-错误类型捕获
-
-1234567891011try:    # 尝试执行的代码    passexcept 错误类型1:    ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Python" title="Python">Python</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2018/12/26/Python面向对象/">
-        <h2 class="post-title">
-            Python面向对象
-        </h2>
-        <h3 class="post-subtitle">
-            Python面向对象基础
-        </h3>
-        <div class="post-content-preview">
-            目标
-
-dir 内置函数
-定义简单的类（只包含方法）
-方法中的 self 参数
-初始化方法
-内置方法和属性
-
-01. dir 内置函数
-
-在 Python 中 对象几乎是无所不在的， 变量、数据、函数 都是对象
-使用内置函数 dir 传入 标识符 / 数据，可以查看对象内的 所有属性及方法
-
-123456789101112class Cat:    """这是一个猫类"""    def e......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by WangWei on
-            2018-12-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Python" title="Python">Python</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -611,17 +593,13 @@ dir 内置函数
             
         
             
+        
+            
             <a href="/tags/#jvm" title="jvm" rel="3">jvm</a>
             
         
             
-        
-            
             <a href="/tags/#设计模式" title="设计模式" rel="4">设计模式</a>
-            
-        
-            
-            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
             
         
             
@@ -633,11 +611,17 @@ dir 内置函数
             
         
             
+            <a href="/tags/#Camera" title="Camera" rel="5">Camera</a>
+            
+        
+            
         
             
         
             
             <a href="/tags/#类加载" title="类加载" rel="2">类加载</a>
+            
+        
             
         
             
@@ -706,6 +690,14 @@ dir 内置函数
     <ul>
       
         <li>
+          <a href="/2019/03/13/Es6_基础语法_day1/">(no title)</a>
+        </li>
+      
+        <li>
+          <a href="/2019/03/07/记录一个RecyclerView/">记录一个RecyclerView</a>
+        </li>
+      
+        <li>
           <a href="/2019/03/07/应用内悬浮可移动控件/">制作一个悬浮框</a>
         </li>
       
@@ -715,14 +707,6 @@ dir 内置函数
       
         <li>
           <a href="/2019/01/29/行为模式/">(no title)</a>
-        </li>
-      
-        <li>
-          <a href="/2019/01/29/结构型模式/">结构型模式</a>
-        </li>
-      
-        <li>
-          <a href="/2019/01/28/创建型模式/">创建型模式</a>
         </li>
       
     </ul>
