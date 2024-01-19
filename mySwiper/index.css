@@ -25,7 +25,7 @@
     font-size: 24px;
 }
 .myswiper .swiper-slide img {
-    filter: brightness(0.8); /* 图片变暗 ,字体看得清 */
+    filter: brightness(1); /* 图片变暗 ,字体看得清 */
 }
 .myswiper.swiper-container-vertical .swiper-pagination-bullet-active {
     height: 30px;
