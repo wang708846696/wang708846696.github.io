@@ -215,6 +215,17 @@
           
             <li class="drawer-box-content_item" style="position: relative;">
               
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">干货整理</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
                 <a href="/categories" class="drawer-menu-item-link">
                   
                     <i class="fas fa-bookmark" aria-hidden="true"></i>
@@ -307,6 +318,17 @@
                     <i class="fas fa-home" aria-hidden="true"></i>
                   
                   <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="干货整理">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">干货整理</span>
                 </a>
               
             </li>
@@ -421,9 +443,9 @@
         <!-- 内容区域 -->
         <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
 <div class="bg-light-floor-archive" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
-<div class="archive-header" style="background-image:url('https://pic1.zhimg.com/v2-af3ccef61cf58b1a70765747cc1bbeac_b.jpg')">
+<div class="archive-header" style="background-image:url('/img/bgfile/header2.png')">
   <div class="archive-header-title">
-    公司大事件
+    干货文章整理
   </div>
   <div class="archive-header-desc">
   
@@ -454,7 +476,7 @@
       <source style="width: 100%;height: 100vh;" src="/">
   </video>
   <div class="video-header-title">
-    公司大事件
+    干货文章整理
   </div>
   <div class="video-header-desc">
   
@@ -499,6 +521,23 @@
           <li class="post-item" data-aos="fade-left">
             
             <div class="post-img-box">
+              <a href="/2024/01/18/midjourney-hui-hua-zhou-yu/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" src="/img/mj_bg.png" class="lazyload placeholder" data-srcset="/img/mj_bg.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                <span class="post-date">01-18</span>
+              </div>
+              <a class="post-title" href="/2024/01/18/midjourney-hui-hua-zhou-yu/">Midjourney绘画咒语</a>
+            </div>
+          </li>
+        
+          
+          <li class="post-item" data-aos="fade-left">
+            
+            <div class="post-img-box">
               <a href="/2024/01/18/zhao-pin/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
                 <img class="lazyload lazyload placeholder" src="/img/boss.jpeg" class="lazyload placeholder" data-srcset="/img/boss.jpeg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
@@ -526,23 +565,6 @@
                 <span class="post-date">01-18</span>
               </div>
               <a class="post-title" href="/2024/01/18/shen-qi-wang-zhan/">神器网站</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2024/01/18/midjourney-hui-hua-zhou-yu/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/img/mj_bg.png" class="lazyload placeholder" data-srcset="/img/mj_bg.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">01-18</span>
-              </div>
-              <a class="post-title" href="/2024/01/18/midjourney-hui-hua-zhou-yu/">Midjourney绘画咒语</a>
             </div>
           </li>
         
@@ -579,7 +601,7 @@
       if (isDark) {
         this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
       } else {
-        this.FISH_COLOR = '' || 'rgba(66, 185, 133, 0.6)';
+        this.FISH_COLOR = '' || 'rgba(62, 63, 63, 0.6)';
       }
     },
     setParameters: function () {
